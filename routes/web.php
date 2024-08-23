@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\AdminController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -22,3 +23,4 @@ Route::get('/', function () {
 // });
 
 Route::get('/userprofile', [UserController::class, 'showUsers'])->name('user.profile');
+Route::get('/admindashboard', [AdminController::class, 'showAdmin'])->name('admin.dashboard');

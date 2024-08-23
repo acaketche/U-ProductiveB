@@ -56,7 +56,7 @@ class AuthController extends Controller
     public function login(Request $request)
 {
     try {
-        $credentials = $request->only('name', 'password');
+        $credentials = $request->only('name', 'password',);
         Log::info('Login attempt', $credentials);
 
         if (Auth::attempt($credentials)) {

@@ -85,7 +85,7 @@
                 <div class="input-group">
                     <input type="password" class="form-control" id="password" name="password" placeholder="Masukkan Password">
                     <button type="button" class="btn btn-outline-secondary" id="togglePassword">
-                        <i class="bi bi-eye-fill" id="toggleIcon"></i>
+                    <i class="bi bi-eye-fill" id="toogleIcon"></i>
                     </button>
                 </div>
             </div>
@@ -116,16 +116,13 @@
 
     <!-- Script for toggling password visibility -->
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const togglePassword = document.querySelector('#togglePassword');
-            const passwordInput = document.querySelector('#password');
-            const toggleIcon = document.querySelector('#toggleIcon');
+         $(document).ready(function() {
+            $('#togglePassword').click(function() {
+                const passwordInput = $('#password');
+                const type = passwordInput.attr('type') === 'password' ? 'text' : 'password';
+                passwordInput.attr('type', type);
 
-            togglePassword.addEventListener('click', function () {
-                const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-                passwordInput.setAttribute('type', type);
-                toggleIcon.classList.toggle('bi-eye-fill');
-                toggleIcon.classList.toggle('bi-eye-slash');
+                $(this).find('i').toggleClass('bi-eye-slash bi-eye');
             });
         });
     </script>

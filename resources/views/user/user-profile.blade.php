@@ -90,9 +90,10 @@
                     <li class="nav-item">
                         <a class="nav-link" href="video.html">Video</a>
                     </li>
-                    <li class="nav-item">
-                        <button class="btn btn-warning me-2">Logout</button>
-                    </li>
+                   <form action="{{ route('logout') }}" method="POST" style="display: inline;">
+                        @csrf
+                        <button type="submit" class="btn btn-warning">Logout</button>
+                    </form>
                 </ul>
             </div>
         </div>
