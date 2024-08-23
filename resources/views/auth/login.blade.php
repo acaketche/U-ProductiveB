@@ -1,10 +1,9 @@
 <!DOCTYPE html>
 <html lang="id">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+    <title>U-Productive Login</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <style>
@@ -23,7 +22,7 @@
             border-radius: 8px;
             border: none;
             width: 500px;
-            height: 460px;
+            height: auto;
         }
 
         .login-container h1 {
@@ -72,30 +71,32 @@
         }
     </style>
 </head>
-
 <body>
     <div class="login-container">
         <h1>Login</h1>
-        <form action="/login" method="POST">
+        <form action="{{ route('login') }}" method="POST">
+            @csrf
             <div class="mb-3">
-                <label for="email" class="form-label">Username </label>
-                <input type="email" class="form-control" id="email" name="email" placeholder="Username" required>
+                <label for="name" class="form-label">Username</label>
+                <input type="text" class="form-control" id="name" name="name" placeholder="Username" required>
             </div>
             <div class="mb-3">
-                <label for="password" class="form-label">Kata Sandi</label>
+                <label for="password" class="form-label">Password</label>
                 <div class="input-group">
-                    <input type="password" class="form-control" id="password" name="password" placeholder="Kata Sandi" required>
-                    <span class="input-group-text" id="togglePassword"><i class="bi bi-eye-slash"></i></span>
+                    <input type="password" class="form-control" id="password" name="password" placeholder="Masukkan Password">
+                    <button type="button" class="btn btn-outline-secondary" id="togglePassword">
+                        <i class="bi bi-eye-fill" id="toggleIcon"></i>
+                    </button>
                 </div>
             </div>
 
-            <!-- Dropdown untuk memilih role -->
+            <!-- Dropdown for selecting role -->
             <div class="mb-3">
-                <label for="role" class="form-label">Login sebagai</label>
+                <label for="role" class="form-label">Login as</label>
                 <select class="form-select" id="role" name="role" required>
-                    <option value="mahasiswa">Mahasiswa</option>
-                    <option value="dosen">Dosen</option>
-                    <option value="admin">Admin</option>
+                    <option value="Mahasiswa">Mahasiswa</option>
+                    <option value="Dosen">Dosen</option>
+                    <option value="Admin">Admin</option>
                 </select>
             </div>
 
@@ -104,29 +105,29 @@
             </div>
         </form>
         <div class="mt-3 text-center">
-            <p>Belum punya Akun? <a href="#">Daftar Disini</a></p>
-            <a href="#">About</a>
-            <a href="#">Contact</a>
+            <p>Don't have an account? <a href="{{ route('register') }}">Register here</a></p>
+            <div class="mt-3">
+                <a href="#">About</a> | <a href="#">Contact</a>
+            </div>
         </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-    <!-- Script untuk toggle visibilitas password -->
+    <!-- Script for toggling password visibility -->
     <script>
-        const togglePassword = document.querySelector('#togglePassword');
-        const password = document.querySelector('#password');
+        document.addEventListener('DOMContentLoaded', function() {
+            const togglePassword = document.querySelector('#togglePassword');
+            const passwordInput = document.querySelector('#password');
+            const toggleIcon = document.querySelector('#toggleIcon');
 
-        togglePassword.addEventListener('click', function () {
-            // Toggle tipe input antara password dan text
-            const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
-            password.setAttribute('type', type);
-
-            // Toggle ikon mata antara slash dan eye
-            this.querySelector('i').classList.toggle('bi-eye-slash');
-            this.querySelector('i').classList.toggle('bi-eye');
+            togglePassword.addEventListener('click', function () {
+                const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                passwordInput.setAttribute('type', type);
+                toggleIcon.classList.toggle('bi-eye-fill');
+                toggleIcon.classList.toggle('bi-eye-slash');
+            });
         });
     </script>
 </body>
-
 </html>
