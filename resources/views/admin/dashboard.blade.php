@@ -98,10 +98,13 @@
         </button>
         <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">
         <ul class="navbar-nav px-3">
-            <li class="nav-item text-nowrap">
-                <a class="nav-link" href="#">Sign out</a>
-            </li>
-        </ul>
+    <li class="nav-item text-nowrap">
+        <form id="logout-form" action="{{ route('logout') }}" method="POST">
+            @csrf
+            <button type="submit" class="nav-link btn btn-link" style="padding: 0; margin: 0;">Sign out</button>
+        </form>
+    </li>
+</ul>
     </nav>
 
     <div class="container-fluid">

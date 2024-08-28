@@ -39,7 +39,7 @@ class AuthController extends Controller
         $user = User::create([
             'name' => $request->input('name'),
             'email' => $request->input('email'),
-            'password' => Hash::make($request->input('password')),
+            'password' =>$request->input('password'),
             'role' => $request->input('role'),
         ]);
 
@@ -54,33 +54,43 @@ class AuthController extends Controller
     }
 
     public function login(Request $request)
-{
-    try {
-        $credentials = $request->only('name', 'password',);
+    {
+        // Validasi input
+        $request->validate([
+            'name' => 'required|string',
+            'password' => 'required|string',
+        ]);
+
+        // Ambil input name dan password
+        $credentials = $request->only('name', 'password');
         Log::info('Login attempt', $credentials);
 
-        if (Auth::attempt($credentials)) {
-            $request->session()->regenerate();
-            $user = Auth::user();
+        // Cari user berdasarkan name
+        $user = User::where('name', $credentials['name'])->first();
 
-            // Redirect based on user role
+        // Verifikasi user dan password
+        if ($user && Hash::check($credentials['password'], $user->password)) {
+            // Set session untuk login user
+            auth()->login($user);
+
+            // Regenerate session untuk keamanan
+            $request->session()->regenerate();
+
+            // Cek role dan redirect ke halaman sesuai
             if ($user->hasRole('admin')) {
-                return redirect()->route('admin.dashboard');
-            } elseif ($user->hasRole('dosen')) {
-                return redirect()->route('user.profile');
+                return redirect()->intended('/admindashboard');
             } elseif ($user->hasRole('mahasiswa')) {
-                return redirect()->route('user.profile');
+                return redirect()->intended('/userprofile');
+            } elseif ($user->hasRole('dosen')) {
+                return redirect()->intended('/userprofile');
             } else {
-                Log::warning('Unknown role for user', ['user_id' => $user->id]);
-                return redirect()->route('home')->withErrors(['authError' => 'Role tidak dikenal']);
+                return redirect()->intended('/home');
             }
-        } else {
-            Log::warning('Login failed', $credentials);
-            return redirect()->back()->withErrors(['authError' => 'Username atau password salah'])->withInput();
-        }
-    } catch (\Exception $e) {
-        Log::error("Error during sign in: " . $e->getMessage());
-        return redirect()->back()->withErrors(['error' => 'Terjadi kesalahan server. Silahkan coba kembali.'])->withInput();
+
+        // Jika login gagal
+        return back()->withErrors([
+            'name' => 'The provided credentials do not match our records.',
+        ])->onlyInput('name');
     }
 }
 

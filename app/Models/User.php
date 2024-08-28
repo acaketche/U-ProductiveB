@@ -61,19 +61,18 @@ class User extends Authenticatable
     /**
      * Relasi ke artikel yang dibuat oleh user.
      */
-    // public function articles()
-    // {
-    //     return $this->hasMany(Article::class);
-    // }
+    public function articles()
+    {
+       return $this->hasMany(Article::class, 'user_id', 'user_id');
+     }
 
     // /**
     //  * Relasi ke video yang dibuat oleh user.
     //  */
-    // public function videos()
-    // {
-    //     return $this->hasMany(Video::class);
-    // }
-
+    public function videos()
+    {
+        return $this->hasMany(Video::class, 'user_id', 'user_id');
+    }
     // /**
     //  * Relasi ke komentar yang dibuat oleh user.
     //  */
