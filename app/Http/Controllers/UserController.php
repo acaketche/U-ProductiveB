@@ -7,46 +7,20 @@ use App\Models\User;
 
 class UserController extends Controller
 {
-    public function showUsers()
-    {
-        $user = User::all();
-        return view('user.user-profile', compact('user'));
-    }
+    public function kelolaUser()
+        {
+            {
+                $users = User::all();
+                return view('admin.kelola-user', compact('users'));
+            }
+        }
 
-    // public function createUser()
-    // {
-    //     return view('contoh-crud.create-user');
-    // }
+        public function destroy($id)
+        {
+            $category = Category::findOrFail($id);
+            $category->delete();
 
-    // public function showUserDetail($user_id)
-    // {
-    //     $user = User::findOrFail($user_id);
-    //     return view('contoh-crud.user-detail', compact('user'));
-    // }
-
-    // public function editUser($user_id)
-    // {
-    //     $user = User::findOrFail($user_id);
-    //     return view('contoh-crud.edit-user', compact('user'));
-    // }
-
-    // public function store(Request $request)
-    // {
-    //     User::create($request->all());
-    //     return redirect()->route('user.index');
-    // }
-
-    // public function update(Request $request, $user_id)
-    // {
-    //     $user = User::findOrFail($user_id);
-    //     $user->update($request->all());
-    //     return redirect()->route('user.index');
-    // }
-
-    // public function destroy($user_id)
-    // {
-    //     User::destroy($user_id);
-    //     return redirect()->route('user.index');
-    // }
+            return redirect()->route('kelola.user')->with('success', 'Kategori berhasil dihapus.');
+        }
 }
 ?>

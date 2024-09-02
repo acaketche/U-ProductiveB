@@ -5,89 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard Admin</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        body {
-            font-size: .875rem;
-        }
-
-        .sidebar {
-            position: fixed;
-            top: 0;
-            bottom: 0;
-            left: 0;
-            z-index: 100;
-            padding: 48px 0 0;
-            box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
-        }
-
-        .sidebar-sticky {
-            position: -webkit-sticky;
-            position: sticky;
-            top: 0;
-            height: calc(100vh - 48px);
-            padding-top: .5rem;
-            overflow-x: hidden;
-            overflow-y: auto;
-        }
-
-        .sidebar .nav-link {
-            font-weight: 500;
-            color: #333;
-        }
-
-        .sidebar .nav-link.active {
-            color: #007bff;
-        }
-
-        .sidebar .nav-link:hover .feather,
-        .sidebar .nav-link.active .feather {
-            color: inherit;
-        }
-
-        .sidebar-heading {
-            font-size: .75rem;
-            text-transform: uppercase;
-        }
-
-        .navbar-brand {
-            padding-top: .75rem;
-            padding-bottom: .75rem;
-            font-size: 1rem;
-            background-color: rgba(0, 0, 0, .25);
-            box-shadow: inset -1px 0 0 rgba(0, 0, 0, .25);
-        }
-
-        .navbar .form-control {
-            padding: .75rem 1rem;
-            border-width: 0;
-            border-radius: 0;
-        }
-
-        .form-control-dark {
-            color: #fff;
-            background-color: rgba(255, 255, 255, .1);
-            border-color: rgba(255, 255, 255, .1);
-        }
-
-        .form-control-dark:focus {
-            border-color: transparent;
-            box-shadow: 0 0 0 3px rgba(255, 255, 255, .25);
-        }
-
-        .bd-placeholder-img {
-            font-size: 1.125rem;
-            text-anchor: middle;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            user-select: none;
-        }
-
-        @media (min-width: 768px) {
-            .bd-placeholder-img-lg {
-                font-size: 3.5rem;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="{{ asset('style/admin.css') }}">
 </head>
 <body>
     <!-- Navbar -->
@@ -98,13 +16,13 @@
         </button>
         <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">
         <ul class="navbar-nav px-3">
-    <li class="nav-item text-nowrap">
-        <form id="logout-form" action="{{ route('logout') }}" method="POST">
-            @csrf
-            <button type="submit" class="nav-link btn btn-link" style="padding: 0; margin: 0;">Sign out</button>
-        </form>
-    </li>
-</ul>
+            <li class="nav-item text-nowrap">
+                <form id="logout-form" action="{{ route('logout') }}" method="POST">
+                    @csrf
+                    <button type="submit" class="nav-link btn btn-link" style="padding: 0; margin: 0;">Sign out</button>
+                </form>
+            </li>
+        </ul>
     </nav>
 
     <div class="container-fluid">
@@ -120,31 +38,31 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="kelola-user.html">
+                            <a class="nav-link" href="{{ route('kelola.user') }}">
                                 <span data-feather="users"></span>
                                 Kelola Data User
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="kelola-kategori.html">
+                            <a class="nav-link" href="{{ route('kelola.kategori') }}">
                                 <span data-feather="tag"></span>
                                 Kelola Data Kategori
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="kelola-artikel.html">
+                            <a class="nav-link" href="{{ route('kelola.artikel') }}">
                                 <span data-feather="file-text"></span>
                                 Kelola Data Artikel
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="kelola-video.html">
+                            <a class="nav-link" href="{{ route('kelola.video') }}">
                                 <span data-feather="video"></span>
                                 Kelola Data Video
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="kelola-forum.html">
+                            <a class="nav-link" href="{{ route('kelola.forum') }}">
                                 <span data-feather="message-circle"></span>
                                 Kelola Forum
                             </a>
@@ -172,7 +90,7 @@
                             <div class="card-body">
                                 <h5 class="card-title">Kelola Data User</h5>
                                 <p class="card-text">Manajemen data pengguna yang terdaftar di sistem.</p>
-                                <a href="kelola-user.html" class="btn btn-primary">Kelola User</a>
+                                <a href="{{ route('kelola.user') }}" class="btn btn-primary">Kelola User</a>
                             </div>
                         </div>
                     </div>
@@ -181,7 +99,7 @@
                             <div class="card-body">
                                 <h5 class="card-title">Kelola Data Kategori</h5>
                                 <p class="card-text">Manajemen kategori untuk artikel dan video.</p>
-                                <a href="kelola-kategori.html" class="btn btn-primary">Kelola Kategori</a>
+                                <a href="{{ route('kelola.kategori') }}" class="btn btn-primary">Kelola Kategori</a>
                             </div>
                         </div>
                     </div>
@@ -190,7 +108,7 @@
                             <div class="card-body">
                                 <h5 class="card-title">Kelola Data Artikel</h5>
                                 <p class="card-text">Manajemen artikel yang diterbitkan di platform.</p>
-                                <a href="kelola-artikel.html" class="btn btn-primary">Kelola Artikel</a>
+                                <a href="{{ route('kelola.artikel') }}" class="btn btn-primary">Kelola Artikel</a>
                             </div>
                         </div>
                     </div>
@@ -203,7 +121,7 @@
                             <div class="card-body">
                                 <h5 class="card-title">Kelola Data Video</h5>
                                 <p class="card-text">Manajemen video yang diterbitkan di platform.</p>
-                                <a href="kelola-video.html" class="btn btn-primary">Kelola Video</a>
+                                <a href="{{ route('kelola.video') }}" class="btn btn-primary">Kelola Video</a>
                             </div>
                         </div>
                     </div>
@@ -212,7 +130,7 @@
                             <div class="card-body">
                                 <h5 class="card-title">Kelola Forum</h5>
                                 <p class="card-text">Manajemen forum diskusi untuk pengguna.</p>
-                                <a href="kelola-forum.html" class="btn btn-primary">Kelola Forum</a>
+                                <a href="{{ route('kelola.forum') }}" class="btn btn-primary">Kelola Forum</a>
                             </div>
                         </div>
                     </div>

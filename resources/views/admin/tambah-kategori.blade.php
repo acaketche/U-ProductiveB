@@ -67,56 +67,28 @@
                     </ul>
                 </div>
             </nav>
-
-            <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                    <h1 class="h2">Kelola Kategori</h1>
-                    <div class="btn-toolbar mb-2 mb-md-0">
-                        <div class="btn-group me-2">
-                            <button type="button" class="btn btn-sm btn-outline-secondary">Share</button>
-                            <button type="button" class="btn btn-sm btn-outline-secondary">Export</button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="content">
-                    <p>Manajemen data kategori yang terdaftar di sistem untuk bagian filter dan tambah artikel dan video.</p>
-
-                    <!-- Tombol Tambah -->
-                    <a href="{{ route('tambah-kategori') }}" class="btn btn-primary mb-3">Tambah Kategori</a>
-
-                    <table class="table table-striped table-bordered">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Kategori</th>
-                                <th>Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach($categories as $category)
-                                <tr>
-                                    <td>{{ $category->category_id }}</td>
-                                    <td>{{ $category->name }}</td>
-                                    <td>
-                                        {{-- <a href="{{ route('edit-kategori', $category->category_id) }}" class="btn btn-warning btn-sm">Edit</a> --}}
-                                        <form action="{{ route('delete-kategori', $category->category_id) }}" method="POST" style="display:inline;">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button class="btn btn-danger btn-sm" type="submit">Hapus</button>
-                                        </form>
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
-            </main>
+<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2">Tambah Kategori</h1>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://unpkg.com/feather-icons"></script>
-    <script>
-        feather.replace();
-    </script>
+
+    <div class="content">
+        <form action="{{ route('kategori.store') }}" method="POST">
+            @csrf
+            <div class="mb-3">
+                <label for="name" class="form-label">Nama Kategori</label>
+                <input type="text" class="form-control" id="name" name="name" placeholder="Masukkan nama kategori" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Simpan</button>
+            <a href="{{ route('kelola.kategori') }}" class="btn btn-secondary">Kembali</a>
+        </form>
+    </div>
+</main>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://unpkg.com/feather-icons"></script>
+<script>
+    feather.replace();
+</script>
 </body>
 </html>

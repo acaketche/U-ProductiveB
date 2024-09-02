@@ -78,7 +78,7 @@ class AuthController extends Controller
 
             // Cek role dan redirect ke halaman sesuai
             if ($user->hasRole('admin')) {
-                return redirect()->intended('/admindashboard');
+                return redirect()->intended('/admin/dashboard');
             } elseif ($user->hasRole('mahasiswa')) {
                 return redirect()->intended('/userprofile');
             } elseif ($user->hasRole('dosen')) {

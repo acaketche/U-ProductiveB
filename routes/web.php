@@ -5,6 +5,11 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ArticleController;
+use App\Http\Controllers\KategoriController;
+
+
+Route::get('/artikel', [ArticleController::class,'show'])->name('artikel');
 
 Route::get('/', function () {
     return view('welcome');
@@ -23,11 +28,22 @@ Route::get('/', function () {
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 // });
 
-// Route::get('/userprofile', [UserController::class, 'showUsers'])->name('user.profile');
-Route::get('/admindashboard', [AdminController::class, 'showAdmin'])->name('admin.dashboard');
-
 // Route::middleware('auth')->group(function () {
     Route::get('/userprofile', [ProfileController::class, 'index'])->name('user.profile');
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
+// });
+
+// Route::middleware(['auth'])->group(function () {
+    Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+    Route::get('/admin/kelola-user', [AdminController::class, 'kelolaUser'])->name('kelola.user');
+    //kategori
+    Route::get('/admin/kelola-kategori', [KategoriController::class, 'kelolaKategori'])->name('kelola.kategori');
+    Route::get('/tambah-kategori', [KategoriController::class, 'create'])->name('tambah-kategori');
+    Route::post('/kategori/store', [KategoriController::class, 'store'])->name('kategori.store');
+    Route::delete('/kategori/{id}', [KategoriController::class, 'destroy'])->name('delete-kategori');
+
+    Route::get('/admin/kelola-artikel', [AdminController::class, 'kelolaArtikel'])->name('kelola.artikel');
+    Route::get('/admin/kelola-video', [AdminController::class, 'kelolaVideo'])->name('kelola.video');
+    Route::get('/admin/kelola-forum', [AdminController::class, 'kelolaForum'])->name('kelola.forum');
 // });
