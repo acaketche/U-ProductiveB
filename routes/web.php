@@ -9,6 +9,7 @@ use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\KategoriController;
 
 
+
 Route::get('/artikel', [ArticleController::class,'show'])->name('artikel');
 
 Route::get('/', function () {
@@ -36,7 +37,8 @@ Route::get('/', function () {
 
 // Route::middleware(['auth'])->group(function () {
     Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
-    Route::get('/admin/kelola-user', [AdminController::class, 'kelolaUser'])->name('kelola.user');
+    Route::get('/admin/kelola-user', [UserController::class, 'kelolaUser'])->name('kelola.user');
+    Route::delete('/user/{id}', [UserController::class, 'destroy'])->name('delete-user');
     //kategori
     Route::get('/admin/kelola-kategori', [KategoriController::class, 'kelolaKategori'])->name('kelola.kategori');
     Route::get('/tambah-kategori', [KategoriController::class, 'create'])->name('tambah-kategori');

@@ -29,19 +29,19 @@
                 <div class="position-sticky sidebar-sticky">
                     <ul class="nav flex-column">
                         <li class="nav-item">
-                            <a class="nav-link " aria-current="page" href="admin-dashboard.html">
+                            <a class="nav-link " aria-current="page" href="{{route('admin.dashboard')}}">
                                 <span data-feather="home"></span>
                                 Dashboard
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link " href="kelola-user.html">
+                            <a class="nav-link  " href="{{route('kelola.user')}}">
                                 <span data-feather="users"></span>
                                 Kelola Data User
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link active" href="kelola-kategori.html">
+                            <a class="nav-link active" href="{{route('kelola.kategori')}}">
                                 <span data-feather="tag"></span>
                                 Kelola Data Kategori
                             </a>

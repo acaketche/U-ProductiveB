@@ -32,7 +32,7 @@
                 <div class="position-sticky sidebar-sticky">
                     <ul class="nav flex-column">
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="#">
+                            <a class="nav-link active" aria-current="page" href="{{route('admin.dashboard')}}">
                                 <span data-feather="home"></span>
                                 Dashboard
                             </a>

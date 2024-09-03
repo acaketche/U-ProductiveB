@@ -17,8 +17,8 @@ class UserController extends Controller
 
         public function destroy($id)
         {
-            $category = Category::findOrFail($id);
-            $category->delete();
+            $users = User::findOrFail($id);
+            $users->delete();
 
             return redirect()->route('kelola.user')->with('success', 'Kategori berhasil dihapus.');
         }
