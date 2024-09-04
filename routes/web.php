@@ -7,6 +7,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\KategoriController;
+use App\Http\Controllers\VideoController;
 
 
 
@@ -49,3 +50,15 @@ Route::get('/', function () {
     Route::get('/admin/kelola-video', [AdminController::class, 'kelolaVideo'])->name('kelola.video');
     Route::get('/admin/kelola-forum', [AdminController::class, 'kelolaForum'])->name('kelola.forum');
 // });
+
+Route::get('/video', [VideoController::class, 'index'])->name('video.index');
+// Rute untuk menampilkan form tambah video
+Route::get('/video/tambah', [VideoController::class, 'create'])->name('video.create');
+
+// Rute untuk menyimpan video baru
+Route::post('/video', [VideoController::class, 'store'])->name('video.store');
+
+Route::get('/video/{video_id}', [VideoController::class, 'show'])->name('video.show');
+
+
+

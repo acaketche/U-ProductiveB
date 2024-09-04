@@ -7,17 +7,28 @@ use Illuminate\Database\Eloquent\Model;
 
 class Video extends Model
 {
+
+    
     use HasFactory;
+
+    protected $table = 'videos';
     protected $primaryKey = 'video_id';
-    protected $fillable = ['title', 'url', 'status', 'user_id', 'category_id'];
+    public $timestamps = true;
 
-    public function user()
-    {
-        return $this->belongsTo(User::class, 'user_id', 'user_id');
-    }
+    protected $fillable = [
+        'title',
+        'url',
+        'category_id',
+        'description',
+        'thumbnail_url',
+        'created_at',
+        'updated_at'
+    ];
 
+    // app/Models/Video.php
     public function category()
     {
-        return $this->belongsTo(Category::class, 'category_id', 'category_id');
+        return $this->belongsTo(Category::class, 'category_id');
     }
+
 }
