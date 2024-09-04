@@ -1,0 +1,97 @@
+body {
+    background-color: #e6ebf3d0;
+}
+
+.logo {
+    width: 30px;
+}
+.navbar {
+    background-color: #4A90E2;
+    padding: 1rem;
+}
+
+.navbar-brand {
+    font-weight: bold;
+    color: #ffffff;
+}
+
+.navbar-nav .nav-link {
+    color: #ffffff;
+    margin-right: 1rem;
+}
+
+.navbar-nav .nav-link.active {
+    background-color: #ffffff;
+    color: #000000;
+    border-radius: 5px;
+    padding: 0.3rem 0.8rem;
+}
+
+.navbar-nav .btn-warning {
+    background-color: #FFD166;
+    border: none;
+}
+
+.navbar-nav .btn-outline-secondary {
+    color: #ffffff;
+    border-color: #074881;
+}
+
+.btn-primary {
+    background-color: #FFD166;
+    border: none;
+}
+
+.btn-outline-primary {
+    color: #af8585;
+    border-color: #000000;
+}
+
+.dropdown-menu {
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+.form-label {
+    font-weight: bold;
+}
+
+@media (max-width: 768px) {
+    .dropdown-menu {
+        width: 100% !important;
+    }
+
+    .row > .col-6 {
+        width: 100%;
+    }
+}
+
+.card {
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.card-img-top {
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+}
+
+.card-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #000000;
+}
+
+.card-text {
+    color: #000000;
+}
+
+.pagination .page-link {
+    color: #000000;
+}
+
+.pagination .page-link:hover {
+    background-color: #FFD166;
+    color: #ffffff;
+}
+

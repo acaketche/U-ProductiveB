@@ -9,8 +9,23 @@ class Article extends Model
 {
     use HasFactory;
 
-    protected $primaryKey = 'article_id';
-    protected $fillable = ['title', 'content', 'status', 'user_id', 'category_id'];
+    // Jika primary key bukan 'id', Anda perlu menyebutkan nama kolom primary key
+   protected $primaryKey = 'article_id';
+
+   // Jika primary key bukan auto-incrementing, tambahkan properti ini
+   public $incrementing = false;
+
+   // Jika primary key bukan integer, tambahkan properti ini
+   protected $keyType = 'string'; // Ganti dengan tipe data yang sesuai
+
+    protected $fillable = [
+        'title',
+        'category_id',
+        'content',
+        'image',
+    ];
+
+    public $timestamps = false; // Menonaktifkan penggunaan kolom created_at dan updated_at
 
     public function user()
     {

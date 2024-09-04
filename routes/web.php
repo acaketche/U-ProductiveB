@@ -47,3 +47,9 @@ Route::get('/', function () {
     Route::get('/admin/kelola-video', [AdminController::class, 'kelolaVideo'])->name('kelola.video');
     Route::get('/admin/kelola-forum', [AdminController::class, 'kelolaForum'])->name('kelola.forum');
 // });
+
+//artikel
+    Route::get('/index', [ArticleController::class, 'index']);
+    Route::get('/articles/create', [ArticleController::class, 'create'])->name('articles.create');
+    Route::post('/articles', [ArticleController::class, 'store'])->name('articles.store');
+    Route::resource('articles', ArticleController::class);
