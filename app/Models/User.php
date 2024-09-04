@@ -58,6 +58,21 @@ class User extends Authenticatable
         return $this->role === $role;
     }
 
+    public function isMahasiswa()
+    {
+        return $this->hasRole('mahasiswa');
+    }
+
+    /**
+     * Check if the user is a Dosen.
+     *
+     * @return bool
+     */
+    public function isDosen()
+    {
+        return $this->hasRole('dosen');
+    }
+
     /**
      * Relasi ke artikel yang dibuat oleh user.
      */
