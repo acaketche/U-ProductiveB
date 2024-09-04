@@ -121,6 +121,21 @@ class ArticleController extends Controller
           return redirect()->route('articles.index')->with('success', 'Artikel berhasil diperbarui!');
       }
 
+      public function kelolaArtikel()
+        {
+            $articles = Article::with('category')->paginate(10);
+            return view('admin.kelola-artikel', compact('articles'));
+        }
+
+      public function approve($id)
+      {
+          $article = Article::findOrFail($id);
+          $article->status = 'approved';
+          $article->save();
+
+          return redirect()->route('admin.kelolaArtikel')->with('success', 'Artikel berhasil disetujui!');
+      }
+
     // Menghapus artikel
     public function destroy(Article $article)
     {

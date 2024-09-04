@@ -13,11 +13,10 @@ class AdminController extends Controller
             return view('admin.dashboard');
         }
 
-
-
         public function kelolaArtikel()
         {
-            return view('admin.kelola-artikel');
+            $articles = Article::with('category')->paginate(10);
+            return view('admin.kelola-artikel', compact('articles'));
         }
 
         public function kelolaVideo()
