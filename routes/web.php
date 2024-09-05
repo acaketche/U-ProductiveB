@@ -51,9 +51,9 @@ Route::get('/artikel', [ArticleController::class, 'show'])->name('artikel');
     // Admin article management
     Route::post('/admin/approve-article/{id}', [ArticleController::class, 'approve'])->name('admin.approve-article');
     Route::get('/admin/kelola-artikel', [ArticleController::class, 'kelolaArtikel'])->name('kelola.artikel');
+    Route::delete('/admin/artikel/{id}', [ArticleController::class, 'destroy'])->name('delete-artikel');
 
     // Other admin routes
-    Route::get('/admin/kelola-video', [AdminController::class, 'kelolaVideo'])->name('kelola.video');
     Route::get('/admin/kelola-forum', [AdminController::class, 'kelolaForum'])->name('kelola.forum');
 
 Route::get('/video', [VideoController::class, 'index'])->name('video.index');
@@ -66,5 +66,6 @@ Route::post('/video', [VideoController::class, 'store'])->name('video.store');
 Route::get('/video/{video_id}', [VideoController::class, 'show'])->name('video.show');
 
 Route::get('/history', [HistoryController::class, 'index'])->name('history.index');
-
+Route::get('/admin/kelola-video', [VideoController::class, 'kelolaVideo'])->name('kelola.video');
+Route::delete('/admin/video/{id}', [VideoController::class, 'destroy'])->name('delete-video');
 

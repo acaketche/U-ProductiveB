@@ -47,7 +47,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="kelola-artikel.html">
+                            <a class="nav-link" href="{{route('kelola.artikel')}}">
                                 <span data-feather="file-text"></span>
                                 Kelola Data Artikel
                             </a>
