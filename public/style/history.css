@@ -1,0 +1,262 @@
+body {
+    background-color: #f5f5f5;
+}
+
+/* Navbar Styles */
+.navbar-custom {
+    background-color: #4a90e2;
+    padding: 10px 20px;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+}
+
+.navbar-brand {
+    display: flex;
+    align-items: center;
+    color: #fff;
+}
+
+.navbar-brand img {
+    height: 30px;
+    margin-right: 10px;
+}
+
+.navbar-nav {
+    margin-left: auto;
+}
+
+.navbar-nav .nav-link {
+    color: #fff;
+    margin: 0 10px;
+}
+
+.navbar-nav .nav-link.active {
+    background-color: #fff;
+    color: #4a90e2;
+    border-radius: 8px;
+    padding: 5px 10px;
+}
+
+.navbar-nav .nav-link:hover {
+    color: #bbd8ff;
+}
+
+.navbar-icon img {
+    width: 24px;
+    height: 24px;
+    margin-left: 10px;
+}
+
+/* Sidebar Styles */
+.sidebar {
+    background-color: #e6ebf3;
+    padding: 1rem;
+    width: 250px;
+    position: absolute;
+    top: 50px;
+    height: 700px;
+    overflow-y: auto;
+}
+
+.sidebar img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    border: 2px solid #4a90e2;
+    display: block;
+    margin: 0 auto;
+}
+
+.sidebar .profile-info {
+    margin-top: 10px;
+    text-align: center;
+}
+
+.sidebar .profile-info p {
+    margin: 5px 0;
+    color: #333;
+    font-weight: 500;
+}
+
+.sidebar .profile-info .contact-info {
+    font-size: 0.9rem;
+    color: #333;
+}
+
+.sidebar .menu {
+    margin-top: 60px;
+}
+
+.sidebar .menu a {
+    display: flex;
+    align-items: center;
+    padding: 10px 15px;
+    color: #333;
+    text-decoration: none;
+    font-weight: 500;
+    margin: 5px 0;
+    border-radius: 8px;
+}
+
+.sidebar .menu a:hover {
+    background-color: #ccccff;
+    color: #fff;
+}
+
+.sidebar .menu i {
+    margin-right: 10px;
+}
+
+.sidebar .join-class-btn {
+    margin-top: 20px;
+    background-color: #4a90e2;
+    text-align: center;
+    padding: 10px;
+    border-radius: 8px;
+    text-decoration: none;
+    display: block;
+}
+
+/* Content Styles */
+.content {
+    margin-left: 270px;
+    padding: 80px 20px 20px 20px;
+}
+
+.btn.btn-secondary {
+    width: 10%;
+    padding: 8px;
+    border-radius: 10px;
+    border: 1px solid;
+    margin-bottom: 15px;
+    margin-left: 50px;
+}
+
+.btn.btn-primary {
+    width: 10%;
+    padding: 8px;
+    border-radius: 10px;
+    border: 1px solid;
+    margin-bottom: 15px;
+}
+
+.card {
+    margin-bottom: 20px;
+}
+
+.card-body {
+    padding: 1rem;
+}
+
+.comment-section {
+    display: flex;
+    align-items: center;
+    margin-top: 15px;
+}
+
+.comment-section .btn {
+    background-color: #979797;
+    color: #110f0f;
+    border: none;
+}
+
+.avatar-group {
+    display: flex;
+    align-items: center;
+}
+
+.avatar-group img {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%; /* Membuat avatar bulat */
+    margin-right: 5px;
+}
+
+.btn-favorite {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    margin-right: 5px;
+}
+
+.favorite-icon {
+    width: 20px;
+    height: 20px;
+}
+
+.favorite-icon.active {
+    filter: grayscale(0);
+}
+
+.favorite-icon.inactive {
+    filter: grayscale(100%);
+}
+
+
+.new-post-container {
+    padding: 100px;
+    border-radius: 8px;
+    width: 100%;
+    margin: 20px auto;
+}
+
+.new-post-form {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.form-group {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.post-input-area {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+.cancel-btn, .post-btn {
+    padding: 8px 16px;
+    font-size: 14px;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+}
+
+.user-avatar {
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.post-textarea {
+    width: 100%;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    padding: 15px;
+    font-size: 14px;
+    resize: none;
+}
+
+/* Menata textarea */
+form textarea[name="body"] {
+    width: 100%; /* Agar textarea memenuhi lebar yang tersedia */
+    padding: 10px; /* Memberikan padding dalam textarea */
+    margin-top: 10px; /* Jarak atas */
+    border-radius: 5px; /* Membuat sudut textarea melengkung */
+    border: 1px solid #ccc; /* Mengatur warna border */
+    resize: vertical; /* Membatasi pengguna hanya mengubah ukuran secara vertikal */
+    box-sizing: border-box; /* Memastikan padding tidak mempengaruhi lebar keseluruhan */
+}
+
+/* Menata form agar menggunakan Flexbox */
+form.d-flex {
+    display: flex; /* Menggunakan Flexbox untuk tata letak */
+    align-items: flex-start; /* Mengatur elemen agar dimulai dari bagian atas */
+    gap: 10px; /* Memberikan jarak antar elemen */
+}
