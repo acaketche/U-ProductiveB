@@ -66,7 +66,7 @@
                 <div class="card-body">
                     <h5 class="card-title">{{ $video->title }}</h5>
                     <p class="card-text">Kategori: {{ $video->category->name }}</p>
-                    <a href="https://www.youtube.com/watch?v={{ $video->youtube_id }}" class="btn btn-primary btn-sm" target="_blank">Tonton di YouTube</a>
+                    {{-- <a href="https://www.youtube.com/watch?v={{ $video->youtube_id }}" class="btn btn-primary btn-sm" target="_blank">Tonton di YouTube</a> --}}
                 </div>
             </div>
 

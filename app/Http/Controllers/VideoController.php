@@ -56,8 +56,8 @@ class VideoController extends Controller
         $request->validate([
             'title' => 'required|string|max:255',
             'url' => 'required|url',
-            'category_id' => 'required|integer|exists:categories,id', // Perbaiki validasi ini
-            'description' => 'nullable|string|max:1000',
+            'category_id' => 'required|integer|exists:categories,category_id', // Perbaiki validasi ini
+            'description' => 'nullable|string|max:5000',
         ]);
 
         // Panggil method extractYouTubeId()
@@ -103,17 +103,32 @@ class VideoController extends Controller
         return view('video.show', compact('video', 'video_Id')); // Mengirimkan data video dan video_Id ke view
     }
 
-    public function destroy(Video $video)
-    {
-        $video->delete();
-
-        return redirect()->route('video.index')->with('success', 'Video berhasil dihapus.');
-    }
-
     // Method untuk mengekstrak ID YouTube dari URL
     private function extractYouTubeId($url)
     {
         preg_match('/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/i', $url, $matches);
         return $matches[1] ?? null; // Return ID atau null jika tidak ditemukan
+    }
+    public function kelolaVideo()
+        {
+            $videos = Video::with('category')->paginate(10);
+            return view('admin.kelola-video', compact('videos'));
+        }
+
+    public function approve($id)
+      {
+          $video = Video::findOrFail($id);
+          $video->status = 'approved';
+          $video->save();
+
+          return redirect()->route('kelola.video')->with('success', 'Video berhasil disetujui!');
+      }
+
+    // Menghapus artikel
+    public function destroy($id)
+    {
+        $video = Video::findOrFail($id);
+        $video->delete();
+        return redirect()->route('kelola.video')->with('success', 'Video berhasil dihapus!');
     }
 }

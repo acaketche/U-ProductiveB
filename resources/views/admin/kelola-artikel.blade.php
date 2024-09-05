@@ -56,7 +56,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="kelola-video.html">
+                            <a class="nav-link" href="{{route('kelola.video')}}">
                                 <span data-feather="video"></span>
                                 Kelola Data Video
                             </a>
@@ -112,11 +112,16 @@
                                     </td>
                                     <td>
                                         @if($article->status == 'pending')
-                                            <form action="{{ route('admin.approve-article', $article->id) }}" method="POST">
+                                            <form action="{{ route('admin.approve-article', $article->article_id) }}" method="POST">
                                                 @csrf
                                                 <button type="submit" class="btn btn-sm btn-success">Setujui</button>
                                             </form>
                                         @endif
+                                        <form action="{{ route('delete-artikel', $article->article_id) }}" method="POST" style="display:inline;">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button class="btn btn-danger btn-sm" type="submit">Hapus</button>
+                                        </form>
                                     </td>
                                 </tr>
                             @endforeach

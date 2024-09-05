@@ -137,9 +137,11 @@ class ArticleController extends Controller
       }
 
     // Menghapus artikel
-    public function destroy(Article $article)
+    public function destroy($id)
     {
+        $article = Article::findOrFail($id);
         $article->delete();
-        return redirect()->route('articles.index')->with('success', 'Artikel berhasil dihapus!');
+        return redirect()->route('kelola.artikel')->with('success', 'Artikel berhasil dihapus!');
     }
+
 }
