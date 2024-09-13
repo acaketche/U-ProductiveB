@@ -13,7 +13,7 @@ use App\Http\Controllers\HistoryController;
 Route::get('/', function () {
     return view('welcome');
 });
-Route::get('/artikel', [ArticleController::class, 'show'])->name('artikel');
+
 
 // Guest routes
 // Route::middleware(['guest'])->group(function() {
@@ -34,6 +34,8 @@ Route::get('/artikel', [ArticleController::class, 'show'])->name('artikel');
     Route::get('/articles/create', [ArticleController::class, 'create'])->name('articles.create');
     Route::post('/articles', [ArticleController::class, 'store'])->name('articles.store');
     Route::resource('articles', ArticleController::class)->except(['create', 'store']);
+    Route::get('/artikel/show', [ArticleController::class, 'show'])->name('articles.show');
+    Route::get('/artikel', [ArticleController::class, 'index'])->name('articles.index');
 // });
 
 // Admin routes

@@ -9,7 +9,7 @@ class Article extends Model
 {
     use HasFactory;
 
-    // Jika primary key bukan 'id', Anda perlu menyebutkan nama kolom primary key
+    // Jika primary key bukan 'id', Anda perlu menyebutkan nama kolom primary key 
    protected $primaryKey = 'article_id';
 
    // Jika primary key bukan auto-incrementing, tambahkan properti ini
