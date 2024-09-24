@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Admin</title>
+    <title>@yield('judul')</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('style/admin.css') }}">
 </head>
@@ -74,7 +74,7 @@
             <!-- Main Content -->
             <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
                 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                    <h1 class="h2">Dashboard</h1>
+                    <h1 class="h2">@yield('judul2')</h1>
                     <div class="btn-toolbar mb-2 mb-md-0">
                         <div class="btn-group me-2">
                             <button type="button" class="btn btn-sm btn-outline-secondary">Share</button>
@@ -83,57 +83,7 @@
                     </div>
                 </div>
 
-                <!-- Content Row -->
-                <div class="row">
-                    <div class="col-12 col-md-6 col-lg-4 mb-4">
-                        <div class="card">
-                            <div class="card-body">
-                                <h5 class="card-title">Kelola Data User</h5>
-                                <p class="card-text">Manajemen data pengguna yang terdaftar di sistem.</p>
-                                <a href="{{ route('kelola.user') }}" class="btn btn-primary">Kelola User</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-12 col-md-6 col-lg-4 mb-4">
-                        <div class="card">
-                            <div class="card-body">
-                                <h5 class="card-title">Kelola Data Kategori</h5>
-                                <p class="card-text">Manajemen kategori untuk artikel dan video.</p>
-                                <a href="{{ route('kelola.kategori') }}" class="btn btn-primary">Kelola Kategori</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-12 col-md-6 col-lg-4 mb-4">
-                        <div class="card">
-                            <div class="card-body">
-                                <h5 class="card-title">Kelola Data Artikel</h5>
-                                <p class="card-text">Manajemen artikel yang diterbitkan di platform.</p>
-                                <a href="{{ route('kelola.artikel') }}" class="btn btn-primary">Kelola Artikel</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Additional Content Row -->
-                <div class="row">
-                    <div class="col-12 col-md-6 col-lg-4 mb-4">
-                        <div class="card">
-                            <div class="card-body">
-                                <h5 class="card-title">Kelola Data Video</h5>
-                                <p class="card-text">Manajemen video yang diterbitkan di platform.</p>
-                                <a href="{{ route('kelola.video') }}" class="btn btn-primary">Kelola Video</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-12 col-md-6 col-lg-4 mb-4">
-                        <div class="card">
-                            <div class="card-body">
-                                <h5 class="card-title">Kelola Forum</h5>
-                                <p class="card-text">Manajemen forum diskusi untuk pengguna.</p>
-                                <a href="{{ route('kelola.forum') }}" class="btn btn-primary">Kelola Forum</a>
-                            </div>
-                        </div>
-                    </div>
+               @yield('content')
                 </div>
             </main>
         </div>
