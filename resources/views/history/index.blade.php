@@ -1,4 +1,4 @@
-<!-- resources/views/forum.blade.php -->
+<!-- resources/views/history.blade.php -->
 <!DOCTYPE html>
 <html lang="id">
 
@@ -25,13 +25,13 @@
                     <a class="nav-link" href="#">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Artikel</a>
+                    <a class="nav-link" href="{{route ('articles.index')}}">Artikel</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Video</a>
+                    <a class="nav-link" href="{{route ('video.index')}}">Video</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link active text-black" href="#">Forum</a>
+                    <a class="nav-link" href="#">Forum</a>
                 </li>
             </ul>
             <a href="#" class="navbar-icon">
@@ -42,29 +42,39 @@
 
     <!-- Sidebar -->
     <div class="sidebar">
-        <img src="{{ asset('https://via.placeholder.com/100') }}" alt="Profile Picture">
+        <img src="{{ asset('storage/' . $user->profile_picture) }}" alt="Profile Picture">
         <div class="profile-info">
-            <p>Prof. Ayunda S.Kom, M.Kom</p>
-            <p class="contact-info">+62 823 1478 5265</p>
-            <p class="contact-info">ayunda@gmail.com</p>
-        </div>
+                @if ($user)
+                    <p>{{ $user->name }}</p>
+                    <p class="contact-info">{{ $user->email }}</p>
+                @else
+                    <p>Guest</p>
+                    <p class="contact-info">Email tidak tersedia</p>
+                @endif
+            </div>
         <div class="menu">
-            <a href="#"><i class="bi bi-person-circle"></i> Profile</a>
-            <a href="#"><i class="bi bi-clock-history"></i> History</a>
-            <a href="#"><i class="bi bi-star-fill"></i> Favorite</a>
+            <a href="{{ route('user.profile') }}"><i class="bi bi-person-circle"></i> Profile</a>
+            <a href="#" class="active"><i class="bi bi-clock-history"></i> History</a> <!-- Tombol aktif -->
+            <a href="{{ route ('favorite.index')}}"><i class="bi bi-star-fill"></i> Favorite</a>
         </div>
     </div>
 
-    <!-- Content -->
-    <div class="content">
-        <div class="history-card">
-            <h5>History</h5>
-            @foreach($histories as $history)
-            <div class="history-item">
-                <p>{{ $history['title'] }}</p>
-                <small>{{ $history['date'] }}</small>
-            </div>
-            @endforeach
-        </div>
+<!-- Content -->
+<div class="content">
+    <div class="history-card">
+        <h5>History</h5> <!-- Hanya teks ini yang akan bold -->
+        @foreach($histories as $history)
+    <div class="history-item">
+        @if(isset($history['article_id']))
+            <p>Melihat Artikel: {{ $history['article']['title'] ?? 'Judul tidak tersedia' }}</p>
+        @elseif(isset($history['video_id']))
+            <p>Melihat Video: {{ $history['video']['title'] ?? 'Judul tidak tersedia' }}</p>
+        @endif
+        <small>{{ isset($history['viewed_at']) ? \Carbon\Carbon::parse($history['viewed_at'])->format('d M Y, H:i') : 'Tanggal tidak tersedia' }}</small>
     </div>
+@endforeach
+
+    </div>
+</div>
+
 

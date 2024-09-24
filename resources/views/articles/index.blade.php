@@ -33,7 +33,7 @@
                         <a class="nav-link active text-black" aria-current="page" href="{{ route('articles.index') }}">Artikel</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-white" href="#">Video</a>
+                        <a class="nav-link text-white" href="{{route('video.index')}}">Video</a>
                     </li>
                     <li class="nav-item">
                         <button class="btn btn-warning me-2">Login</button>
@@ -57,8 +57,8 @@
                     <!-- Search input -->
                     <input type="text" name="search" class="form-control me-2" placeholder="Cari Artikel" value="{{ request('search') }}">
 
-                    <!-- Filter Dropdown Form -->
-                    <form action="{{ route('articles.index') }}" method="GET" class="dropdown-center">
+                    <!-- Filter Dropdown -->
+                    <div class="dropdown">
                         <button class="btn btn-outline-primary dropdown-toggle" type="button" id="filterDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                             Filter
                         </button>
@@ -67,12 +67,12 @@
                                 <div class="col-6">
                                     <label for="kategori" class="form-label">Kategori</label>
                                     <select class="form-select" id="kategori" name="category">
-                                        <option value ="">Pilih</option>
+                                        <option value="">Pilih</option>
                                         @foreach ($categories as $category)
-                                        <option value="{{ $category->category_id }}" {{ request('category') == $category->category_id ? 'selected' : '' }}>
-                                            {{ $category->name }}
-                                        </option>
-                                    @endforeach
+                                            <option value="{{ $category->category_id }}" {{ request('category') == $category->category_id ? 'selected' : '' }}>
+                                                {{ $category->name }}
+                                            </option>
+                                        @endforeach
                                     </select>
                                 </div>
                                 <div class="col-6">
@@ -95,7 +95,7 @@
                                 </div>
                             </div>
                         </div>
-                    </form>
+                    </div>
                 </form>
             </div>
         </div>
@@ -110,24 +110,16 @@
                     </a>
                     <div class="card-body">
                         <h5 class="card-title">{{ $article->title }}</h5>
-                        <p class="card-text">{{ $article->content }}</p>
+                        <p class="card-text">{{ Str::limit($article->content, 100) }}</p>
                     </div>
                 </div>
             </div>
             @endforeach
         </div>
 
-
+        <!-- Pagination -->
         <nav aria-label="Page navigation">
-            <ul class="pagination justify-content-end">
-                <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                <li class="page-item"><a class="page-link" href="#">...</a></li>
-                <li class="page-item"><a class="page-link" href="#">68</a></li>
-                <li class="page-item"><a class="page-link" href="#">Next</a></li>
-            </ul>
+            {{ $articles->links('pagination::bootstrap-5') }}
         </nav>
     </div>
 

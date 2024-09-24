@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Video;
 use App\Models\Category;
+use App\Models\History;
 
 class VideoController extends Controller
 {
@@ -99,7 +100,15 @@ class VideoController extends Controller
     public function show($id)
     {
         $video = Video::findOrFail($id); // Mengambil data video berdasarkan ID
-        $video_Id = $this->extractYouTubeId($video->url); // Mendapatkan ID YouTube dari URL
+        $video_Id = $this->extractYouTubeId($video->url); // Mendapatkan ID YouTube dari
+
+         // Simpan riwayat ke tabel histories
+    History::create([
+        'user_id' => auth()->id(),
+        'video_id' => $video->video_id,
+        'viewed_at' => now(),
+    ]);
+
         return view('video.show', compact('video', 'video_Id')); // Mengirimkan data video dan video_Id ke view
     }
 
