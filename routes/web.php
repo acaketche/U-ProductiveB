@@ -9,8 +9,12 @@ use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\VideoController;
 use App\Http\Controllers\HistoryController;
 use App\Http\Controllers\FavoriteController;
+use App\Http\Controllers\ForumController;
+use App\Http\Controllers\CommentController;
 
-// Public routes
+
+Route::get('/artikel', [ArticleController::class,'show'])->name('artikel');
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -82,3 +86,20 @@ Route::put('/profile', [ProfileController::class, 'update'])->name('profile.upda
 Route::middleware('auth')->group(function () {
     Route::get('/favorite', [FavoriteController::class, 'index'])->name('favorite.index');
 });
+
+//artikel
+    Route::get('/index', [ArticleController::class, 'index']);
+    Route::get('/articles/create', [ArticleController::class, 'create'])->name('articles.create');
+    Route::post('/articles', [ArticleController::class, 'store'])->name('articles.store');
+    Route::resource('articles', ArticleController::class);
+
+//forum
+    Route::get('/forum', [ForumController::class, 'index'])->name('forum.index');
+    Route::get('/forum/create', [ForumController::class, 'create'])->name('forum.create');
+    Route::post('/forum', [ForumController::class, 'store'])->name('forum.store');
+    Route::get('/forum/{id}', [ForumController::class, 'show'])->name('forum.show');
+
+//comentar
+    Route::get('/comment/{post_id}', [CommentController::class, 'create'])->name('comments.create');
+    Route::post('/comment', [CommentController::class, 'store'])->name('comments.store');
+
