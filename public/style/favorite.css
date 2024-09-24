@@ -284,11 +284,3 @@ form.d-flex {
     background-color: #0056b3;
     color: white;
 }
-
-.profile-picture {
-    border-radius: 50%;
-    width: 100px;
-    height: 100px;
-    object-fit: cover;
-    border: 2px solid #ccccff;
-}

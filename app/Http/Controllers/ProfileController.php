@@ -14,9 +14,11 @@ class ProfileController extends Controller
         $user = Auth::user();
         $articles = $user->articles;
         $videos = $user->videos;
+        $history = $user->history;
 
-        return view('user.user-profile', compact('user', 'articles', 'videos'));
+        return view('user.user-profile', compact('user', 'articles', 'videos', 'history'));
     }
+
 
     public function edit()
     {

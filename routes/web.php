@@ -8,6 +8,7 @@ use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\VideoController;
 use App\Http\Controllers\HistoryController;
+use App\Http\Controllers\FavoriteController;
 
 // Public routes
 Route::get('/', function () {
@@ -69,3 +70,13 @@ Route::get('/history', [HistoryController::class, 'index'])->name('history.index
 Route::get('/admin/kelola-video', [VideoController::class, 'kelolaVideo'])->name('kelola.video');
 Route::delete('/admin/video/{id}', [VideoController::class, 'destroy'])->name('delete-video');
 
+// Rute untuk menampilkan halaman profil
+Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
+
+// Rute untuk mengupdate profil dengan metode PUT
+Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
+
+//rute untuk favorite
+Route::middleware('auth')->group(function () {
+    Route::get('/favorite', [FavoriteController::class, 'index'])->name('favorite.index');
+});

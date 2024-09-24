@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Video extends Model
 {
 
-    
+
     use HasFactory;
 
     protected $table = 'videos';
@@ -29,6 +29,13 @@ class Video extends Model
     public function category()
     {
         return $this->belongsTo(Category::class, 'category_id');
+    }
+
+    use HasFactory;
+
+    public function histories()
+    {
+        return $this->hasMany(History::class, 'video_id');
     }
 
 }

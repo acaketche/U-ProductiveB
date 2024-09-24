@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
+use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 
 use Illuminate\Http\Request;
 
@@ -19,7 +21,20 @@ class HistoryController extends Controller
             ['title' => 'Life Hack Otak ala Orang Jenius', 'date' => '2024-08-26'],
             ['title' => 'Hack Produktif: Cara Efektif Mengatur Ruang Kerja', 'date' => '2024-08-25'],
         ];
+        $user = Auth::user();
 
-        return view('history.index', compact('histories'));
+        return view('history.index', compact('histories','user'));
     }
+
+
+    public function showHistory()
+{
+    $histories = History::where('user_id', auth()->id())
+        ->orderBy('viewed_at', 'desc')
+        ->with(['article', 'video'])
+        ->get();
+
+    return view('history', compact('histories'));
+}
+
 }
