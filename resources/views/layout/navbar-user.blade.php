@@ -30,7 +30,7 @@
                         <a class="nav-link" href="{{route('video.index')}}">Video</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Forum</a>
+                        <a class="nav-link" href="{{route('forum.index')}}">Forum</a>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle text-dark" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">

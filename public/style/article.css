@@ -74,6 +74,8 @@ body {
 .card-img-top {
     border-top-left-radius: 15px;
     border-top-right-radius: 15px;
+    object-fit: cover;
+    height: 150px;
 }
 
 .card-title {

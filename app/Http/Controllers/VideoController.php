@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Video;
 use App\Models\Category;
 use App\Models\History;
+use Illuminate\Support\Facades\Auth;
 
 class VideoController extends Controller
 {
@@ -57,7 +58,7 @@ class VideoController extends Controller
         $request->validate([
             'title' => 'required|string|max:255',
             'url' => 'required|url',
-            'category_id' => 'required|integer|exists:categories,category_id', // Perbaiki validasi ini
+            'category_id' => 'required|integer|exists:categories,category_id',
             'description' => 'nullable|string|max:5000',
         ]);
 
@@ -67,11 +68,12 @@ class VideoController extends Controller
 
         $requestData = $request->all();
         $requestData['thumbnail_url'] = $thumbnailUrl;
-        $requestData['user_id'] = auth()->id();
+        $requestData['user_id'] = Auth::id();
 
         Video::create($requestData);
 
         return redirect()->route('video.index')->with('success', 'Video berhasil ditambahkan.');
+
     }
 
     public function edit(Video $video)

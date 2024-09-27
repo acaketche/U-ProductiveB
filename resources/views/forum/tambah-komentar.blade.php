@@ -27,7 +27,7 @@
                     <a class="nav-link" href="{{ route('articles.index') }}">Artikel</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Video</a>
+                    <a class="nav-link" href="{{ route ('video.index')}}">Video</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link active text-black" href="{{ route('forum.index') }}">Forum</a>

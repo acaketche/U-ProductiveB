@@ -22,7 +22,8 @@ class Video extends Model
         'description',
         'thumbnail_url',
         'created_at',
-        'updated_at'
+        'updated_at',
+        'user_id'
     ];
 
     // app/Models/Video.php

@@ -1,45 +1,5 @@
-<!-- resources/views/articles/create.blade.php -->
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tambah Artikel Baru - U-Productive</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
-    <link rel="stylesheet" href="{{ asset('style/article.css') }}">
-</head>
-<body>
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-primary">
-        <div class="container-fluid">
-            <a class="navbar-brand text-white" href="#">
-                <img src="{{ asset('images/logo.png') }}" class="logo"> U-Productive
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link text-white" href="#">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-black active" aria-current="page" href="{{ route('articles.index') }}">Artikel</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-white" href="#">Video</a>
-                    </li>
-                    <li class="nav-item">
-                        <button class="btn btn-warning me-2">Login</button>
-                    </li>
-                    <li class="nav-item">
-                        <button class="btn btn-outline-secondary">Register</button>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+@extends('layout.navbar-guest')
+@section('content')
 
     <!-- Form Tambah Artikel Baru -->
     <div class="container mt-4">
@@ -81,7 +41,4 @@
             </div>
         </form>
     </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+@endsection

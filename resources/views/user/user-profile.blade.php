@@ -1,5 +1,4 @@
-@extends('layout.navbar-user')
-@section('judul')
+@extends('layout.navbar-guest')
 @section('content')
 <div class="container mt-4">
     <!-- Profile Header -->
@@ -30,21 +29,34 @@
             <!-- Article Items -->
             @foreach($articles as $article)
             <div class="col-md-4 content-item">
-                <img src="{{ $article->thumbnail ? asset('storage/' . $article->thumbnail) : asset('images/default-article.png') }}" alt="{{ $article->title }}">
+                <div class="card h-100 position-relative">
+                <img src="{{ Storage::url($article->image) }}" class="card-img-top" alt="{{ $article->title }}">
                 <h5>{{ $article->title }}</h5>
                 <p>Category: {{ $article->category->name }}</p>
+                </div>
             </div>
             @endforeach
 
             <!-- Video Items -->
             @foreach($videos as $video)
             <div class="col-md-4 content-item">
-                <iframe src="{{ $video->url }}" title="{{ $video->title }}" frameborder="0" allowfullscreen></iframe>
+                <div class="card h-100 position-relative">
+                <a href="{{ route('video.show', $video->video_id) }}" class="video-thumbnail">
+                    <img src="{{ $video->thumbnail_url }}" class="card-img-top" alt="{{ $video->title }}">
+                    <div class="play-icon">
+                        <i class="bi bi-play-circle"></i>
+                    </div>
+                </a>
                 <h5>{{ $video->title }}</h5>
                 <p>Category: {{ $video->category->name }}</p>
+                </div>
             </div>
             @endforeach
         </div>
     </div>
 </div>
 @endsection
+@push('styles')
+<link rel="stylesheet" href="{{ asset('style/usernavbar.css') }}">
+
+@endpush

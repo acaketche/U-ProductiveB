@@ -1,4 +1,4 @@
-@extends('layout.navbar-video')
+@extends('layout.navbar-guest')
 
 @section('content')
 <div class="container mt-4">
