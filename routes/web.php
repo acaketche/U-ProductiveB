@@ -31,57 +31,74 @@ Route::get('/videos', [VideoController::class, 'index'])->name('videos.index');
 });
 
 Route::group(['middleware' => ['role:mahasiswa,dosen']], function() {
-        Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
-        Route::get('/userprofile', [ProfileController::class, 'index'])->name('user.profile');
-        Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
-        Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+    Route::get('/userprofile', [ProfileController::class, 'index'])->name('user.profile');
+    Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
 
-        // Article routes for authenticated users
-        Route::get('/articles/create', [ArticleController::class, 'create'])->name('articles.create');
-        Route::post('/articles', [ArticleController::class, 'store'])->name('articles.store');
-        Route::resource('articles', ArticleController::class)->except(['create', 'store']);
-        Route::get('/artikel/show', [ArticleController::class, 'show'])->name('articles.show');
-        Route::get('/artikel', [ArticleController::class, 'index'])->name('articles.index');
+    // Article routes for authenticated users
+    Route::get('/articles/create', [ArticleController::class, 'create'])->name('articles.create');
+    Route::post('/articles', [ArticleController::class, 'store'])->name('articles.store');
+    Route::resource('articles', ArticleController::class)->except(['create', 'store']);
+    Route::get('/artikel/show', [ArticleController::class, 'show'])->name('articles.show');
+    Route::get('/artikel', [ArticleController::class, 'index'])->name('articles.index');
 
-        Route::get('/video', [VideoController::class, 'index'])->name('video.index');
-// Rute untuk menampilkan form tambah video
-Route::get('/video/tambah', [VideoController::class, 'create'])->name('video.create');
+    Route::get('/video', [VideoController::class, 'index'])->name('video.index');
+    // Rute untuk menampilkan form tambah video
+    Route::get('/video/tambah', [VideoController::class, 'create'])->name('video.create');
 
-// Rute untuk menyimpan video baru
-Route::post('/video', [VideoController::class, 'store'])->name('video.store');
+    // Rute untuk menyimpan video baru
+    Route::post('/video', [VideoController::class, 'store'])->name('video.store');
 
-Route::get('/video/{video_id}', [VideoController::class, 'show'])->name('video.show');
+    Route::get('/video/{video_id}', [VideoController::class, 'show'])->name('video.show');
 
-Route::get('/history', [HistoryController::class, 'index'])->name('history.index');
+    Route::get('/history', [HistoryController::class, 'index'])->name('history.index');
 
 
-// Rute untuk menampilkan halaman profil
-Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
+    // Rute untuk menampilkan halaman profil
+    Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
 
-// Rute untuk mengupdate profil dengan metode PUT
-Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    // Rute untuk mengupdate profil dengan metode PUT
+    Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
 
-//rute untuk favorite
-    Route::get('/favorite', [FavoriteController::class, 'index'])->name('favorite.index');
+    //rute untuk favorite
+    Route::post('/favorite/toggle', [FavoriteController::class, 'toggle'])->name('favorite.toggle');
+    Route::get('/favorites', [FavoriteController::class, 'index'])->name('favorite.index');
+    // Route::post('favorite/{post}', [App\Http\Controllers\FavoriteController::class, 'favorite']);
+    // Route::post('unfavorite/{post}', [App\Http\Controllers\FavoriteController::class, 'unfavorite']);
+    // Rute untuk menghapus favorit
+    Route::post('/post/{post}/unfavorite', [FavoriteController::class, 'unfavorite'])->name('post.unfavorite');
 
-//artikel
+
+    //route midelwarre favorite
+    Route::middleware(['auth'])->group(function () {
+        Route::post('/favorite/{post}', [FavoriteController::class, 'toggle'])->name('favorite.toggle');
+    });
+
+
+    //artikel
     Route::get('/index', [ArticleController::class, 'index']);
     Route::get('/articles/create', [ArticleController::class, 'create'])->name('articles.create');
     Route::post('/articles', [ArticleController::class, 'store'])->name('articles.store');
     Route::resource('articles', ArticleController::class);
 
-//forum
+    //forum
     Route::get('/forum', [ForumController::class, 'index'])->name('forum.index');
     Route::get('/forum/create', [ForumController::class, 'create'])->name('forum.create');
     Route::post('/forum', [ForumController::class, 'store'])->name('forum.store');
     Route::get('/forum/{id}', [ForumController::class, 'show'])->name('forum.show');
+    // Rute untuk menambahkan favorit
+    Route::post('/post/{post}/favorite', [ForumController::class, 'favorite'])->name('post.favorite');
+    // Route::post('/forum/{id}/favorite', [ForumPostController::class, 'favorite'])->middleware('auth');
+    // Route::post('/forum/{id}/unfavorite', [ForumPostController::class, 'unfavorite'])->middleware('auth');
+    // Route::get('/forum', [ForumController::class, 'index'])->middleware('auth');
+    // Route::get('/my-favorites', [App\Http\Controllers\ForumController::class, 'myFavorites']);
 
-//comentar
+
+    //comentar
     Route::get('/comment/{post_id}', [CommentController::class, 'create'])->name('comments.create');
     Route::post('/comment', [CommentController::class, 'store'])->name('comments.store');
-
-    });
-
+});
 
 
 Route::group(['middleware' => ['role:admin']], function() {
@@ -102,10 +119,7 @@ Route::group(['middleware' => ['role:admin']], function() {
     Route::delete('/admin/artikel/{id}', [ArticleController::class, 'destroy'])->name('delete-artikel');
 
     Route::get('/admin/kelola-video', [VideoController::class, 'kelolaVideo'])->name('kelola.video');
-Route::delete('/admin/video/{id}', [VideoController::class, 'destroy'])->name('delete-video');
+    Route::delete('/admin/video/{id}', [VideoController::class, 'destroy'])->name('delete-video');
     // Other admin routes
     Route::get('/admin/kelola-forum', [AdminController::class, 'kelolaForum'])->name('kelola.forum');
 });
-
-
-

@@ -25,13 +25,13 @@
                     <a class="nav-link" href="#">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Artikel</a>
+                    <a class="nav-link" href="{{route('articles.index')}}">Artikel</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Video</a>
+                    <a class="nav-link" href="{{route('video.index')}}">Video</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Forum</a>
+                    <a class="nav-link" href="{{route('forum.index')}}">Forum</a>
                 </li>
             </ul>
             <a href="#" class="navbar-icon">
@@ -61,17 +61,34 @@
 
    <!-- Content -->
    <div class="content">
-    <div class="favorite-card">
-        <h5><strong>Favorite for {{ $user->name ?? 'Guest' }}</strong></h5>
-        @forelse($favorites as $favorite)
-            <div class="favorite-item">
-                <i class="bi bi-star"></i>
-                <p>{{ $favorite->article ? $favorite->article->title : $favorite->video->title }}</p>
-                <small>{{ $favorite->created_at->format('d M Y H:i') }}</small>
+    <!-- resources/views/favorite.blade.php -->
+        <div class="text-center mb-3">
+            <h3>My Favorite Posts</h3>
+        </div>
+        @foreach ($favorites as $post)
+        <div class="card mb-3">
+            <div class="card-header">
+                {{ Carbon\Carbon::parse($post->created_at)->diffForHumans() }}
             </div>
-        @empty
-            <p>No favorites found.</p>
-        @endforelse
+            <div class="card-body">
+                <h5 class="card-title">{{ $post->title }}</h5>
+                <p class="card-text">{{ $post->content }}</p>
+            </div>
+            @if (Auth::check())
+            <div class="card-footer text-muted">
+                <favorite
+                    :post={{ $post->id }}
+                    :favorited={{ $post->favorited() ? 'true' : 'false' }}
+                    >
+                </favorite>
+                <form action="{{ url('/post/' . $post->post_id . '/unfavorite') }}" method="POST">
+                    @csrf
+                    <button type="submit">Hapus dari Favorit</button>
+                </form>
+            </div>
+            @endif
+        </div>
+        @endforeach
     </div>
 </div>
 

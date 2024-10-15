@@ -179,11 +179,12 @@ body {
 }
 
 .favorite-icon {
-    font-size: 1.5rem; /* Ukuran ikon */
+    font-size: 24px;
+    color: grey;
+    transition: color 0.3s ease;
 }
-
 .favorite-icon.active {
-    filter: grayscale(0);
+    color: blue; /* Warna biru ketika difavoritkan */
 }
 
 .favorite-icon.inactive {

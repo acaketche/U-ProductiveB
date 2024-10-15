@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\ForumPost; // Model yang sesuai
 use App\Models\User;
+use App\Models\Favorite; // Pastikan ini ada
 
 class ForumController extends Controller
 {
@@ -43,4 +44,36 @@ class ForumController extends Controller
 
         return redirect()->route('forum.index'); // Mengarahkan kembali ke halaman forum setelah postingan dibuat
     }
+
+    // public function favorites()
+    // {
+    //     $favorites = Auth::user()->favorites;
+
+    //     return view('favorite.index', compact('favorites'));
+    // }
+
+    public function show($id)
+    {
+        $post = ForumPost::findOrFail($id);
+
+        // Cek apakah postingan sudah difavoritkan oleh pengguna yang sedang login
+        $isFavorited = $post->favorited ? true : false;
+
+        return view('forum.show', compact('post', 'isFavorited'));
+    }
+
+    public function favorite($postId)
+    {
+        $post = ForumPost::findOrFail($postId);
+
+        // Simpan ke tabel favorit
+        $favorite = new Favorite();
+        $favorite->user_id = Auth::id();
+        $favorite->post_id = $post->post_id;
+        $favorite->save();
+
+        return redirect()->route('favorite.index', ['post' => $postId])
+                        ->with('success', 'Post telah ditambahkan ke favorit');
+    }
+
 }

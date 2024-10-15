@@ -31,7 +31,7 @@
                     <a class="nav-link" href="{{route ('video.index')}}">Video</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Forum</a>
+                    <a class="nav-link" href="{{route('forum.index')}}">Forum</a>
                 </li>
             </ul>
             <a href="#" class="navbar-icon">
