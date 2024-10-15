@@ -19,7 +19,7 @@
         <div class="mb-3">
             <label for="password" class="form-label">Password</label>
             <input type="password" name="password" id="password" class="form-control">
-            <small class="form-text text-muted">Leave blank if you don't want to change the password.</small>
+            <small class="form-text text-muted">Kosongkan jika tidak ingin mengubah password.</small>
         </div>
 
         <div class="mb-3">

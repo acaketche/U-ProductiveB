@@ -52,4 +52,7 @@
         </div>
     </div>
 </div>
+@push('styles')
+<link rel="stylesheet" href="{{ asset('home.css')}}">
+@endpush
 @endsection

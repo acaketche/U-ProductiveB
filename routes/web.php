@@ -19,9 +19,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/home', [UtamaController::class,'index'])->name('home');
 // Guest routes
 Route::middleware(['guest'])->group(function() {
-    Route::get('/home', [UtamaController::class,'index'])->name('home');
     Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
     Route::post('/login', [AuthController::class, 'login']);
     Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('register');
@@ -36,12 +36,12 @@ Route::group(['middleware' => ['role:mahasiswa,dosen']], function() {
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
 
-    // Article routes for authenticated users
-    Route::get('/articles/create', [ArticleController::class, 'create'])->name('articles.create');
-    Route::post('/articles', [ArticleController::class, 'store'])->name('articles.store');
-    Route::resource('articles', ArticleController::class)->except(['create', 'store']);
-    Route::get('/artikel/show', [ArticleController::class, 'show'])->name('articles.show');
-    Route::get('/artikel', [ArticleController::class, 'index'])->name('articles.index');
+        // Article routes for authenticated users
+        Route::get('/articles/create', [ArticleController::class, 'create'])->name('articles.create');
+        Route::post('/articles', [ArticleController::class, 'store'])->name('articles.store');
+        Route::resource('articles', ArticleController::class)->except(['create', 'store']);
+        Route::get('/artikel/{id}', [ArticleController::class, 'show'])->name('articles.show');
+        Route::get('/artikel', [ArticleController::class, 'index'])->name('articles.index');
 
     Route::get('/video', [VideoController::class, 'index'])->name('video.index');
     // Rute untuk menampilkan form tambah video
@@ -115,6 +115,7 @@ Route::group(['middleware' => ['role:admin']], function() {
 
     // Admin article management
     Route::post('/admin/approve-article/{id}', [ArticleController::class, 'approve'])->name('admin.approve-article');
+    Route::post('/admin/reject-article/{id}', [ArticleController::class, 'reject'])->name('admin.reject-article');
     Route::get('/admin/kelola-artikel', [ArticleController::class, 'kelolaArtikel'])->name('kelola.artikel');
     Route::delete('/admin/artikel/{id}', [ArticleController::class, 'destroy'])->name('delete-artikel');
 

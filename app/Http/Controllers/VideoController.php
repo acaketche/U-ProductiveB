@@ -11,38 +11,41 @@ use Illuminate\Support\Facades\Auth;
 class VideoController extends Controller
 {
     public function index(Request $request)
-    {
-        $search = $request->input('search');
-        $category = $request->input('category_id'); // Perbaiki nama parameter sesuai dengan nama field di form filter
-        $time = $request->input('waktu'); // Perbaiki nama parameter sesuai dengan nama field di form filter
-        $query = Video::query();
+{
+    $search = $request->input('cari'); // Sesuaikan dengan nama input di form pencarian
+    $category = $request->input('category'); // Sesuaikan dengan nama input di form filter kategori
+    $time = $request->input('time'); // Sesuaikan dengan nama input di form filter waktu
 
-        if ($search) {
-            $query->where('title', 'like', '%' . $search . '%');
-        }
+    $query = Video::query();
 
-        // Filter berdasarkan kategori
-        if ($category) {
-            $query->where('category_id', $category);
-        }
-
-        // Filter berdasarkan waktu
-        if ($time == 'Dalam 24 Jam') {
-            $query->where('created_at', '>=', now()->subDay());
-        } elseif ($time == '1 Minggu Terakhir') {
-            $query->where('created_at', '>=', now()->subWeek());
-        } elseif ($time == '1 Bulan Terakhir') {
-            $query->where('created_at', '>=', now()->subMonth());
-        }
-
-        $videos = $query->paginate(12);
-
-        // Ambil data kategori dari database
-        $categories = Category::all();
-
-        // Kirim data ke view
-        return view('video.index', compact('videos', 'categories'));
+    // Filter berdasarkan pencarian
+    if ($search) {
+        $query->where('title', 'like', '%' . $search . '%');
     }
+
+    // Filter berdasarkan kategori
+    if ($category) {
+        $query->where('category_id', $category);
+    }
+
+    // Filter berdasarkan waktu
+    if ($time == '24 Jam') {
+        $query->where('created_at', '>=', now()->subDay());
+    } elseif ($time == '1 Minggu') {
+        $query->where('created_at', '>=', now()->subWeek());
+    } elseif ($time == '1 Bulan') {
+        $query->where('created_at', '>=', now()->subMonth());
+    }
+
+    $videos = $query->paginate(12);
+
+    // Ambil data kategori dari database
+    $categories = Category::all();
+
+    // Kirim data ke view
+    return view('video.index', compact('videos', 'categories'));
+}
+
 
     public function create()
     {

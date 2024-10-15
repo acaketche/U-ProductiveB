@@ -25,6 +25,7 @@ class Article extends Model
         'category_id',
         'content',
         'image',
+        'status',
     ];
 
     // Menonaktifkan timestamps (created_at dan updated_at)
