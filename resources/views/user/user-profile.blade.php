@@ -30,9 +30,14 @@
             @foreach($articles as $article)
             <div class="col-md-4 content-item">
                 <div class="card h-100 position-relative">
-                <img src="{{ Storage::url($article->image) }}" class="card-img-top" alt="{{ $article->title }}">
-                <h5>{{ $article->title }}</h5>
-                <p>Category: {{ $article->category->name }}</p>
+                    <!-- Image wrapped with link -->
+                    <a href="{{ route('articles.show', $article->article_id) }}">
+                        <img src="{{ Storage::url($article->image) }}" class="card-img-top" alt="{{ $article->title }}">
+                    </a>
+                    <div class="card-body">
+                        <h5 class="card-title">{{ $article->title }}</h5>
+                        <p class="card-text">{{ Str::limit($article->content, 100) }}</p>
+                    </div>
                 </div>
             </div>
             @endforeach

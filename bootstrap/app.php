@@ -14,7 +14,7 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->redirectTo(
             guests:'/login',
-            users:'/home'
+            users:'/userprofile'
         );
         $middleware->alias([
             'role'=> RoleMiddleware::class

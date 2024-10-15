@@ -6,11 +6,12 @@
     <title>U-PRODUCTIVE</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
-    <link rel="stylesheet" href="{{ asset('video.css') }}">
+    <link rel="stylesheet" href="{{ asset('navbar.css') }}">
     @stack('styles')
 </head>
 <body>
-    @guest
+    <x-navbar.index />
+    {{-- @guest
     <nav class="navbar navbar-expand-lg bg-primary">
         <div class="container-fluid">
             <a class="navbar-brand text-white" href="#">
@@ -23,7 +24,7 @@
             <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link text-white" href="#">Home</a>
+                        <a class="nav-link text-white" href="{{route('home')}}">Home</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{{route('articles.index')}}">Artikel</a>
@@ -62,26 +63,27 @@
                 <li class="nav-item">
                     <a class="nav-link active text-black" href="{{route('forum.index')}}">Forum</a>
                 </li>
+                <!-- Dropdown should be part of the navbar list -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle text-dark" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-person-circle"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                        <li><a class="dropdown-item" href="{{ route('user.profile') }}">Profile</a></li>
+                        <li>
+                            <form action="{{ route('logout') }}" method="POST" class="dropdown-item p-0">
+                                @csrf
+                                <button type="submit" class="btn btn-link text-decoration-none">Logout</button>
+                            </form>
+                        </li>
+                    </ul>
+                </li>
             </ul>
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle text-dark" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    <i class="bi bi-person-circle"></i>
-                </a>
-                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-                    <li><a class="dropdown-item" href="{{ route('user.profile') }}">Profile</a></li>
-                    <li>
-                        <form action="{{ route('logout') }}" method="POST" class="dropdown-item p-0">
-                            @csrf
-                            <button type="submit" class="btn btn-link text-decoration-none">Logout</button>
-                        </form>
-                    </li>
-                </ul>
-            </li>
-
         </div>
     </nav>
 
-    @endauth
+
+    @endauth --}}
 
 
     @yield('content')
