@@ -25,13 +25,13 @@
                     <a class="nav-link" href="#">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Artikel</a>
+                    <a class="nav-link" href="{{route('articles.index')}}">Artikel</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Video</a>
+                    <a class="nav-link" href="{{route('video.index')}}">Video</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Forum</a>
+                    <a class="nav-link" href="{{route('forum.index')}}">Forum</a>
                 </li>
             </ul>
             <a href="#" class="navbar-icon">
@@ -55,24 +55,44 @@
         <div class="menu">
             <a href="{{ route('user.profile') }}"><i class="bi bi-person-circle"></i> Profile</a>
             <a href="{{route ('history.index')}}"><i class="bi bi-clock-history"></i> History</a>
-            <a href="#" class="active"><i class="bi bi-star-fill"></i> Favorite</a> <!-- Tombol aktif -->
+            <a href="{{route('favorite.index')}}" class="active"><i class="bi bi-star-fill"></i> Favorite</a> <!-- Tombol aktif -->
         </div>
     </div>
 
-   <!-- Content -->
-   <div class="content">
+  <!-- Content -->
+<div class="content">
     <div class="favorite-card">
         <h5><strong>Favorite for {{ $user->name ?? 'Guest' }}</strong></h5>
         @forelse($favorites as $favorite)
-            <div class="favorite-item">
-                <i class="bi bi-star"></i>
-                <p>{{ $favorite->article ? $favorite->article->title : $favorite->video->title }}</p>
-                <small>{{ $favorite->created_at->format('d M Y H:i') }}</small>
+            <div class="favorite-item d-flex align-items-center justify-content-between">
+                <!-- Form untuk toggle favorit -->
+                <form action="{{ route('favorite.toggle', ['post_id' => $favorite->post_id]) }}" method="POST">
+                    @csrf
+                    <button type="submit" class="btn btn-link p-0 m-0">
+                        <i class="bi bi-star-fill favorite-icon {{ $favorite->is_favorited ? 'active' : 'inactive' }}"></i>
+                    </button>
+                </form>
+
+                <!-- Judul Artikel/Video -->
+                <p class="mb-0">
+                    @if ($favorite->article)
+                        {{ $favorite->article->title }}
+                    @elseif ($favorite->video)
+                        {{ $favorite->video->title }}
+                    @else
+                        <em>Item favorit tidak ditemukan</em>
+                    @endif
+                </p>
+
+                <!-- Tanggal Dibuat -->
+                <small class="text-muted">{{ $favorite->created_at->format('d M Y H:i') }}</small>
             </div>
         @empty
             <p>No favorites found.</p>
         @endforelse
     </div>
+</div>
+
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

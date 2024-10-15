@@ -16,7 +16,7 @@
     <nav class="navbar navbar-expand-lg navbar-custom">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">
-                <img src="logo.png">
+                <img src="{{ asset('logo.png') }}" >
                 U-Productive
             </a>
             <ul class="navbar-nav ms-auto d-flex flex-row mb-2 mb-lg-0">
@@ -27,7 +27,7 @@
                     <a class="nav-link" href="{{ route('articles.index') }}">Artikel</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Video</a>
+                    <a class="nav-link" href="{{ route('video.index') }}">Video</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link active text-black" href="{{ route('forum.index') }}">Forum</a>
@@ -46,17 +46,15 @@
                 <div class="sidebar1">
                     <div class="post-comment">
                         <div class="d-flex">
-                            <img src="{{ asset('https://via.placeholder.com/50') }}" alt="User Image" class="rounded-image">
-                            <div>
+                            <img src="{{ $post->user && $post->user->profile_picture ? Storage::url($post->user->profile_picture) : asset('images/default-profile.png') }}" alt="User Image" class="rounded-image" style="width: 50px; height: 50px;">
+                            <div class="ms-3">
                                 @if ($post->user)
                                     <p class="card-text">{{ $post->user->name }}</p>
                                 @else
                                     <p class="card-text">User Tidak Ditemukan</p>
                                 @endif
                                 <p class="card-text">
-                                    <small class="text-muted">
-                                        {{ date('d M Y', strtotime($post->created_at)) }}
-                                    </small>
+                                    <small class="text-muted">{{ date('d M Y', strtotime($post->created_at)) }}</small>
                                 </p>
                                 <p>{{ $post->content }}</p>
                             </div>
@@ -69,8 +67,8 @@
                         <!-- Mengirimkan ID postingan sebagai input tersembunyi -->
                         <input type="hidden" name="post_id" value="{{ $post->post_id }}">
                         <div class="d-flex mb-3">
-                            <img src="{{ asset('https://via.placeholder.com/50') }}" alt="User Image" class="rounded-image1 me-3">
-                            <input type="text" name= "content" class="form-control rounded-pill" placeholder="Tuliskan Komentar Anda..." required>
+                            <img src="{{ asset('https://via.placeholder.com/50') }}" alt="User Image" class="rounded-image me-3" style="width: 50px; height: 50px;">
+                            <input type="text" name="content" class="form-control rounded-pill" placeholder="Tuliskan Komentar Anda..." required>
                         </div>
                         <div class="form-actions">
                             <button type="submit" class="btn btn-primary">Kirim Komentar</button>
@@ -86,13 +84,20 @@
                 @foreach ($post->comments as $comment)
                     <div class="card mb-3">
                         <div class="card-body">
-                            @if ($post->user)
-                                    <p class="card-text">{{ $post->user->name }}</p>
-                                @else
-                                    <p class="card-text">User Tidak Ditemukan</p>
-                             @endif
-                            <p class="card-text"><small class="text-muted">{{ date('d M Y', strtotime($comment->created_at)) }}</small></p>
-                            <p class="card-text">{{ $comment->content }}</p>
+                            <div class="d-flex">
+                                <img src="{{ $comment->user && $comment->user->profile_picture ? Storage::url($comment->user->profile_picture) : asset('images/default-profile.png') }}" alt="User Image" class="rounded-image" style="width: 50px; height: 50px;">
+                                <div class="ms-3">
+                                    @if ($comment->user)
+                                        <p class="card-text">{{ $comment->user->name }}</p>
+                                    @else
+                                        <p class="card-text">User Tidak Ditemukan</p>
+                                    @endif
+                                    <p class="card-text">
+                                        <small class="text-muted">{{ date('d M Y', strtotime($comment->created_at)) }}</small>
+                                    </p>
+                                    <p>{{ $comment->content }}</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 @endforeach

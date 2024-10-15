@@ -28,7 +28,7 @@
                     <a class="nav-link" href="{{route('articles.index')}}">Artikel</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Video</a>
+                    <a class="nav-link" href="{{route('video.index')}}">Video</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link active text-black" href="{{route('forum.index')}}">Forum</a>
@@ -42,8 +42,12 @@
 
     <!-- Sidebar -->
     <div class="sidebar">
-        <img src="{{ asset('storage/') }}" alt="Profile Picture">
-        <div class="profile-info">
+        @if ($user && $user->profile_picture)
+        <img src="{{ asset('storage/' . $user->profile_picture) }}" alt="Profile Picture">
+        @else
+            <p>Profile picture not available</p>
+        @endif
+            <div class="profile-info">
             @if ($user)
                 <p>{{ $user->name }}</p>
                 <p class="contact-info">{{ $user->email }}</p>
@@ -54,8 +58,8 @@
         </div>
         <div class="menu">
             <a href="{{route('user.profile')}}"><i class="bi bi-person-circle"></i> Profile</a>
-            <a href="#"><i class="bi bi-clock-history"></i> History</a>
-            <a href="#"><i class="bi bi-star-fill"></i> Favorite</a>
+            <a href="{{route('history.index')}}"><i class="bi bi-clock-history"></i> History</a>
+            <a href="{{route('favorite.index')}}"><i class="bi bi-star-fill"></i> Favorite</a>
         </div>
     </div>
 

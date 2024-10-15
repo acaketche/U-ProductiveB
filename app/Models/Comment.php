@@ -22,4 +22,9 @@ class Comment extends Model
         return $this->belongsTo(ForumPost::class, 'post_id');
     }
 
+    // Relasi ke model User
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

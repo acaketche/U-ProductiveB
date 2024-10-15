@@ -73,21 +73,6 @@ class User extends Authenticatable
         return $this->hasRole('dosen');
     }
 
-    /**
-     * Relasi ke artikel yang dibuat oleh user.
-     */
-    public function articles()
-    {
-       return $this->hasMany(Article::class, 'user_id', 'user_id');
-     }
-
-    // /**
-    //  * Relasi ke video yang dibuat oleh user.
-    //  */
-    public function videos()
-    {
-        return $this->hasMany(Video::class, 'user_id', 'user_id');
-    }
     // /**
     //  * Relasi ke komentar yang dibuat oleh user.
     //  */
@@ -138,4 +123,20 @@ class User extends Authenticatable
     {
         $this->attributes['password'] = Hash::make($password);
     }
+
+    public function articles()
+    {
+        return $this->hasMany(Article::class, 'user_id', 'user_id');
+    }
+
+    public function videos()
+    {
+        return $this->hasMany(Video::class, 'user_id', 'user_id');
+    }
+
+    public function history()
+    {
+        return $this->hasMany(History::class, 'user_id', 'user_id');
+    }
+
 }

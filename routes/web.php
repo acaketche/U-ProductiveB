@@ -11,6 +11,8 @@ use App\Http\Controllers\HistoryController;
 use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\ForumController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\HomeController;
+
 
 
 Route::get('/artikel', [ArticleController::class,'show'])->name('artikel');
@@ -63,34 +65,41 @@ Route::get('/', function () {
     // Other admin routes
     Route::get('/admin/kelola-forum', [AdminController::class, 'kelolaForum'])->name('kelola.forum');
 
-Route::get('/video', [VideoController::class, 'index'])->name('video.index');
+    Route::get('/video', [VideoController::class, 'index'])->name('video.index');
 // Rute untuk menampilkan form tambah video
-Route::get('/video/tambah', [VideoController::class, 'create'])->name('video.create');
+    Route::get('/video/tambah', [VideoController::class, 'create'])->name('video.create');
 
 // Rute untuk menyimpan video baru
-Route::post('/video', [VideoController::class, 'store'])->name('video.store');
+    Route::post('/video', [VideoController::class, 'store'])->name('video.store');
 
-Route::get('/video/{video_id}', [VideoController::class, 'show'])->name('video.show');
+    Route::get('/video/{video_id}', [VideoController::class, 'show'])->name('video.show');
 
-Route::get('/history', [HistoryController::class, 'index'])->name('history.index');
-Route::get('/admin/kelola-video', [VideoController::class, 'kelolaVideo'])->name('kelola.video');
-Route::delete('/admin/video/{id}', [VideoController::class, 'destroy'])->name('delete-video');
+    Route::get('/history', [HistoryController::class, 'index'])->name('history.index');
+    Route::get('/admin/kelola-video', [VideoController::class, 'kelolaVideo'])->name('kelola.video');
+    Route::delete('/admin/video/{id}', [VideoController::class, 'destroy'])->name('delete-video');
 
 // Rute untuk menampilkan halaman profil
-Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
+    Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
 
 // Rute untuk mengupdate profil dengan metode PUT
-Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
+// routes/web.php
+    Route::put('/profile/update', [UserController::class, 'update'])->name('profile.update');
+
+
 
 //rute untuk favorite
-Route::middleware('auth')->group(function () {
+    Route::middleware('auth')->group(function () {
     Route::get('/favorite', [FavoriteController::class, 'index'])->name('favorite.index');
-});
+    });
+    Route::post('/favorite/toggle/{post_id}', [FavoriteController::class, 'toggle'])->name('favorite.toggle');
+
 
 //artikel
     Route::get('/index', [ArticleController::class, 'index']);
     Route::get('/articles/create', [ArticleController::class, 'create'])->name('articles.create');
     Route::post('/articles', [ArticleController::class, 'store'])->name('articles.store');
+    Route::get('/articles/{id}', [ArticleController::class, 'show'])->name('articles.show');
     Route::resource('articles', ArticleController::class);
 
 //forum
@@ -102,4 +111,7 @@ Route::middleware('auth')->group(function () {
 //comentar
     Route::get('/comment/{post_id}', [CommentController::class, 'create'])->name('comments.create');
     Route::post('/comment', [CommentController::class, 'store'])->name('comments.store');
+
+//home
+    Route::get('/home', [HomeController::class, 'index'])->name('home.index');
 

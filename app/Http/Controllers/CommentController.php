@@ -11,7 +11,7 @@ class CommentController extends Controller
     public function create($post_id)
     {
         // Ambil data postingan berdasarkan ID
-        $post = ForumPost::findOrFail($post_id);
+        $post = ForumPost::with('user', 'comments.user')->findOrFail($post_id);
 
         // Tampilkan view form komentar dengan data postingan
         return view('forum.tambah-komentar', compact('post'));
@@ -21,7 +21,7 @@ class CommentController extends Controller
     {
         // Validasi input
         $validatedData = $request->validate([
-            'post_id' => 'required|exists:forum_post,post_id',
+            'post_id' => 'required|exists:forum_post,post_id', // Pastikan tabelnya forum_posts
             'content' => 'required|string'
         ]);
 

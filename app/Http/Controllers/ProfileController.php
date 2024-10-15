@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Article;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
@@ -11,17 +12,26 @@ class ProfileController extends Controller
 {
     public function index()
     {
+        // Periksa apakah pengguna sudah terautentikasi
+        if (!Auth::check()) {
+            return redirect()->route('login')->with('error', 'Silakan login untuk mengakses profil Anda.');
+        }
+
         $user = Auth::user();
-        $articles = $user->articles;
-        $videos = $user->videos;
-        $history = $user->history;
+        $articles = $user->articles; // Pastikan relasi articles ada dalam model User
+        $videos = $user->videos; // Pastikan relasi videos ada dalam model User
+        $history = $user->history; // Pastikan relasi history ada dalam model User
 
         return view('user.user-profile', compact('user', 'articles', 'videos', 'history'));
     }
 
-
     public function edit()
     {
+        // Periksa apakah pengguna sudah terautentikasi
+        if (!Auth::check()) {
+            return redirect()->route('login')->with('error', 'Silakan login untuk mengedit profil Anda.');
+        }
+
         $user = Auth::user();
 
         return view('user.edit-profile', compact('user'));
@@ -29,6 +39,11 @@ class ProfileController extends Controller
 
     public function update(Request $request)
     {
+        // Periksa apakah pengguna sudah terautentikasi
+        if (!Auth::check()) {
+            return redirect()->route('login')->with('error', 'Silakan login untuk memperbarui profil Anda.');
+        }
+
         $user = Auth::user();
 
         // Validation
