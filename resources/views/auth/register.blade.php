@@ -92,16 +92,16 @@
                 <div class="input-group">
                     <input type="password" class="form-control" id="password" name="password" placeholder="Masukkan Password">
                     <button type="button" class="btn btn-outline-secondary" id="togglePassword">
-                    <i class="bi bi-eye-fill" id="toogleIcon"></i>
+                        <i class="bi bi-eye-fill" id="togglePasswordIcon"></i>
                     </button>
                 </div>
             </div>
             <div class="mb-3">
                 <label for="password_confirmation" class="form-label">Confirm Password</label>
                 <div class="input-group">
-                <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" placeholder="Komfirmasi Password" required>
-                <button type="button" class="btn btn-outline-secondary" id="togglePassword">
-                    <i class="bi bi-eye-fill" id="toogleIcon"></i>
+                    <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" placeholder="Konfirmasi Password" required>
+                    <button type="button" class="btn btn-outline-secondary" id="toggleConfirmPassword">
+                        <i class="bi bi-eye-fill" id="toggleConfirmPasswordIcon"></i>
                     </button>
                 </div>
             </div>
@@ -127,24 +127,25 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         $(document).ready(function() {
+            // Toggle password visibility for password
             $('#togglePassword').click(function() {
                 const passwordInput = $('#password');
                 const type = passwordInput.attr('type') === 'password' ? 'text' : 'password';
                 passwordInput.attr('type', type);
 
-                $(this).find('i').toggleClass('bi-eye-slash bi-eye');
+                $('#togglePasswordIcon').toggleClass('bi-eye-slash bi-eye');
             });
 
+            // Toggle password visibility for confirm password
             $('#toggleConfirmPassword').click(function() {
                 const confirmPasswordInput = $('#password_confirmation');
                 const type = confirmPasswordInput.attr('type') === 'password' ? 'text' : 'password';
                 confirmPasswordInput.attr('type', type);
 
-                $(this).find('i').toggleClass('bi-eye-slash bi-eye');
+                $('#toggleConfirmPasswordIcon').toggleClass('bi-eye-slash bi-eye');
             });
         });
     </script>
 </body>
 
 </html>
-

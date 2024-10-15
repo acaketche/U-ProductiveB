@@ -7,7 +7,7 @@ use App\Models\Category;
 use App\Models\History;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-
+use Carbon\Carbon;
 
 class ArticleController extends Controller
 {
@@ -42,6 +42,9 @@ class ArticleController extends Controller
             $query->where('created_at', '>=', now()->subMonth());
         }
 
+        // Urutkan berdasarkan artikel terbaru
+        $query->orderBy('created_at', 'desc');
+
         // Ambil hasil dengan pagination
         $articles = $query->paginate(10);
 
@@ -72,15 +75,6 @@ class ArticleController extends Controller
 
         // Simpan gambar ke direktori 'public/images'
         $imagePath = $request->file('image')->store('images', 'public');
-
-        // Simpan artikel dengan data gambar
-        // Article::create([
-        //     'title' => $request->title,
-        //     'category_id' => $request->category_id,
-        //     'content' => $request->content,
-        //     'image' => $imagePath,
-        //     'user_id' => Auth::id(),
-        // ]);
         $article = new Article;
         $article->title = $request->input('title');
         $article->category_id = $request->input('category_id');
@@ -155,6 +149,15 @@ class ArticleController extends Controller
 
         return redirect()->route('admin.kelolaArtikel')->with('success', 'Artikel berhasil disetujui!');
     }
+    public function reject($id)
+        {
+            $article = Article::findOrFail($id);
+            $article->status = 'rejected';
+            $article->save();
+
+            return redirect()->route('admin.kelolaArtikel')->with('success', 'Artikel berhasil ditolak!');
+        }
+
 
     // Menghapus artikel
     public function destroy($id)

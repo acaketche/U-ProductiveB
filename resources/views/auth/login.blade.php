@@ -114,16 +114,15 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-    <!-- Script for toggling password visibility -->
     <script>
-         $(document).ready(function() {
-            $('#togglePassword').click(function() {
-                const passwordInput = $('#password');
-                const type = passwordInput.attr('type') === 'password' ? 'text' : 'password';
-                passwordInput.attr('type', type);
+        document.getElementById('togglePassword').addEventListener('click', function () {
+            const passwordInput = document.getElementById('password');
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
 
-                $(this).find('i').toggleClass('bi-eye-slash bi-eye');
-            });
+            const toggleIcon = document.getElementById('toogleIcon');
+            toggleIcon.classList.toggle('bi-eye-slash');
+            toggleIcon.classList.toggle('bi-eye');
         });
     </script>
 </body>

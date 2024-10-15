@@ -1,9 +1,4 @@
-@extends('layout.navbar-user')
-
-@section('judul')
-    Profil Pengguna
-@endsection
-
+@extends('layout.navbar-guest')
 @section('content')
 <div class="container mt-4">
     <!-- Profile Header -->
@@ -33,22 +28,40 @@
         <div class="row">
             <!-- Article Items -->
             @foreach($articles as $article)
-                <div class="col-md-4 content-item mb-4">
-                    <img src="{{ $article->thumbnail ? asset('storage/' . $article->thumbnail) : asset('images/default-article.png') }}" alt="{{ $article->title }}" class="img-fluid">
-                    <h5>{{ $article->title }}</h5>
-                    <p>Category: {{ $article->category->name }}</p>
+            <div class="col-md-4 content-item">
+                <div class="card h-100 position-relative">
+                    <!-- Image wrapped with link -->
+                    <a href="{{ route('articles.show', $article->article_id) }}">
+                        <img src="{{ Storage::url($article->image) }}" class="card-img-top" alt="{{ $article->title }}">
+                    </a>
+                    <div class="card-body">
+                        <h5 class="card-title">{{ $article->title }}</h5>
+                        <p class="card-text">{{ Str::limit($article->content, 100) }}</p>
+                    </div>
                 </div>
+            </div>
             @endforeach
 
             <!-- Video Items -->
             @foreach($videos as $video)
-                <div class="col-md-4 content-item mb-4">
-                    <iframe src="{{ $video->url }}" title="{{ $video->title }}" frameborder="0" allowfullscreen class="w-100"></iframe>
-                    <h5>{{ $video->title }}</h5>
-                    <p>Category: {{ $video->category->name }}</p>
+            <div class="col-md-4 content-item">
+                <div class="card h-100 position-relative">
+                <a href="{{ route('video.show', $video->video_id) }}" class="video-thumbnail">
+                    <img src="{{ $video->thumbnail_url }}" class="card-img-top" alt="{{ $video->title }}">
+                    <div class="play-icon">
+                        <i class="bi bi-play-circle"></i>
+                    </div>
+                </a>
+                <h5>{{ $video->title }}</h5>
+                <p>Category: {{ $video->category->name }}</p>
                 </div>
+            </div>
             @endforeach
         </div>
     </div>
 </div>
 @endsection
+@push('styles')
+<link rel="stylesheet" href="{{ asset('style/usernavbar.css') }}">
+
+@endpush

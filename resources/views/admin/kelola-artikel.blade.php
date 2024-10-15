@@ -32,11 +32,18 @@
                                     </td>
                                     <td>
                                         @if($article->status == 'pending')
-                                            <form action="{{ route('admin.approve-article', $article->article_id) }}" method="POST">
-                                                @csrf
-                                                <button type="submit" class="btn btn-sm btn-success">Setujui</button>
-                                            </form>
-                                        @endif
+                                        <form action="{{ route('admin.approve-article', $article->article_id) }}" method="POST" style="display:inline;">
+                                            @csrf
+                                            <button type="submit" class="btn btn-sm btn-success">Setujui</button>
+                                        </form>
+
+                                        <form action="{{ route('admin.reject-article', $article->article_id) }}" method="POST" style="display:inline;">
+                                            @csrf
+                                            <button type="submit" class="btn btn-sm btn-danger">Tolak</button>
+                                        </form>
+                                    @endif
+
+
                                         <form action="{{ route('delete-artikel', $article->article_id) }}" method="POST" style="display:inline;">
                                             @csrf
                                             @method('DELETE')

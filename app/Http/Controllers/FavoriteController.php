@@ -1,45 +1,59 @@
 <?php
 
-// app/Http/Controllers/FavoriteController.php
-
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Favorite;
+use App\Models\ForumPost;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class FavoriteController extends Controller
 {
+    public function toggle(ForumPost $post)
+    {
+        try {
+            $user = Auth::user();
+
+            if (!$user) {
+                return response()->json(['message' => 'Unauthorized'], 401);
+            }
+
+            // Logika untuk menambah atau menghapus postingan dari favorit
+            $user->favorites()->toggle($post->id);
+
+            return response()->json(['message' => 'Favorite updated!'], 200);
+        } catch (\Exception $e) {
+            // Log error di Laravel log dan kembalikan respons 500
+            \Log::error($e->getMessage());
+            return response()->json(['message' => 'An error occurred'], 500);
+        }
+    }
+
     public function index()
     {
-        $user = Auth::user(); // Ambil data pengguna yang sedang login
-        $favorites = Favorite::with('article', 'video')->where('user_id', $user->id)->get();
+        $user = auth()->user();
+        $favorites = $user->favorites()->with(['article', 'video'])->get();
+
         return view('favorite.index', compact('favorites', 'user'));
     }
-    public function toggle($post_id)
+
+    public function favorite(ForumPost $post)
     {
-        $user = auth()->user();
-        $post = Post::find($post_id);
+        Auth::user()->favorites()->attach($post->id);
+        return back();
+    }
 
-        if (!$post) {
-            return redirect()->back()->with('error', 'Post not found.');
-        }
+    public function unfavorite($postId)
+    {
+        $post = ForumPost::findOrFail($postId);
 
-        // Cek apakah postingan sudah di-favorite
-        $favorite = Favorite::where('user_id', $user->id)->where('post_id', $post_id)->first();
+        // Hapus dari tabel favorit
+        Favorite::where('user_id', Auth::id())
+                ->where('post_id', $post->post_id)
+                ->delete();
 
-        if ($favorite) {
-            // Jika sudah di-favorite, hapus dari favorite
-            $favorite->delete();
-        } else {
-            // Jika belum di-favorite, tambahkan ke favorite
-            Favorite::create([
-                'user_id' => $user->id,
-                'post_id' => $post_id,
-            ]);
-        }
-
-        return redirect()->back()->with('success', 'Favorite updated.');
+        return redirect()->route('favorite.index', ['post' => $postId])
+                        ->with('success', 'Post telah dihapus dari favorit');
     }
 }
 

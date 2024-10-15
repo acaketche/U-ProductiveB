@@ -21,18 +21,27 @@ class CommentController extends Controller
     {
         // Validasi input
         $validatedData = $request->validate([
-            'post_id' => 'required|exists:forum_post,post_id', // Pastikan tabelnya forum_posts
-            'content' => 'required|string'
+            'post_id' => 'required|exists:forum_post,post_id',
+            'content' => 'required|string|max:255',
         ]);
 
-        // Simpan komentar baru ke database
-        Comment::create([
-            'post_id' => $validatedData['post_id'],
-            'content' => $validatedData['content'],
-            'user_id' => auth()->id() // Mengaitkan komentar dengan user yang login
-        ]);
+        // Buat komentar baru
+        $comment = new Comment();
+        $comment->post_id = $validatedData['post_id'];
+        $comment->user_id = auth()->id(); // ID user yang saat ini login
+        $comment->content = $validatedData['content'];
+        $comment->save();
 
-        // Redirect kembali ke halaman forum atau halaman detail postingan
-        return redirect()->route('forum.index')->with('success', 'Komentar berhasil ditambahkan!');
+        // // Ambil waktu pembuatan dari komentar yang baru saja disimpan
+        // $createdAt = $comment->created_at ? $comment->created_at->format('d M Y') : 'Waktu tidak tersedia';
+
+        // Mengembalikan respons JSON
+        return response()->json([
+            'user' => [
+                'name' => $comment->user->name,
+            ],
+            'content' => $comment->content,
+            'created_at' => $comment->created_at, // Ini harus berupa objek datetime
+        ]);
     }
 }

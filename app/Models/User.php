@@ -139,4 +139,8 @@ class User extends Authenticatable
         return $this->hasMany(History::class, 'user_id', 'user_id');
     }
 
+    public function favorites()
+    {
+        return $this->belongsToMany(ForumPost::class, 'favorites', 'user_id', 'post_id');
+    }
 }

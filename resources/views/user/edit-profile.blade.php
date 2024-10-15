@@ -44,18 +44,10 @@
             <label for="current_password" class="form-label">Password Lama</label>
             <input type="password" name="current_password" id="current_password" class="form-control" required>
             <small class="form-text text-muted">Masukkan password saat ini sebelum mengubah password baru.</small>
-        </div>
 
-        <!-- Input Password Baru -->
-        <div class="mb-3">
-            <label for="new_password" class="form-label">Password Baru</label>
-            <input type="password" name="new_password" id="new_password" class="form-control" required>
-        </div>
-
-        <!-- Konfirmasi Password Baru -->
-        <div class="mb-3">
-            <label for="password_confirmation" class="form-label">Konfirmasi Password Baru</label>
-            <input type="password" name="new_password_confirmation" id="password_confirmation" class="form-control" required>
+            <label for="password" class="form-label">Password</label>
+            <input type="password" name="password" id="password" class="form-control">
+            <small class="form-text text-muted">Kosongkan jika tidak ingin mengubah password.</small>
         </div>
 
         <!-- Input Foto Profil -->

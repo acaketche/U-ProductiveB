@@ -59,6 +59,7 @@
         </div>
     </div>
 
+<<<<<<< HEAD
   <!-- Content -->
 <div class="content">
     <div class="favorite-card">
@@ -86,10 +87,38 @@
 
                 <!-- Tanggal Dibuat -->
                 <small class="text-muted">{{ $favorite->created_at->format('d M Y H:i') }}</small>
+=======
+   <!-- Content -->
+   <div class="content">
+    <!-- resources/views/favorite.blade.php -->
+        <div class="text-center mb-3">
+            <h3>My Favorite Posts</h3>
+        </div>
+        @foreach ($favorites as $post)
+        <div class="card mb-3">
+            <div class="card-header">
+                {{ Carbon\Carbon::parse($post->created_at)->diffForHumans() }}
+>>>>>>> 38fb869e6d5bbac34f81d92d8ab0dadb585c05a9
             </div>
-        @empty
-            <p>No favorites found.</p>
-        @endforelse
+            <div class="card-body">
+                <h5 class="card-title">{{ $post->title }}</h5>
+                <p class="card-text">{{ $post->content }}</p>
+            </div>
+            @if (Auth::check())
+            <div class="card-footer text-muted">
+                <favorite
+                    :post={{ $post->id }}
+                    :favorited={{ $post->favorited() ? 'true' : 'false' }}
+                    >
+                </favorite>
+                <form action="{{ url('/post/' . $post->post_id . '/unfavorite') }}" method="POST">
+                    @csrf
+                    <button type="submit">Hapus dari Favorit</button>
+                </form>
+            </div>
+            @endif
+        </div>
+        @endforeach
     </div>
 </div>
 
