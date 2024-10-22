@@ -1,58 +1,3 @@
-<<<<<<< HEAD
-<!-- resources/views/forum.blade.php -->
-<!DOCTYPE html>
-<html lang="id">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Forum U-Productive</title>
-    <!-- Gunakan asset helper untuk memuat CSS -->
-    <link href="{{ asset('https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css') }}" rel="stylesheet">
-    <link href="{{asset('style/forum.css')}}" rel="stylesheet">
-</head>
-
-<body>
-    <!-- Navbar -->
-    <nav class="navbar navbar-custom">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#">
-                <img src="{{ asset('https://via.placeholder.com/30') }}" alt="Logo">
-                U-Productive
-            </a>
-            <ul class="navbar-nav ms-auto d-flex flex-row mb-2 mb-lg-0">
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{route('articles.index')}}">Artikel</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{route('video.index')}}">Video</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link active text-black" href="{{route('forum.index')}}">Forum</a>
-                </li>
-            </ul>
-            <a href="#" class="navbar-icon">
-                <img src="{{ asset('https://via.placeholder.com/24') }}" alt="User Icon">
-            </a>
-        </div>
-    </nav>
-
-    <!-- Sidebar -->
-    <div class="sidebar">
-        @if ($user && $user->profile_picture)
-        <img src="{{ asset('storage/' . $user->profile_picture) }}" alt="Profile Picture">
-        @else
-            <p>Profile picture not available</p>
-        @endif
-            <div class="profile-info">
-            @if ($user)
-                <p>{{ $user->name }}</p>
-                <p class="contact-info">{{ $user->email }}</p>
-=======
 @extends('layout.navbar-guest')
 @section('content')
     <!-- Sidebar -->
@@ -63,7 +8,6 @@
                 <p>{{ Auth::user()->name }}</p>
                 <p class="contact-info">{{ Auth::user()->email }}</p>
                 <p class="contact-info">{{ Auth::user()->role }}</p>
->>>>>>> 38fb869e6d5bbac34f81d92d8ab0dadb585c05a9
             @else
                 <p>Guest</p>
                 <p class="contact-info">Email tidak tersedia</p>
@@ -100,11 +44,10 @@
                     <p class="card-text">{{ $post->content }}</p>
 
                     <div class="comment-section">
-                        <!-- Form untuk menambahkan favorite -->
-                         <form action="{{ url('/post/' . $post->post_id . '/favorite') }}" method="POST">
-                             @csrf
-                            <button class="btn-favorite" type="submit"><i class="bi bi-bookmark" style="font-size: 1.5em; cursor: pointer;" data-post-id="{{ $post->post_id }}"></i></button>
-                        </form>
+                        <!-- Ikon bintang untuk menambahkan favorite -->
+                        <i class="bi {{ $post->is_favorite ? 'bi-star-fill' : 'bi-star' }} favorite-icon" 
+                           style="font-size: 1.5em; cursor: pointer; color: {{ $post->is_favorite ? 'gold' : 'gray' }};" 
+                           data-post-id="{{ $post->post_id }}"></i>
 
                         <!-- Form untuk menambahkan komentar -->
                         <form action="{{ route('comments.create', ['post_id' => $post->post_id]) }}" method="GET">
@@ -119,45 +62,56 @@
 
 @push('styles')
     <link href="{{asset('style/forum.css')}}" rel="stylesheet">
+    <style>
+        /* CSS untuk mengubah ikon favorit saat aktif */
+        .favorite-icon.bi-star-fill {
+            color: gold; /* Warna saat ikon aktif (bintang penuh) */
+        }
+        .favorite-icon.bi-star {
+            color: gray; /* Warna saat ikon tidak aktif */
+        }
+    </style>
 @endpush
 
+@push('scripts')
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Mengambil semua ikon bintang
+            const favoriteIcons = document.querySelectorAll('.favorite-icon');
 
-<script>
-    // Pastikan script dijalankan setelah seluruh konten halaman dimuat
-    document.addEventListener('DOMContentLoaded', () => {
-        // Mengambil semua ikon bookmark
-        const bookmarkIcons = document.querySelectorAll('.bi-bookmark');
+            favoriteIcons.forEach(icon => {
+                icon.addEventListener('click', (event) => {
+                    const postId = event.target.getAttribute('data-post-id');
 
-        bookmarkIcons.forEach(icon => {
-            icon.addEventListener('click', (event) => {
-                const postId = event.target.getAttribute('data-post-id');
-
-                if (postId) {
-                    fetch(`/favorite/${postId}`, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                        },
-                        body: JSON.stringify({ postId: postId })
-                    })
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error('Network response was not ok');
-                        }
-                        return response.json();
-                    })
-                    .then(data => {
-                        console.log(data.message);
-                        // Logika lain jika diperlukan
-                    })
-                    .catch(error => console.error('Error:', error));
-
-                } else {
-                    console.error('Post ID not found!');
-                }
+                    if (postId) {
+                        // Mengirim permintaan POST ke server
+                        fetch(`/favorite/${postId}`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                            },
+                            body: JSON.stringify({ postId: postId })
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            // Mengubah ikon berdasarkan status favorit
+                            if (data.is_favorite) {
+                                icon.classList.remove('bi-star');
+                                icon.classList.add('bi-star-fill');
+                                icon.style.color = 'gold'; // Bintang aktif
+                            } else {
+                                icon.classList.remove('bi-star-fill');
+                                icon.classList.add('bi-star');
+                                icon.style.color = 'gray'; // Bintang tidak aktif
+                            }
+                        })
+                        .catch(error => console.error('Error:', error));
+                    } else {
+                        console.error('Post ID not found!');
+                    }
+                });
             });
         });
-    });
-</script>
-
+    </script>
+@endpush

@@ -59,35 +59,6 @@
         </div>
     </div>
 
-<<<<<<< HEAD
-  <!-- Content -->
-<div class="content">
-    <div class="favorite-card">
-        <h5><strong>Favorite for {{ $user->name ?? 'Guest' }}</strong></h5>
-        @forelse($favorites as $favorite)
-            <div class="favorite-item d-flex align-items-center justify-content-between">
-                <!-- Form untuk toggle favorit -->
-                <form action="{{ route('favorite.toggle', ['post_id' => $favorite->post_id]) }}" method="POST">
-                    @csrf
-                    <button type="submit" class="btn btn-link p-0 m-0">
-                        <i class="bi bi-star-fill favorite-icon {{ $favorite->is_favorited ? 'active' : 'inactive' }}"></i>
-                    </button>
-                </form>
-
-                <!-- Judul Artikel/Video -->
-                <p class="mb-0">
-                    @if ($favorite->article)
-                        {{ $favorite->article->title }}
-                    @elseif ($favorite->video)
-                        {{ $favorite->video->title }}
-                    @else
-                        <em>Item favorit tidak ditemukan</em>
-                    @endif
-                </p>
-
-                <!-- Tanggal Dibuat -->
-                <small class="text-muted">{{ $favorite->created_at->format('d M Y H:i') }}</small>
-=======
    <!-- Content -->
    <div class="content">
     <!-- resources/views/favorite.blade.php -->
@@ -98,7 +69,6 @@
         <div class="card mb-3">
             <div class="card-header">
                 {{ Carbon\Carbon::parse($post->created_at)->diffForHumans() }}
->>>>>>> 38fb869e6d5bbac34f81d92d8ab0dadb585c05a9
             </div>
             <div class="card-body">
                 <h5 class="card-title">{{ $post->title }}</h5>

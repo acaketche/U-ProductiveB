@@ -12,7 +12,7 @@ class VideoController extends Controller
 {
     public function index(Request $request)
 {
-    $search = $request->input('cari'); // Sesuaikan dengan nama input di form pencarian
+    $search = $request->input ('cari'); // Sesuaikan dengan nama input di form pencarian
     $category = $request->input('category'); // Sesuaikan dengan nama input di form filter kategori
     $time = $request->input('time'); // Sesuaikan dengan nama input di form filter waktu
 
