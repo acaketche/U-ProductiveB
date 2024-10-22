@@ -2,7 +2,7 @@
 @section('content')
     <!-- Sidebar -->
     <div class="sidebar">
-        <img src="{{ Auth::user() && Auth::user()->profile_picture ? Storage::url(Auth::user()->profile_picture) : asset('images/default-profile.png') }}" alt="Profile Picture">
+        <img src="{{ Auth::user() && Auth::user()->profile_picture ? Storage::url(Auth::user()->profile_picture) : asset('images/default-profile.png') }}" >
         <div class="profile-info">
             @if (Auth::check())
                 <p>{{ Auth::user()->name }}</p>

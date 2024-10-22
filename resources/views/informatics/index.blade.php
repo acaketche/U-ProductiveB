@@ -3,7 +3,7 @@
 @section('content')
 <div class="container mt-4">
     <div class="d-flex justify-content-center align-items-center mb-4">
-        <button class="btn btn-primary me-2" onclick="window.location.href='{{ route('informatica.create') }}';">
+        <button class="btn btn-primary me-2" onclick="window.location.href='{{route ('informatica.create')}}';">
             <i class="bi bi-plus me-2"></i>Tambah
         </button>
         <div class="d-flex">
@@ -56,21 +56,20 @@
     </div>
 
     <div class="row">
-        @foreach($informatics as $informatica)
-        <div class="col-md-4">
-            <!-- Bungkus card dengan link ke halaman detail -->
-            <a href="{{ route('informatica.show',$informatica->if_id) }}">
-                <div class="card">
-                    <canvas id="pdf-thumbnail-{{ $informatica->if_id }}" class="card-img-top" style="height: 150px; object-fit: cover;"></canvas>
-                    <div class="card-body">
-                        <h5 class="card-title">{{ $informatica->title }}</h5>
-                    </div>
+        @foreach ($informatics as $informatica)
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 position-relative">
+                <!-- Gambar dengan tautan -->
+                <a href="{{ route('informatica.show', $informatica->if_id) }}">
+                    <img src="{{ Storage::url($informatica->file_pdf) }}" class="card-img-top" alt="{{ $informatica->title }}">
+                </a>
+                <div class="card-body">
+                    <h5 class="card-title">{{ $informatica->title }}</h5>
                 </div>
-            </a>
+            </div>
         </div>
         @endforeach
     </div>
-
 
     <!-- Pagination -->
     <nav aria-label="Page navigation">

@@ -9,74 +9,85 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <style>
         body {
-            background-color: #dcdcdc;
+            background: linear-gradient(to right, #4a90e2, #8a3ab9);
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
             margin: 0;
+            font-family: 'Arial', sans-serif;
         }
 
         .register-container {
-            background-color: #e6ebf3d0;
+            background-color: #fff;
             padding: 2rem;
-            border-radius: 8px;
-            border: none;
-            width: 500px;
-            height: auto;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 500px;
         }
 
         .register-container h1 {
-            background-color: #4a90e2;
-            padding: 0.5rem;
             text-align: center;
-            border-radius: 8px 8px 0 0;
-            margin: -2rem -2rem 1.5rem -2rem;
-            color: #fff;
-            font-size: 1.5rem;
+            color: #333;
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
         }
 
         .form-label {
-            font-weight: medium;
             font-size: 0.9rem;
+            font-weight: bold;
+            color: #333;
         }
 
         .btn-primary {
             background-color: #4a90e2;
-            color: #fff;
             border: none;
-            font-weight: medium;
+            padding: 0.75rem;
+            border-radius: 6px;
+            width: 100%;
+            font-size: 1rem;
+            font-weight: bold;
+            color: #fff;
+            transition: background-color 0.3s ease;
         }
 
         .btn-primary:hover {
-            background-color: #bbd8ff;
+            background-color: #357ab8;
         }
 
         .text-center a {
-            color: #ff8c6b;
-            font-weight: medium;
+            color: #4a90e2;
             text-decoration: none;
+            font-weight: bold;
         }
 
         .text-center a:hover {
             text-decoration: underline;
         }
 
-        .cancel-text a {
-            color: #4a90e2;
-            font-weight: medium;
-            text-decoration: none;
+        .input-group button {
+            background-color: transparent;
+            border: none;
+            padding: 0 0.5rem;
+            cursor: pointer;
         }
 
-        .cancel-text a:hover {
-            text-decoration: underline;
+        .input-group button i {
+            font-size: 1.25rem;
+            color: #4a90e2;
+        }
+
+        .text-muted {
+            font-size: 0.85rem;
         }
     </style>
 </head>
 
 <body>
     <div class="register-container">
-        <h1>Daftar</h1>
+        <h1>Register</h1>
         <form action="{{ route('register') }}" method="POST">
             @csrf
             <div class="mb-3">
@@ -90,8 +101,8 @@
             <div class="mb-3">
                 <label for="password" class="form-label">Password</label>
                 <div class="input-group">
-                    <input type="password" class="form-control" id="password" name="password" placeholder="Masukkan Password">
-                    <button type="button" class="btn btn-outline-secondary" id="togglePassword">
+                    <input type="password" class="form-control" id="password" name="password" placeholder="Masukkan Password" required>
+                    <button type="button" class="btn" id="togglePassword">
                         <i class="bi bi-eye-fill" id="togglePasswordIcon"></i>
                     </button>
                 </div>
@@ -100,7 +111,7 @@
                 <label for="password_confirmation" class="form-label">Confirm Password</label>
                 <div class="input-group">
                     <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" placeholder="Konfirmasi Password" required>
-                    <button type="button" class="btn btn-outline-secondary" id="toggleConfirmPassword">
+                    <button type="button" class="btn" id="toggleConfirmPassword">
                         <i class="bi bi-eye-fill" id="toggleConfirmPasswordIcon"></i>
                     </button>
                 </div>
@@ -113,22 +124,20 @@
                     <option value="Admin">Admin</option>
                 </select>
             </div>
-            <div class="btn-group w-100 mb-2">
-                <button type="submit" class="btn btn-primary w-100">Register</button>
-            </div>
+            <button type="submit" class="btn btn-primary">Register</button>
         </form>
 
         <div class="mt-3 text-center">
-            <p class="cancel-text">Batal, <a href="{{ route('login') }}">Kembali ke halaman Login</a>?</p>
+            <p class="text-muted">Sudah punya akun? <a href="{{ route('login') }}">Login di sini</a></p>
         </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             // Toggle password visibility for password
-            $('#togglePassword').click(function() {
+            $('#togglePassword').click(function () {
                 const passwordInput = $('#password');
                 const type = passwordInput.attr('type') === 'password' ? 'text' : 'password';
                 passwordInput.attr('type', type);
@@ -137,7 +146,7 @@
             });
 
             // Toggle password visibility for confirm password
-            $('#toggleConfirmPassword').click(function() {
+            $('#toggleConfirmPassword').click(function () {
                 const confirmPasswordInput = $('#password_confirmation');
                 const type = confirmPasswordInput.attr('type') === 'password' ? 'text' : 'password';
                 confirmPasswordInput.attr('type', type);

@@ -6,154 +6,138 @@ body {
 .Logo {
     width: 30px;
 }
-.navbar {
-    background-color: #4A90E2;
-    padding: 1rem;
-}
-
-.navbar-brand {
-    font-weight: bold;
-    color: #ffffff;
-}
-
-.navbar-nav .nav-link {
-    color: #ffffff;
-    margin-right: 1rem;
-}
-
-.navbar-nav .nav-link.active {
-    background-color: #ffffff;
-    color: #000000;
-    border-radius: 5px;
-    padding: 0.3rem 0.8rem;
-}
-
-.navbar-nav .btn-warning {
-    background-color: #FFD166;
-    border: none;
-}
-
-.navbar-nav .btn-outline-secondary {
-    color: #ffffff;
-    border-color: #074881;
-}
-
-.btn-primary {
-    background-color: #FFD166;
-    border: none;
-}
-
-.btn-outline-primary {
-    color: #af8585;
-    border-color: #000000;
-}
-
-.dropdown-menu {
-    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
-}
-
-.form-label {
-    font-weight: bold;
-}
-
-@media (max-width: 768px) {
-    .dropdown-menu {
-        width: 100% !important;
-    }
-
-    .row > .col-6 {
-        width: 100%;
-    }
-}
-
-.card {
-    border: none;
-    border-radius: 15px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.card-img-top {
-    border-top-left-radius: 15px;
-    border-top-right-radius: 15px;
-}
-
-.card-title {
-    font-size: 1.2rem;
-    font-weight: bold;
-    color: #000000;
-}
-
-.card-text {
-    color: #000000;
-}
-
-.pagination .page-link {
-    color: #000000;
-}
-
-.pagination .page-link:hover {
-    background-color: #FFD166;
-    color: #ffffff;
-}
-
-
+/* Profile Header */
 .profile-header {
     display: flex;
     align-items: center;
-    padding: 20px 0;
+    padding: 20px;
     border-bottom: 1px solid #ddd;
+    justify-content: flex-start; /* Align items to the left */
 }
+
 .profile-header img {
     width: 150px;
     height: 150px;
     border-radius: 50%;
     object-fit: cover;
-    margin-right: 30px;
+    margin-right: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
 }
+
+.profile-details {
+    text-align: left; /* Align text to the left for a more Instagram-like layout */
+}
+
 .profile-details h3 {
-    margin-bottom: 5px;
+    font-size: 28px; /* Larger font size for the name */
+    font-weight: bold;
+    margin: 0; /* Remove margin for tighter spacing */
 }
+
+.profile-details .username {
+    color: #8e8e8e; /* Slightly lighter color for the username */
+    font-size: 16px;
+}
+
 .profile-details p {
-    margin: 5px 0;
-    color: #777;
+    color: #555;
+    font-size: 14px;
+    margin: 5px 0; /* Add margin for better spacing */
 }
+
 .profile-details .stats {
     display: flex;
-    gap: 20px;
+    justify-content: flex-start; /* Align stats to the left */
+    gap: 50px; /* Increased gap between stats */
     margin-top: 10px;
 }
+
 .profile-details .stats .stat-item {
-    text-align: center;
+    text-align: center; /* Center text for each stat item */
 }
+
 .profile-details .stats .stat-item h4 {
-    margin: 0;
-    font-size: 20px;
+    font-size: 22px; /* Slightly larger font for stats */
+    font-weight: bold;
+    color: #000;
+}
+
+.profile-details .stats .stat-item p {
+    color: #777;
+    font-size: 14px;
+}
+
+.profile-details .btn-outline-secondary {
+    margin-top: 15px;
+    font-size: 14px;
+    border-radius: 20px; /* Rounded corners for the button */
+    padding: 8px 16px; /* Increased padding for a better button look */
+}
+
+.profile-details .btn-outline-secondary:hover {
+    background-color: #4A90E2;
+    color: #fff;
+    border-color: #4A90E2;
+    transition: background-color 0.3s; /* Smooth transition for hover effect */
+}
+
+/* Profile Content */
+.profile-content h4 {
+    margin-top: 20px;
     font-weight: bold;
 }
-.profile-details .stats .stat-item p {
-    margin: 0;
-    color: #555;
+
+/* Content Item Styles */
+.content-item {
+    margin-bottom: 20px; /* Space between content items */
 }
-.profile-content {
-    margin-top: 30px;
+
+.card {
+    border: none; /* Remove card border */
+    transition: transform 0.2s; /* Smooth scaling on hover */
+    height: 250px; /* Set a fixed height for the card */
+    overflow: hidden; /* Hide overflow if content is too long */
 }
-.profile-content h4 {
-    margin-bottom: 20px;
+
+.card:hover {
+    transform: scale(1.05); /* Scale up the card slightly on hover */
 }
-.profile-content .content-item {
-    margin-bottom: 30px;
+
+.card img {
+    height: 150px; /* Set a specific height for images */
+    object-fit: cover; /* Maintain aspect ratio */
 }
-.profile-content .content-item img,
-.profile-content .content-item iframe {
-    width: 100%;
-    height: 200px;
-    object-fit: cover;
-    border-radius: 10px;
-    margin-bottom: 10px;
+
+.card-body {
+    padding: 10px; /* Adjust padding for a more compact look */
 }
-.profile-content .content-item h5 {
-    margin-bottom: 5px;
+
+.card-title {
+    font-size: 16px; /* Adjust title size */
+    margin-bottom: 5px; /* Space below title */
 }
-.profile-content .content-item p {
-    color: #777;
+
+.card-text {
+    font-size: 12px; /* Smaller font size for content */
+    color: #777; /* Adjust text color for readability */
 }
+
+/* Video Thumbnail */
+.video-thumbnail {
+    position: relative; /* Position for the play icon */
+}
+
+.play-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 40px;
+    color: white;
+    opacity: 0.7;
+}
+
+.play-icon:hover {
+    opacity: 1; /* Full opacity on hover */
+}
+

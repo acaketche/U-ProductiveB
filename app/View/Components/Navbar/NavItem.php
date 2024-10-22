@@ -16,7 +16,7 @@ class NavItem extends Component
 
     public function isActive()
     {
-        return Route::is($this->route) ? 'active' : ''; // Use 'active' for Bootstrap
+        return Route::is($this->route) ? 'active' : '';
     }
 
     public function render(): View|Closure|string

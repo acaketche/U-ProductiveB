@@ -35,18 +35,16 @@ class InformaticaController extends Controller
             }
         }
 
-        $informatics = $query->paginate(6);
+        $informatics = $query->paginate(9);
 
         return view('informatics.index', compact('informatics', 'categories'));
     }
 
     public function show($id)
     {
-        $informatics = Informatica::find($id);
-
+        $informatics = Informatica::findOrFail($id);
         return view('informatics.show', compact('informatics'));
     }
-
 
     public function create()
     {
@@ -62,14 +60,11 @@ class InformaticaController extends Controller
             'category_id' => 'required|exists:categories,category_id',
         ]);
 
-        // Simpan file PDF
         $path = $request->file('file_pdf')->store('file_pdfs', 'public');
 
-        // Simpan data informatika tanpa thumbnail
         Informatica::create([
             'title' => $request->title,
             'file_pdf' => $path,
-            'thumbnail' => null, // Tidak perlu simpan thumbnail di sini
             'category_id' => $request->category_id,
         ]);
 
