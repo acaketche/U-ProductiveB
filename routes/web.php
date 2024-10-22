@@ -12,6 +12,7 @@ use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\ForumController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\UtamaController;
+use App\Http\Controllers\InformaticaController;
 
 
 
@@ -53,6 +54,7 @@ Route::group(['middleware' => ['role:mahasiswa,dosen']], function() {
     Route::get('/video/{video_id}', [VideoController::class, 'show'])->name('video.show');
 
     Route::get('/history', [HistoryController::class, 'index'])->name('history.index');
+
 
 
     // Rute untuk menampilkan halaman profil
@@ -124,3 +126,12 @@ Route::group(['middleware' => ['role:admin']], function() {
     // Other admin routes
     Route::get('/admin/kelola-forum', [AdminController::class, 'kelolaForum'])->name('kelola.forum');
 });
+
+// Route untuk halaman Informatics
+Route::prefix('informatica')->name('informatica.')->group(function () {
+    Route::get('/', [InformaticaController::class, 'index'])->name('index');
+    Route::get('/create', [InformaticaController::class, 'create'])->name('create');
+    Route::post('/', [InformaticaController::class, 'store'])->name('store');
+    Route::get('/{id}', [InformaticaController::class, 'show'])->name('show');
+});
+

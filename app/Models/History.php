@@ -20,15 +20,18 @@ class History extends Model
         return $this->belongsTo(User::class);
     }
 
-    // Relasi ke model Article
     public function article()
     {
-        return $this->belongsTo(Article::class,'article_id');
+        return $this->belongsTo(Article::class);
     }
 
-    // Relasi ke model Video
     public function video()
     {
-        return $this->belongsTo(Video::class,'video_id');
+        return $this->belongsTo(Video::class);
+    }
+
+    public function forumPost()
+    {
+        return $this->belongsTo(ForumPost::class, 'forum_post_id', 'post_id');
     }
 }

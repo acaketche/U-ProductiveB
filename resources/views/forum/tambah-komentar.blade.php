@@ -92,11 +92,6 @@
                                 @else
                                     <p class="card-text">User Tidak Ditemukan</p>
                                 @endif
-                                <p class="card-text">
-                                    <small class="text-muted">
-                                        {{ date('d M Y', strtotime($comment->created_at)) }}
-                                    </small>
-                                </p>
                                 <p class="card-text">{{ $comment->content }}</p>
                             </div>
                         </div>
@@ -129,20 +124,11 @@
                         console.log(response); // Tambahkan ini untuk debugging
                         // Pastikan respons server sesuai dengan apa yang Anda harapkan
                         if (response) {
-                            // Format waktu di sisi klien
-                            var formattedDate = new Date(response.created_at).toLocaleDateString('id-ID', {
-                                day: 'numeric',
-                                month: 'short',
-                                year: 'numeric'
-                            });
 
                             var commentHtml = `
                                 <div class="card mb-3">
                                     <div class="card-body">
                                         <p>${response.user.name}</p>
-                                        <p class="card-text">
-                                            <small class="text-muted">${response.created_at}</small>
-                                        </p>
                                         <p class="card-text">${response.content}</p>
                                     </div>
                                 </div>

@@ -41,7 +41,6 @@ class CommentController extends Controller
                 'name' => $comment->user->name,
             ],
             'content' => $comment->content,
-            'created_at' => $comment->created_at, // Ini harus berupa objek datetime
         ]);
     }
 }
