@@ -44,11 +44,10 @@
                     <p class="card-text">{{ $post->content }}</p>
 
                     <div class="comment-section">
-                        <!-- Form untuk menambahkan favorite -->
-                         <form action="{{ url('/post/' . $post->post_id . '/favorite') }}" method="POST">
-                             @csrf
-                            <button class="btn-favorite" type="submit"><i class="bi bi-bookmark" style="font-size: 1.5em; cursor: pointer;" data-post-id="{{ $post->post_id }}"></i></button>
-                        </form>
+                        <!-- Ikon bintang untuk menambahkan favorite -->
+                        <i class="bi {{ $post->is_favorite ? 'bi-star-fill' : 'bi-star' }} favorite-icon" 
+                           style="font-size: 1.5em; cursor: pointer; color: {{ $post->is_favorite ? 'gold' : 'gray' }};" 
+                           data-post-id="{{ $post->post_id }}"></i>
 
                         <!-- Form untuk menambahkan komentar -->
                         <form action="{{ route('comments.create', ['post_id' => $post->post_id]) }}" method="GET">
@@ -63,45 +62,56 @@
 
 @push('styles')
     <link href="{{asset('style/forum.css')}}" rel="stylesheet">
+    <style>
+        /* CSS untuk mengubah ikon favorit saat aktif */
+        .favorite-icon.bi-star-fill {
+            color: gold; /* Warna saat ikon aktif (bintang penuh) */
+        }
+        .favorite-icon.bi-star {
+            color: gray; /* Warna saat ikon tidak aktif */
+        }
+    </style>
 @endpush
 
+@push('scripts')
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Mengambil semua ikon bintang
+            const favoriteIcons = document.querySelectorAll('.favorite-icon');
 
-<script>
-    // Pastikan script dijalankan setelah seluruh konten halaman dimuat
-    document.addEventListener('DOMContentLoaded', () => {
-        // Mengambil semua ikon bookmark
-        const bookmarkIcons = document.querySelectorAll('.bi-bookmark');
+            favoriteIcons.forEach(icon => {
+                icon.addEventListener('click', (event) => {
+                    const postId = event.target.getAttribute('data-post-id');
 
-        bookmarkIcons.forEach(icon => {
-            icon.addEventListener('click', (event) => {
-                const postId = event.target.getAttribute('data-post-id');
-
-                if (postId) {
-                    fetch(`/favorite/${postId}`, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                        },
-                        body: JSON.stringify({ postId: postId })
-                    })
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error('Network response was not ok');
-                        }
-                        return response.json();
-                    })
-                    .then(data => {
-                        console.log(data.message);
-                        // Logika lain jika diperlukan
-                    })
-                    .catch(error => console.error('Error:', error));
-
-                } else {
-                    console.error('Post ID not found!');
-                }
+                    if (postId) {
+                        // Mengirim permintaan POST ke server
+                        fetch(`/favorite/${postId}`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                            },
+                            body: JSON.stringify({ postId: postId })
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            // Mengubah ikon berdasarkan status favorit
+                            if (data.is_favorite) {
+                                icon.classList.remove('bi-star');
+                                icon.classList.add('bi-star-fill');
+                                icon.style.color = 'gold'; // Bintang aktif
+                            } else {
+                                icon.classList.remove('bi-star-fill');
+                                icon.classList.add('bi-star');
+                                icon.style.color = 'gray'; // Bintang tidak aktif
+                            }
+                        })
+                        .catch(error => console.error('Error:', error));
+                    } else {
+                        console.error('Post ID not found!');
+                    }
+                });
             });
         });
-    });
-</script>
-
+    </script>
+@endpush

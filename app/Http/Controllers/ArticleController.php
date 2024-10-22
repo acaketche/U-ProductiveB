@@ -9,7 +9,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 
-
 class ArticleController extends Controller
 {
 
@@ -74,19 +73,20 @@ class ArticleController extends Controller
             'category_id' => 'required|exists:categories,category_id',
             'content' => 'required|string',
             'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+
         ]);
 
         // Simpan gambar ke direktori 'public/images'
         $imagePath = $request->file('image')->store('images', 'public');
-
-        // Simpan artikel dengan data gambar
         $article = new Article;
         $article->title = $request->input('title');
         $article->category_id = $request->input('category_id');
         $article->content = $request->input('content');
         $article->image = $imagePath;
         $article->user_id = Auth::id();  // Tambahkan ID pengguna yang sedang login
+
         $article->save();  // Simpan ke database
+
 
         return redirect()->route('articles.index')->with('success', 'Artikel berhasil ditambahkan!');
     }
@@ -94,12 +94,13 @@ class ArticleController extends Controller
     // Menampilkan detail artikel
     public function show($id)
     {
-        $article = Article::findOrFail($id);
+        // Mengambil artikel dengan user dan category menggunakan eager loading
+        $article = Article::with('user', 'category')->findOrFail($id);
 
         // Simpan riwayat ke tabel histories
         History::create([
             'user_id' => auth()->id(),
-            'article_id' => $article->id,
+            'article_id' => $article->article_id, // Pastikan menggunakan primary key yang benar
             'viewed_at' => now(),
         ]);
 

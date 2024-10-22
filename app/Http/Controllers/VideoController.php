@@ -12,12 +12,12 @@ class VideoController extends Controller
 {
     public function index(Request $request)
 {
-    $search = $request->input('cari'); // Sesuaikan dengan nama input di form pencarian
+    $search = $request->input ('cari'); // Sesuaikan dengan nama input di form pencarian
     $category = $request->input('category'); // Sesuaikan dengan nama input di form filter kategori
     $time = $request->input('time'); // Sesuaikan dengan nama input di form filter waktu
 
     $query = Video::query();
-
+    $query->where('status','approved');
     // Filter berdasarkan pencarian
     if ($search) {
         $query->where('title', 'like', '%' . $search . '%');
@@ -130,13 +130,21 @@ class VideoController extends Controller
         }
 
     public function approve($id)
-      {
-          $video = Video::findOrFail($id);
-          $video->status = 'approved';
-          $video->save();
+    {
+        $video = Video::findOrFail($id);
+        $video->status = 'approved';
+        $video->save();
 
-          return redirect()->route('kelola.video')->with('success', 'Video berhasil disetujui!');
-      }
+        return redirect()->route('kelola.video')->with('success', 'Artikel berhasil disetujui!');
+    }
+    public function reject($id)
+        {
+            $video = Video::findOrFail($id);
+            $video->status = 'rejected';
+            $video->save();
+
+            return redirect()->route('kelola.video')->with('success', 'Artikel berhasil ditolak!');
+        }
 
     // Menghapus artikel
     public function destroy($id)

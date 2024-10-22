@@ -55,7 +55,7 @@
         <div class="menu">
             <a href="{{ route('user.profile') }}"><i class="bi bi-person-circle"></i> Profile</a>
             <a href="{{route ('history.index')}}"><i class="bi bi-clock-history"></i> History</a>
-            <a href="#" class="active"><i class="bi bi-star-fill"></i> Favorite</a> <!-- Tombol aktif -->
+            <a href="{{route('favorite.index')}}" class="active"><i class="bi bi-star-fill"></i> Favorite</a> <!-- Tombol aktif -->
         </div>
     </div>
 
@@ -90,6 +90,8 @@
         </div>
         @endforeach
     </div>
+</div>
+
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

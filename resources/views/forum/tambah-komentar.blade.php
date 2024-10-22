@@ -16,7 +16,7 @@
     <nav class="navbar navbar-expand-lg navbar-custom">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">
-                <img src="logo.png">
+                <img src="{{ asset('logo.png') }}" >
                 U-Productive
             </a>
             <ul class="navbar-nav ms-auto d-flex flex-row mb-2 mb-lg-0">
@@ -54,9 +54,7 @@
                                     <p class="card-text">User Tidak Ditemukan</p>
                                 @endif
                                 <p class="card-text">
-                                    <small class="text-muted">
-                                        {{ date('d M Y', strtotime($post->created_at)) }}
-                                    </small>
+                                    <small class="text-muted">{{ date('d M Y', strtotime($post->created_at)) }}</small>
                                 </p>
                                 <p class="card-text">{{ $post->content }}</p>
                             </div>

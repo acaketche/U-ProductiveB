@@ -1,3 +1,4 @@
+
 @extends('layout.navbar-guest')
 
 @section('content')
@@ -29,6 +30,7 @@
     </div>
 </div>
 @endsection
+
 
 @push('styles')
 <link rel="stylesheet" href="{{ asset('style/article.css') }}">

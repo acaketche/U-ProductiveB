@@ -2,14 +2,20 @@
 @section('content')
 <div class="container mt-4">
     <!-- Profile Header -->
+<<<<<<< HEAD
+    <div class="profile-header d-flex align-items-center">
+        <img src="{{ $user->profile_picture ? Storage::url($user->profile_picture) : asset('images/default-profile.png') }}" alt="Profile Picture" class="img-thumbnail" style="width: 150px; height: 150px;">
+        <div class="profile-details ms-4">
+=======
     <div class="profile-header">
         <img src="{{ $user->profile_picture ? Storage::url($user->profile_picture) : asset('images/default-profile.png') }}" class="img-thumbnail" alt="Profile Picture">
         <div class="profile-details">
+>>>>>>> 7d466ada0dee1427e10bd06e8cf698cb6e7d0c9f
             <h3>{{ $user->name }}</h3>
             <p class="username">{{ '@' . strtolower(str_replace(' ', '_', $user->name)) }}</p>
             <p>{{ $user->email }}</p>
-            <div class="stats">
-                <div class="stat-item">
+            <div class="d-flex">
+                <div class="stat-item me-4">
                     <h4>{{ $articles->count() }}</h4>
                     <p>Articles</p>
                 </div>
@@ -23,7 +29,7 @@
     </div>
 
     <!-- Profile Content -->
-    <div class="profile-content">
+    <div class="profile-content mt-4">
         <h4>My Content</h4>
         <div class="row">
             <!-- Article Items -->

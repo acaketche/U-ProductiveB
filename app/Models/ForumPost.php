@@ -22,6 +22,7 @@ class ForumPost extends Model
     // Deklarasikan kolom tanggal
     protected $dates = ['created_at'];
 
+
    // Relasi dengan model User
    public function user()
    {

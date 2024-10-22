@@ -11,7 +11,7 @@ class CommentController extends Controller
     public function create($post_id)
     {
         // Ambil data postingan berdasarkan ID
-        $post = ForumPost::findOrFail($post_id);
+        $post = ForumPost::with('user', 'comments.user')->findOrFail($post_id);
 
         // Tampilkan view form komentar dengan data postingan
         return view('forum.tambah-komentar', compact('post'));

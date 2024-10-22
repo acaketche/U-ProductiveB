@@ -34,8 +34,9 @@ class Article extends Model
     // Relasi ke model User (untuk menyatakan bahwa artikel ini ditulis oleh pengguna)
     public function user()
     {
-        return $this->belongsTo(User::class, 'user_id', 'user_id');
+        return $this->belongsTo(User::class, 'user_id', 'user_id'); // Pastikan 'user_id' di sini sesuai dengan kolom di database
     }
+
 
     // Relasi ke model Category (untuk menyatakan kategori artikel)
     public function category()

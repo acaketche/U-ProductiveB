@@ -23,4 +23,9 @@ public function videos()
     return $this->hasMany(Video::class, 'category_id', 'categori_id');
 }
 
+public function teknik_sipils()
+{
+    return $this->hasMany(teknik_sipil::class, 'category_id', 'categori_id');
+}
+
 }

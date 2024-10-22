@@ -13,6 +13,7 @@ use App\Http\Controllers\ForumController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\UtamaController;
 use App\Http\Controllers\InformaticaController;
+use App\Http\Controllers\TeknikSipilController;
 use App\Http\Controllers\PDFExportController;
 
 Route::get('/export-pdf', [PDFExportController::class, 'exportPDF'])->name('export.pdf');
@@ -73,7 +74,7 @@ Route::group(['middleware' => ['role:mahasiswa,dosen']], function() {
 
     //route midelwarre favorite
     Route::middleware(['auth'])->group(function () {
-        Route::post('/favorite/{post}', [FavoriteController::class, 'toggle'])->name('favorite.toggle');
+        Route::post('/favorite/{post}', [FavoriteController::class, 'toggleFavorite']);
     });
 
     //forum
@@ -115,6 +116,8 @@ Route::group(['middleware' => ['role:admin']], function() {
 
     Route::get('/admin/kelola-video', [VideoController::class, 'kelolaVideo'])->name('kelola.video');
     Route::delete('/admin/video/{id}', [VideoController::class, 'destroy'])->name('delete-video');
+    Route::post('/admin/approve-video/{id}', [VideoController::class, 'approve'])->name('admin.approve-video');
+    Route::post('/admin/reject-video/{id}', [VideoController::class, 'reject'])->name('admin.reject-video');
     // Other admin routes
 
     Route::get('/kelola-forum', [AdminController::class, 'kelolaForum'])->name('kelola.forum');
@@ -130,4 +133,24 @@ Route::prefix('informatica')->name('informatica.')->group(function () {
     Route::post('/', [InformaticaController::class, 'store'])->name('store');
     Route::get('/{id}', [InformaticaController::class, 'show'])->name('show');
 });
+
+
+
+// Route untuk menampilkan daftar teknik sipil (index)
+Route::get('teknik_sipil', [TeknikSipilController::class, 'index'])->name('teknik_sipil.index');
+// Route untuk menampilkan form tambah teknik sipil (create)
+Route::get('teknik_sipil/create', [TeknikSipilController::class, 'create'])->name('teknik_sipil.create');
+
+Route::get('/generate-thumbnail', [TeknikSipilController::class, 'generateThumbnailFromAPI']);
+
+// Route untuk menyimpan data teknik sipil baru (store)
+Route::post('teknik_sipil', [TeknikSipilController::class, 'store'])->name('teknik_sipil.store');
+// Route untuk menampilkan detail teknik sipil (show)
+Route::get('teknik_sipil/{teknik_sipil}', [TeknikSipilController::class, 'show'])->name('teknik_sipil.show');
+// Route untuk menampilkan form edit teknik sipil (edit)
+Route::get('teknik_sipil/{teknik_sipil}/edit', [TeknikSipilController::class, 'edit'])->name('teknik_sipil.edit');
+// Route untuk memperbarui data teknik sipil (update)
+Route::put('teknik_sipil/{teknik_sipil}', [TeknikSipilController::class, 'update'])->name('teknik_sipil.update');
+// Route untuk menghapus teknik sipil (destroy)
+Route::delete('teknik_sipil/{teknik_sipil}', [TeknikSipilController::class, 'destroy'])->name('teknik_sipil.destroy');
 

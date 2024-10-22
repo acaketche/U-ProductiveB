@@ -55,4 +55,6 @@ class FavoriteController extends Controller
         return redirect()->route('favorite.index', ['post' => $postId])
                         ->with('success', 'Post telah dihapus dari favorit');
     }
+    
 }
+
