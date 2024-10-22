@@ -36,8 +36,8 @@ class VideoController extends Controller
     } elseif ($time == '1 Bulan') {
         $query->where('created_at', '>=', now()->subMonth());
     }
-
-    $videos = $query->paginate(12);
+    $query->orderBy('created_at', 'desc');
+    $videos = $query->paginate(8);
 
     // Ambil data kategori dari database
     $categories = Category::all();

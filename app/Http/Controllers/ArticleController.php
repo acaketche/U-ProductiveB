@@ -24,10 +24,13 @@ class ArticleController extends Controller
         // Mulai query
         $query = Article::query();
 
+        $query->where('status','approved');
+
         // Filter berdasarkan pencarian
         if ($search) {
             $query->where('title', 'like', '%' . $search . '%');
         }
+
 
         // Filter berdasarkan kategori
         if ($category) {
@@ -47,7 +50,7 @@ class ArticleController extends Controller
         $query->orderBy('created_at', 'desc');
 
         // Ambil hasil dengan pagination
-        $articles = $query->paginate(10);
+        $articles = $query->paginate(6);
 
         // Ambil data kategori dari database
         $categories = Category::all();
@@ -146,7 +149,7 @@ class ArticleController extends Controller
         $article->status = 'approved';
         $article->save();
 
-        return redirect()->route('admin.kelolaArtikel')->with('success', 'Artikel berhasil disetujui!');
+        return redirect()->route('kelola.artikel')->with('success', 'Artikel berhasil disetujui!');
     }
     public function reject($id)
         {

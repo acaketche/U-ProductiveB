@@ -76,4 +76,6 @@ class ForumController extends Controller
                         ->with('success', 'Post telah ditambahkan ke favorit');
     }
 
+
+
 }

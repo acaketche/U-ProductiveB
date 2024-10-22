@@ -1,67 +1,66 @@
+/* General Body Styling */
 body {
-    background-color: #f5f5f5;
+    background-color: #f0f3f5;
 }
 
 /* Navbar Styles */
-.navbar-custom {
-    background-color: #4A90E2;
-    padding: 10px 20px;
-    position: fixed;
+.navbar-energetic {
+    position: fixed; /* Keep navbar fixed on scroll */
     top: 0;
+    left: 0;
     width: 100%;
-    z-index: 1000;
+    z-index: 1000; /* Ensure it stays on top */
+    background: linear-gradient(45deg, #7096e9 0%, #6f93c9 99%, #a0c1f3 100%);
+    padding: 0.7rem 1rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.navbar-brand {
-    display: flex;
-    align-items: center;
-    color: #fff;
-}
-
-.navbar-brand img {
-    height: 30px;
+/* Logo Styling */
+.logo {
+    width: 45px;
+    height: auto;
     margin-right: 10px;
+    filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3));
 }
 
-.navbar-nav {
-    margin-left: auto;
+/* Brand Text Styling */
+.brand-text {
+    font-weight: bold;
+    color: #ffffff;
+    font-size: 1.8rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
 }
 
+/* Navbar Links Styling */
 .navbar-nav .nav-link {
-    color: #fff;
-    margin: 0 10px;
+    color: #ffffff;
+    font-weight: 600;
+    padding: 0.7rem 1.2rem;
+    margin: 0 0.2rem;
+    transition: all 0.3s ease;
+    border-radius: 25px;
 }
 
+.navbar-nav .nav-link:hover,
 .navbar-nav .nav-link.active {
-    background-color: #fff;
-    color: #4a90e2;
-    border-radius: 8px;
-    padding: 5px 10px;
-}
-
-.navbar-nav .nav-link:hover {
-    color: #bbd8ff;
-}
-
-.navbar-icon img {
-    width: 24px;
-    height: 24px;
-    margin-left: 10px;
+    background-color: rgba(255, 255, 255, 0.2);
+    transform: translateY(-3px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 /* Sidebar Styles */
 .sidebar {
-    position: fixed; /* Mengatur posisi sidebar tetap */
-    top: 50px; /* Jarak dari atas halaman */
-    left: 0; /* Jarak dari sisi kiri halaman */
-    width: 250px; /* Lebar sidebar, sesuaikan sesuai kebutuhan */
-    height: 100vh; /* Tinggi sidebar setinggi viewport */
-    padding: 20px; /* Padding di dalam sidebar */
-    background-color: #fff; /* Warna latar belakang sidebar */
-    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1); /* Bayangan untuk efek kedalaman */
-    overflow-y: auto; /* Agar sidebar dapat menggulir jika konten terlalu panjang */
+    position: fixed; /* Sidebar stays fixed on scroll */
+    top: 75px; /* Adjusted based on navbar height */
+    left: 0;
+    width: 250px;
+    height: calc(100vh - 75px); /* Sidebar height adjusted */
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
 }
 
+/* Sidebar Profile Image */
 .sidebar img {
     width: 100px;
     height: 100px;
@@ -71,6 +70,7 @@ body {
     margin: 0 auto;
 }
 
+/* Sidebar Profile Info */
 .sidebar .profile-info {
     margin-top: 10px;
     text-align: center;
@@ -87,6 +87,7 @@ body {
     color: #333;
 }
 
+/* Sidebar Menu */
 .sidebar .menu {
     margin-top: 60px;
 }
@@ -124,27 +125,10 @@ body {
 /* Content Styles */
 .content {
     margin-left: 300px;
-    padding: 50px 20px 20px 20px;
+    padding: 95px 20px 20px 20px;
 }
 
-.btn.btn-secondary {
-    width: 50%;
-    padding: 8px;
-    border-radius: 10px;
-    border: 1px solid;
-    margin-bottom: 15px;
-    margin-left: 50px;
-}
-
-.card {
-    margin-bottom: 30px;
-    margin-top: 15px;
-}
-
-.card-body {
-    padding: 1rem;
-}
-
+/* Additional Forum Styles */
 .comment-section {
     display: flex;
     align-items: center;
@@ -165,247 +149,8 @@ body {
 .avatar-group img {
     width: 30px;
     height: 30px;
-    border-radius: 50%; /* Membuat avatar bulat */
+    border-radius: 50%; /* Circular avatar */
     margin-right: 5px;
 }
 
-.btn-favorite {
-    background-color: transparent; /* Menghapus latar belakang */
-    border: none; /* Menghapus border default */
-    cursor: pointer; /* Menampilkan kursor pointer saat hover */
-    display: flex; /* Gunakan Flexbox untuk menyejajarkan ikon */
-    align-items: center; /* Menyelaraskan ikon di tengah secara vertikal */
-    padding: 10px; /* Menambahkan padding jika diperlukan */
-}
-
-.favorite-icon {
-    font-size: 24px;
-    color: grey;
-    transition: color 0.3s ease;
-}
-.favorite-icon.active {
-    color: blue; /* Warna biru ketika difavoritkan */
-}
-
-.favorite-icon.inactive {
-    filter: grayscale(100%);
-}
-
-
-.new-post-container {
-    padding: 100px;
-    border-radius: 8px;
-    width: 100%;
-    margin: 20px auto;
-}
-
-.new-post-form {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-}
-
-.form-group {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-    margin-bottom: 10px;
-}
-
-.post-input-area {
-    display: flex;
-    align-items: center;
-    width: 100%;
-}
-.cancel-btn, .post-btn {
-    padding: 8px 16px;
-    font-size: 14px;
-    border-radius: 4px;
-    border: none;
-    cursor: pointer;
-}
-
-.user-avatar {
-    border-radius: 50%;
-    margin-right: 10px;
-}
-
-.post-textarea {
-    width: 100%;
-    border-radius: 8px;
-    border: 1px solid #ccc;
-    padding: 15px;
-    font-size: 14px;
-    resize: none;
-}
-
-/* CSS untuk mengecilkan panjang tombol Post */
-/* Styling untuk tombol .btn-primary1 */
-.btn-primary1 {
-    width: 10%;
-    padding: 8px;
-    border-radius: 10px;
-    border: 1px solid #4267B2; /* Warna border sama dengan latar belakang */
-    margin-bottom: 15px;
-    background-color: #4267B2; /* Warna latar belakang tombol */
-    color: white; /* Warna teks tombol */
-    text-align: center; /* Menyelaraskan teks tombol di tengah */
-    cursor: pointer; /* Menunjukkan kursor pointer saat hover */
-}
-
-/* Styling untuk tombol .btn-primary2 */
-.btn-primary2 {
-    width: 100%;
-    padding: 8px;
-    border-radius: 10px;
-    border: 1px solid #4267B2; /* Warna border sama dengan latar belakang */
-    margin-bottom: 15px;
-    background-color: #4267B2; /* Warna latar belakang tombol */
-    color: white; /* Warna teks tombol */
-    text-align: center; /* Menyelaraskan teks tombol di tengah */
-    cursor: pointer; /* Menunjukkan kursor pointer saat hover */
-}
-
-/* Styling saat tombol aktif (tekan) */
-.btn-primary1:active {
-    background-color: #2a4d7b; /* Warna latar belakang saat tombol ditekan */
-    border-color: #2a4d7b; /* Warna border saat tombol ditekan */
-}
-
-/* Styling saat tombol mendapatkan fokus */
-.btn-primary1:focus {
-    outline: none; /* Menghapus outline bawaan saat fokus */
-    box-shadow: none; /* Menghapus bayangan fokus bawaan */
-}
-
-
-/* CSS untuk mengatur lebar tombol Tambah Komentar */
-.btn-primary {
-    width: auto; /* Atur lebar tombol menjadi otomatis */
-    max-width: 200px; /* Maksimal lebar tombol, sesuaikan sesuai kebutuhan */
-    padding: 8px 10px; /* Sesuaikan padding jika diperlukan */
-    font-size: 1rem; /* Ukuran font tombol */
-    text-align: center; /* Memastikan teks tombol berada di tengah */
-}
-
-
-/* Sidebar di sebelah kiri tanpa jarak dengan lebar 900px */
-.sidebar1 {
-    width: 900px; /* Lebar sidebar */
-    padding: 20px;
-    background-color: #f5f5f5; /* Warna latar belakang */
-    border-radius: 10px;
-    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-    position: fixed; /* Membuat sidebar tetap di kiri */
-    left: 0; /* Menempelkan sidebar di sisi kiri */
-    top: 0; /* Sidebar mulai dari atas (dekat dengan navbar) */
-    height: 100vh; /* Tinggi sidebar menyesuaikan dengan viewport penuh */
-}
-
-/* Konten di dalam sidebar dekat dengan navbar */
-.sidebar1 .content {
-    flex: 1; /* Mengisi ruang yang tersedia di sidebar */
-    padding-top: 5px; /* Tambahkan jarak kecil dari atas */
-    overflow-y: auto; /* Memungkinkan scroll jika konten terlalu panjang */
-    box-sizing: border-box;
-}
-
-/* Tampilan komentar di sebelah kanan dengan sedikit jarak dari sidebar */
-.col-md-4 {
-    margin-left: 920px; /* Memberikan jarak sedikit dari sidebar (900px + 20px margin) */
-    margin-right: 20px; /* Sedikit merapat ke kanan */
-    padding-top: 40px;
-    padding-left: 20px;
-    padding-right: 20px;
-}
-
-/* Menata textarea */
-input[name="content"] {
-    width: 100%;
-    height: 60px;
-    padding: 5px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    resize: vertical;
-    box-sizing: border-box;
-}
-
-/* Menata form agar menggunakan Flexbox */
-form.d-flex {
-    display: flex;
-    align-items: flex-start;
-    gap: 10px;
-}
-
-/* Tambahan CSS untuk penyesuaian tampilan */
-.rounded-image {
-    border-radius: 50%;
-    margin-right: 25px;
-    height: 125px;
-}
-
-.reply-section {
-    margin-top: 100px;
-    padding: 15px;
-    border-radius: 10px;
-    background-color: #f8f9fa;
-}
-
-.btn-primary {
-    background-color: #4267B2;
-    border-color: #4267B2;
-}
-
-.post-comment {
-    margin-bottom: 2rem;
-    border: 1px solid #e0e0e0;
-    border-radius: 10px;
-    padding: 50px;
-    margin-top: 60px;
-    background-color: white;
-}
-
-form {
-    margin-top: 1rem;
-}
-
-/* Gaya tombol */
-/* Container untuk tombol-tombol di form */
-.form-actions {
-    display: flex; /* Menggunakan Flexbox */
-    justify-content: center; /* Pusatkan tombol secara horizontal */
-    gap: 1rem; /* Jarak antar tombol */
-    margin-top: 1rem; /* Jarak atas untuk form-actions */
-}
-
-/* Menyusun tombol agar memiliki lebar yang sama */
-.btn-primary, .btn-secondary {
-    flex: 1; /* Membuat tombol mengisi lebar yang tersedia secara merata */
-    height: 45px; /* Tinggi tombol yang konsisten */
-    text-align: center; /* Memastikan teks di tengah tombol */
-    font-size: 0.875rem; /* Ukuran font yang konsisten */
-    padding: 0.375rem 0.75rem; /* Padding untuk tombol */
-    display: flex; /* Menggunakan Flexbox untuk tombol */
-    align-items: center; /* Pusatkan teks secara vertikal */
-    justify-content: center; /* Pusatkan teks secara horizontal */
-    border-radius: 20px; /* Sudut tombol yang melengkung */
-    border: none; /* Menghilangkan border default tombol */
-    margin-left: -280px;
-}
-
-/* Styling untuk tombol "Kembali ke Forum" */
-.btn-secondary {
-    width: auto;
-    height: 45px;
-    max-width: 150px;
-    padding: 0.375rem 0.75rem;
-    font-size: 0.875rem;
-    text-align: center;
-}
-
-.rounded-image1 {
-    border-radius: 50%;
-    margin-right: 25px;
-    height: 60px;
-}
-
+/* Other Custom Styles as Needed */

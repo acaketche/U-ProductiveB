@@ -28,8 +28,10 @@ body {
 }
 
 .sidebar .nav-link.active {
+    background-color: #e9ecef;
     color: #007bff;
 }
+
 
 .sidebar .nav-link:hover .feather,
 .sidebar .nav-link.active .feather {
