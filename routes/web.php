@@ -113,6 +113,8 @@ Route::group(['middleware' => ['role:admin']], function() {
 
     Route::get('/admin/kelola-video', [VideoController::class, 'kelolaVideo'])->name('kelola.video');
     Route::delete('/admin/video/{id}', [VideoController::class, 'destroy'])->name('delete-video');
+    Route::post('/admin/approve-video/{id}', [VideoController::class, 'approve'])->name('admin.approve-video');
+    Route::post('/admin/reject-video/{id}', [VideoController::class, 'reject'])->name('admin.reject-video');
     // Other admin routes
 
     Route::get('/kelola-forum', [AdminController::class, 'kelolaForum'])->name('kelola.forum');
