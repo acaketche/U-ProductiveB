@@ -56,7 +56,7 @@ class ProfileController extends Controller
     // Periksa apakah password baru diisi
     if ($request->filled('password')) {
         // Hash dan simpan password baru
-        $user->password = bcrypt($request->input('password'));
+        $user->password = $request->input('password');
     }
 
     // Periksa apakah ada upload foto profile baru

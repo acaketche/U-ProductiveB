@@ -28,8 +28,10 @@ body {
 }
 
 .sidebar .nav-link.active {
+    background-color: #e9ecef;
     color: #007bff;
 }
+
 
 .sidebar .nav-link:hover .feather,
 .sidebar .nav-link.active .feather {
@@ -77,5 +79,24 @@ body {
 @media (min-width: 768px) {
     .bd-placeholder-img-lg {
         font-size: 3.5rem;
+    }
+}
+
+.table-responsive {
+    max-width: 100%;
+    overflow-x: auto; /* Membuat scroll horizontal jika tabel terlalu lebar */
+}
+
+.table th, .table td {
+    white-space: nowrap; /* Menghindari pemecahan kata */
+}
+
+.table th {
+    text-align: center; /* Menyusun teks di tengah untuk header */
+}
+@media (max-width: 576px) {
+    .table th, .table td {
+        font-size: 0.8rem; /* Mengurangi ukuran font di perangkat kecil */
+        padding: 0.3rem; /* Mengurangi padding */
     }
 }

@@ -10,7 +10,7 @@
 <body>
     <!-- Navbar -->
     <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
-        <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="{{route('admin.dashboard')}}">Admin Dashboard</a>
+        <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="{{ route('admin.dashboard') }}">Admin Dashboard</a>
         <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -19,7 +19,7 @@
             <li class="nav-item text-nowrap">
                 <form id="logout-form" action="{{ route('logoutadmin') }}" method="POST">
                     @csrf
-                    <button type="submit" class="nav-link btn btn-link" style="padding: 0; margin: 0;">Sign out</button>
+                    <button type="submit" class="nav-link btn btn-link text-white" style="padding: 0; margin: 0;">Sign out</button>
                 </form>
             </li>
         </ul>
@@ -28,48 +28,7 @@
     <div class="container-fluid">
         <div class="row">
             <!-- Sidebar -->
-            <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
-                <div class="position-sticky sidebar-sticky">
-                    <ul class="nav flex-column">
-                        <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="{{route('admin.dashboard')}}">
-                                <span data-feather="home"></span>
-                                Dashboard
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('kelola.user') }}">
-                                <span data-feather="users"></span>
-                                Kelola Data User
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('kelola.kategori') }}">
-                                <span data-feather="tag"></span>
-                                Kelola Data Kategori
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('kelola.artikel') }}">
-                                <span data-feather="file-text"></span>
-                                Kelola Data Artikel
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('kelola.video') }}">
-                                <span data-feather="video"></span>
-                                Kelola Data Video
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('kelola.forum') }}">
-                                <span data-feather="message-circle"></span>
-                                Kelola Forum
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </nav>
+            <x-navbar.admin />
 
             <!-- Main Content -->
             <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
@@ -78,17 +37,18 @@
                     <div class="btn-toolbar mb-2 mb-md-0">
                         <div class="btn-group me-2">
                             <button type="button" class="btn btn-sm btn-outline-secondary">Share</button>
-                            <button type="button" class="btn btn-sm btn-outline-secondary">Export</button>
+                            <a href="{{ route('export.pdf') }}" class="btn btn-sm btn-outline-secondary">Export to PDF</a>
                         </div>
                     </div>
                 </div>
 
-               @yield('content')
-                </div>
+                <!-- Dynamic Content -->
+                @yield('content')
             </main>
         </div>
     </div>
 
+    <!-- Bootstrap JS and Feather Icons -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://unpkg.com/feather-icons"></script>
     <script>

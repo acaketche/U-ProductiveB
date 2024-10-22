@@ -1,40 +1,123 @@
 body {
-    background-color: #e6ebf3d0;
+    background-color: #f0f3f5;
 }
 
-.logo {
-    width: 30px;
-}
-.navbar {
-    background-color: #4a90e2;
-    padding: 1rem;
+.navbar-energetic {
+    background: linear-gradient(45deg, #7096e9 0%, #6f93c9 99%, #a0c1f3 100%);
+    padding: 0.7rem 1rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .navbar-brand {
-    font-weight: medium;
+    display: flex; /* Menggunakan flexbox untuk menyelaraskan elemen */
+    align-items: center; /* Menyelaraskan item secara vertikal */
+}
+
+.logo {
+    width: 45px;
+    height: auto;
+    margin-right: 10px;
+    filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3));
+}
+
+.brand-text {
+    font-weight: bold;
     color: #ffffff;
+    font-size: 1.4rem; /* Kecilkan ukuran font */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    margin-left: 5px; /* Tambahkan sedikit jarak antara logo dan teks */
 }
 
 .navbar-nav .nav-link {
     color: #ffffff;
-    margin-right: 1rem;
+    font-weight: 600;
+    padding: 0.7rem 1.2rem;
+    margin: 0 0.2rem;
+    transition: all 0.3s ease;
+    border-radius: 25px;
 }
 
+.navbar-nav .nav-link:hover,
 .navbar-nav .nav-link.active {
-    background-color: #ffffff;
-    color: #000000;
-    border-radius: 5px;
-    padding: 0.3rem 0.8rem;
+    background-color: rgba(255, 255, 255, 0.2);
+    transform: translateY(-3px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.navbar-nav .btn-warning {
-    background-color: #FFD166;
+.btn-login,
+.btn-register {
+    padding: 0.6rem 1.8rem;
+    border-radius: 25px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    margin: 0 0.3rem;
+}
+
+.btn-login {
+    background-color: #ffd166;
+    color: #333;
     border: none;
 }
 
-.navbar-nav .btn-outline-secondary {
-    color: #ffffff;
-    border-color: #074881;
+.btn-login:hover {
+    background-color: #ffc233;
+    transform: translateY(-3px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
+.btn-register {
+    background-color: #06d6a0;
+    color: #ffffff;
+    border: none;
+}
 
+.btn-register:hover {
+    background-color: #05bf8f;
+    transform: translateY(-3px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.dropdown-menu {
+    border: none;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+.dropdown-item {
+    padding: 0.7rem 1.5rem;
+    color: #333;
+    transition: all 0.3s ease;
+}
+
+.dropdown-item:hover {
+    background-color: #ffeaa7;
+    color: #333;
+}
+
+@media (max-width: 991px) {
+    .navbar-nav {
+        background-color: rgba(255, 255, 255, 0.1);
+        border-radius: 15px;
+        padding: 1rem;
+        margin-top: 1rem;
+    }
+
+    .btn-login,
+    .btn-register {
+        display: block;
+        margin: 0.5rem 0;
+        text-align: center;
+    }
+}
+
+/* Tambahkan animasi untuk efek energik */
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+.navbar-brand:hover .logo {
+    animation: pulse 1s infinite;
+}

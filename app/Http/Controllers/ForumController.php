@@ -76,6 +76,7 @@ class ForumController extends Controller
                         ->with('success', 'Post telah ditambahkan ke favorit');
     }
 
+<<<<<<< HEAD
     public function toggleFavorite(Post $post)
 {
     $user = Auth::user();
@@ -88,5 +89,8 @@ class ForumController extends Controller
         return response()->json(['message' => 'Ditambahkan ke favorit']);
     }
 }
+=======
+
+>>>>>>> 7d466ada0dee1427e10bd06e8cf698cb6e7d0c9f
 
 }

@@ -13,23 +13,27 @@ use App\Http\Controllers\ForumController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\UtamaController;
 use App\Http\Controllers\TeknikSipilController;
+use App\Http\Controllers\PDFExportController;
 
-
-
+Route::get('/export-pdf', [PDFExportController::class, 'exportPDF'])->name('export.pdf');
 
 Route::get('/', function () {
-    return view('welcome');
-});
+    return redirect()->route('home');
+ });
 
 Route::get('/home', [UtamaController::class,'index'])->name('home');
+Route::get('/artikel/{id}', [ArticleController::class, 'show'])->name('articles.show');
+Route::get('/artikel', [ArticleController::class, 'index'])->name('articles.index');
+Route::get('/video', [VideoController::class, 'index'])->name('video.index');
+Route::get('/video/{video_id}', [VideoController::class, 'show'])->name('video.show');
 // Guest routes
 Route::middleware(['guest'])->group(function() {
+
     Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
     Route::post('/login', [AuthController::class, 'login']);
     Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('register');
     Route::post('/register', [AuthController::class, 'register']);
-    Route::get('/articles', [ArticleController::class, 'index'])->name('articles.index');
-Route::get('/videos', [VideoController::class, 'index'])->name('videos.index');
+
 });
 
 Route::group(['middleware' => ['role:mahasiswa,dosen']], function() {
@@ -42,18 +46,12 @@ Route::group(['middleware' => ['role:mahasiswa,dosen']], function() {
         Route::get('/articles/create', [ArticleController::class, 'create'])->name('articles.create');
         Route::post('/articles', [ArticleController::class, 'store'])->name('articles.store');
         Route::resource('articles', ArticleController::class)->except(['create', 'store']);
-        Route::get('/artikel/{id}', [ArticleController::class, 'show'])->name('articles.show');
-        Route::get('/artikel', [ArticleController::class, 'index'])->name('articles.index');
 
-    Route::get('/video', [VideoController::class, 'index'])->name('video.index');
     // Rute untuk menampilkan form tambah video
     Route::get('/video/tambah', [VideoController::class, 'create'])->name('video.create');
 
     // Rute untuk menyimpan video baru
     Route::post('/video', [VideoController::class, 'store'])->name('video.store');
-
-    Route::get('/video/{video_id}', [VideoController::class, 'show'])->name('video.show');
-
     Route::get('/history', [HistoryController::class, 'index'])->name('history.index');
 
 
@@ -76,13 +74,6 @@ Route::group(['middleware' => ['role:mahasiswa,dosen']], function() {
     Route::middleware(['auth'])->group(function () {
         Route::post('/favorite/{post}', [FavoriteController::class, 'toggleFavorite']);
     });
-
-
-    //artikel
-    Route::get('/index', [ArticleController::class, 'index']);
-    Route::get('/articles/create', [ArticleController::class, 'create'])->name('articles.create');
-    Route::post('/articles', [ArticleController::class, 'store'])->name('articles.store');
-    Route::resource('articles', ArticleController::class);
 
     //forum
     Route::get('/forum', [ForumController::class, 'index'])->name('forum.index');
@@ -123,8 +114,14 @@ Route::group(['middleware' => ['role:admin']], function() {
 
     Route::get('/admin/kelola-video', [VideoController::class, 'kelolaVideo'])->name('kelola.video');
     Route::delete('/admin/video/{id}', [VideoController::class, 'destroy'])->name('delete-video');
+    Route::post('/admin/approve-video/{id}', [VideoController::class, 'approve'])->name('admin.approve-video');
+    Route::post('/admin/reject-video/{id}', [VideoController::class, 'reject'])->name('admin.reject-video');
     // Other admin routes
-    Route::get('/admin/kelola-forum', [AdminController::class, 'kelolaForum'])->name('kelola.forum');
+
+    Route::get('/kelola-forum', [AdminController::class, 'kelolaForum'])->name('kelola.forum');
+    Route::delete('/kelola-forum/post/{id}', [AdminController::class, 'destroyPost'])->name('delete-forum-post');
+    Route::get('/kelola-forum/post/{id}/comments', [AdminController::class, 'viewComments'])->name('view-comments');
+    Route::delete('/kelola-forum/comment/{id}', [AdminController::class, 'destroyComment'])->name('delete-comment');
 });
 
 
