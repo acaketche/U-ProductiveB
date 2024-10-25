@@ -21,23 +21,23 @@ class CommentController extends Controller
     {
         // Validasi input
         $validatedData = $request->validate([
-            'post_id' => 'required|exists:forum_post,post_id',
+            'post_id' => 'required|exists:forum_post,post_id', // Perbaiki nama tabel
             'content' => 'required|string|max:255',
         ]);
 
-        $comment = new Comment;
-        $comment->post_id = $request->post_id;
-        $comment->content = $request->content;
-        $comment->user_id = auth()->user()->id;
+        // Buat komentar baru
+        $comment = new Comment();
+        $comment->post_id = $validatedData['post_id'];
+        $comment->user_id = auth()->id(); // ID user yang saat ini login
+        $comment->content = $validatedData['content'];
         $comment->save();
 
-        // Mengirim respons JSON yang benar
+        // Mengembalikan respons JSON
         return response()->json([
-            'success' => true,
             'user' => [
-                'name' => auth()->user()->name,
+                'name' => $comment->user->name,
             ],
-            'content' => $comment->content
+            'content' => $comment->content,
         ]);
     }
 }

@@ -13,6 +13,8 @@
                 <x-navbar.nav-item route="articles.index" text="Artikel"/>
                 <x-navbar.nav-item route="video.index" text="Video"/>
                 <x-navbar.nav-item route="informatica.index" text="Informatika"/>
+                <x-navbar.nav-item route="teknik_sipil.index" text="Teknik Sipil"/>
+                <x-navbar.nav-item route="teknik_computer.index" text="Teknik Komputer"/>
                 @guest
                     <li class="nav-item">
                         <a class="btn btn-login" href="{{ route('login') }}">Login</a>
