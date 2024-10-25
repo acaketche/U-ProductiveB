@@ -3,7 +3,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\{
     AuthController, UserController, AdminController, ProfileController, ArticleController, KategoriController,
     VideoController, HistoryController, FavoriteController, ForumController, CommentController,
-    UtamaController, InformaticaController, TeknikSipilController, PDFExportController
+    UtamaController, InformaticaController, TeknikSipilController, PDFExportController, TeknikComputerController
 };
 
 // General Routes
@@ -107,5 +107,9 @@ Route::get('teknik_sipil/{teknik_sipil}', [TeknikSipilController::class, 'show']
 Route::get('teknik_sipil/{teknik_sipil}/edit', [TeknikSipilController::class, 'edit'])->name('teknik_sipil.edit');
 Route::put('teknik_sipil/{teknik_sipil}', [TeknikSipilController::class, 'update'])->name('teknik_sipil.update');
 Route::delete('teknik_sipil/{teknik_sipil}', [TeknikSipilController::class, 'destroy'])->name('teknik_sipil.destroy');
+
+Route::get('teknik_computer', [TeknikComputerController::class, 'index'])->name('teknik_computer.index');
+Route::get('teknik_computer/create', [TeknikComputerController::class, 'create'])->name('teknik_computer.create');
+// Route::post('teknik_sipil', [TeknikSipilController::class, 'store'])->name('teknik_sipil.store');
 
 Route::get('/generate-thumbnail', [TeknikSipilController::class, 'generateThumbnailFromAPI']);
