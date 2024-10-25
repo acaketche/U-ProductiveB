@@ -19,11 +19,11 @@
                         <button class="btn btn-outline-primary dropdown-toggle" type="button" id="filterDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="bi bi-funnel me-1"></i>Filter
                         </button>
-                        <div class="dropdown-menu p-3">
+                        <div class="dropdown-menu p-3" style="width: 350px; padding: 15px; box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15); border: none; border-radius: 10px;">
                             <div class="row g-3">
                                 <div class="col-md-6">
-                                    <label for="kategori" class="form-label">Kategori</label>
-                                    <select class="form-select" id="kategori" name="category">
+                                    <label for="kategori" class="form-label" style="font-weight: bold; font-size: 1rem;">Kategori</label>
+                                    <select class="form-select" id="kategori" name="category" style="font-size: 1rem; padding: 0.75rem;">
                                         <option value="">Pilih</option>
                                         @foreach ($categories as $category)
                                             <option value="{{ $category->category_id }}" {{ request('category') == $category->category_id ? 'selected' : '' }}>
@@ -33,8 +33,8 @@
                                     </select>
                                 </div>
                                 <div class="col-md-6">
-                                    <label for="waktu" class="form-label">Waktu</label>
-                                    <select class="form-select" id="waktu" name="time">
+                                    <label for="waktu" class="form-label" style="font-weight: bold; font-size: 1rem;">Waktu</label>
+                                    <select class="form-select" id="waktu" name="time" style="font-size: 1rem; padding: 0.75rem;">
                                         <option value="" {{ request('time') == '' ? 'selected' : '' }}>Semua Waktu</option>
                                         <option value="24 Jam" {{ request('time') == '24 Jam' ? 'selected' : '' }}>Dalam 24 Jam</option>
                                         <option value="1 Minggu" {{ request('time') == '1 Minggu' ? 'selected' : '' }}>1 Minggu Terakhir</option>

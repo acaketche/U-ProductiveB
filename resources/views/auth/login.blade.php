@@ -136,11 +136,19 @@
     <div class="login-container">
         <h1>Welcome to U-Productive</h1>
         <h2>Master Your University Life</h2>
+
+        <!-- Tampilkan alert jika ada error -->
+        @if ($errors->any())
+            <script>
+                alert("{{ $errors->first('name') }}");
+            </script>
+        @endif
+
         <form action="{{ route('login') }}" method="POST">
             @csrf
             <div class="mb-4 relative">
                 <label for="name" class="form-label">Username</label>
-                <input type="text" id="name" name="name" placeholder="Username" required>
+                <input type="text" id="name" name="name" placeholder="Username" value="{{ old('name') }}" required>
                 <i class="bi bi-person"></i>
             </div>
 

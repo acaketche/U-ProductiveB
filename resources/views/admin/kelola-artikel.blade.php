@@ -31,12 +31,11 @@
                                         </span>
                                     </td>
                                     <td>
-                                        @if($article->status == 'rejected')
+                                        @if($article->status != 'rejected')
                                         <form action="{{ route('admin.approve-article', $article->article_id) }}" method="POST" style="display:inline;">
                                             @csrf
                                             <button type="submit" class="btn btn-sm btn-success">Setujui</button>
                                         </form>
-
                                         <form action="{{ route('admin.reject-article', $article->article_id) }}" method="POST" style="display:inline;">
                                             @csrf
                                             <button type="submit" class="btn btn-sm btn-danger">Tolak</button>

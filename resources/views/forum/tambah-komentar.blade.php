@@ -1,52 +1,15 @@
-<!DOCTYPE html>
-<html lang="id">
+@extends('layout.navbar-guest')
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tambah Komentar - Forum U-Productive</title>
-    <!-- Gunakan asset helper untuk memuat CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
-    <link href="{{ asset('style/forum.css') }}" rel="stylesheet">
-</head>
-
-<body>
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-custom">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#">
-                <img src="{{ asset('logo.png') }}" >
-                U-Productive
-            </a>
-            <ul class="navbar-nav ms-auto d-flex flex-row mb-2 mb-lg-0">
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('articles.index') }}">Artikel</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('video.index') }}">Video</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link active text-black" href="{{ route('forum.index') }}">Forum</a>
-                </li>
-            </ul>
-            <a href="#" class="navbar-icon">
-                <img src="{{ asset('https://via.placeholder.com/24') }}" alt="User Icon">
-            </a>
-        </div>
-    </nav>
-
-    <div class="container-fluid mt-4">
+@section('content')
+    <!-- Tambahkan margin-top pada container agar form komentar tidak tertutup oleh navbar -->
+    <div class="container-fluid mt-5" style="margin-top: 85px;"> <!-- Adjust this margin-top -->
         <div class="row">
             <!-- Sidebar di sebelah kiri -->
             <div class="col-md-8">
                 <div class="sidebar1">
                     <div class="post-comment">
                         <div class="d-flex">
-                            <img src="{{ Auth::user() && Auth::user()->profile_picture ? Storage::url(Auth::user()->profile_picture) : asset('images/default-profile.png') }}"  alt="User Image" class="rounded-image">
+                            <img src="{{ Auth::user() && Auth::user()->profile_picture ? Storage::url(Auth::user()->profile_picture) : asset('images/default-profile.png') }}" alt="User Image" class="rounded-image">
                             <div>
                                 @if ($post->user)
                                     <p>{{ $post->user->name }}</p>
@@ -67,7 +30,7 @@
                         <!-- Mengirimkan ID postingan sebagai input tersembunyi -->
                         <input type="hidden" name="post_id" value="{{ $post->post_id }}">
                         <div class="d-flex mb-3">
-                            <img src="{{ asset('https://via.placeholder.com/50') }}" alt="User Image" class="rounded-image1 me-3">
+                            <img src="{{ asset('https://via.placeholder.com/40') }}" alt="User Image" class="rounded-image1 me-3">
                             <input type="text" name="content" id="commentContent" class="form-control rounded-pill" placeholder="Tuliskan Komentar Anda..." required>
                         </div>
                         <div class="form-actions">
@@ -98,31 +61,36 @@
             </div>
         </div>
     </div>
+@endsection
 
-    <!-- Gunakan asset helper untuk memuat JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+@push('styles')
+    <link href="{{ asset('style/forum.css') }}" rel="stylesheet">
+@endpush
+
+@push('scripts')
     <script>
-       $(document).ready(function() {
+        $(document).ready(function() {
             $('#commentForm').on('submit', function(e) {
                 e.preventDefault();
 
                 var content = $('#commentContent').val();
-                var postId = $(this).data('post-id'); // Ambil post_id dari atribut data-post-id
+                var postId = $(this).data('post-id');
+
+                if (content.trim() === "") {
+                    alert("Komentar tidak boleh kosong.");
+                    return;
+                }
 
                 $.ajax({
-                    url: '{{ route("comments.store") }}', // Pastikan route ini benar
-                    method: 'POST', // Gunakan metode POST
+                    url: '{{ route("comments.store") }}',
+                    method: 'POST',
                     data: {
                         _token: '{{ csrf_token() }}',
                         post_id: postId,
                         content: content
                     },
                     success: function(response) {
-                        console.log(response); // Tambahkan ini untuk debugging
-                        // Pastikan respons server sesuai dengan apa yang Anda harapkan
-                        if (response) {
-
+                        if (response && response.user) {
                             var commentHtml = `
                                 <div class="card mb-3">
                                     <div class="card-body">
@@ -133,6 +101,8 @@
                             `;
                             $('#commentsContainer').prepend(commentHtml);
                             $('#commentContent').val(''); // Reset input komentar
+                        } else {
+                            alert('Terjadi kesalahan dalam menerima respons dari server.');
                         }
                     },
                     error: function(xhr) {
@@ -141,8 +111,5 @@
                 });
             });
         });
-
     </script>
-</body>
-
-</html>
+@endpush
