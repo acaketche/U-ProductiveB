@@ -67,22 +67,21 @@ class TeknikComputerController extends Controller
     $request->validate([
         'title' => 'required|string|max:255',
         'file_pdf' => 'required|mimes:pdf|max:2048',
-        'thumbnail' => 'required|image|mimes:jpg,jpeg,png|max:3500', // Validasi thumbnail
         'category_id' => 'required|exists:categories,category_id',
     ]);
 
     // Simpan file PDF ke folder storage/app/public/pdfs
     $pdfPath = $request->file('file_pdf')->store('pdfs', 'public');
 
-    // Simpan thumbnail ke folder storage/app/public/thumbnails
-    $thumbnailPath = $request->file('thumbnail')->store('thumbnails', 'public');
+ // Generate thumbnail
+ $thumbnailPath = $this->generateThumbnail(storage_path("app/public/$pdfPath"));
 
     // Simpan data ke database
     TeknikComputer::create([
         'title' => $request->title,
         'file_pdf' => $pdfPath,
-        'thumbnail_path' => $thumbnailPath,
         'category_id' => $request->category_id,
+        'thumbnail' => $thumbnailPath,
     ]);
 
     return redirect()->route('teknik_computer.index')->with('success', 'Data berhasil ditambahkan');
@@ -127,52 +126,52 @@ class TeknikComputerController extends Controller
     }
 
     // Menampilkan form untuk edit data
-//     public function edit($id)
-//     {
-//         $teknik_computer = TeknikComputer::findOrFail($id);
-//         $categories = Category::all();
-//         return view('ts.', compact('teknik_sipil', 'categories'));
-//     }
+    public function edit($id)
+    {
+        $teknik_computer = TeknikComputer::findOrFail($id);
+        $categories = Category::all();
+        return view('ts.', compact('teknik_computer', 'categories'));
+    }
 
-//     // Memperbarui data
-//     public function update(Request $request, $id)
-// {
-//     $validatedData = $request->validate([
-//         'title' => 'required|max:255',
-//         'content' => 'required',
-//         'category_id' => 'required|integer',
-//         'thumbnail_path' => 'nullable|image',
-//     ]);
+    // Memperbarui data
+    public function update(Request $request, $id)
+{
+    $validatedData = $request->validate([
+        'title' => 'required|max:255',
+        'content' => 'required',
+        'category_id' => 'required|integer',
+        'thumbnail_path' => 'nullable|image',
+    ]);
 
-//     $teknik_sipil = TeknikSipil::findOrFail($id);
+    $teknik_computer = TeknikComputer::findOrFail($id);
 
-//     // Update gambar jika ada
-//     if ($request->hasFile('thumbnail_path')) {
-//         if ($teknik_sipil->thumbnail_path) {
-//             Storage::delete($teknik_sipil->thumbnail_path);
-//         }
+    // Update gambar jika ada
+    if ($request->hasFile('thumbnail_path')) {
+        if ($teknik_computer->thumbnail_path) {
+            Storage::delete($teknik_computer->thumbnail_path);
+        }
 
-//         $path = $request->file('thumbnail_path')->store('public/images');
-//         $validatedData['thumbnail_path'] = $path;
-//     }
+        $path = $request->file('thumbnail_path')->store('public/images');
+        $validatedData['thumbnail_path'] = $path;
+    }
 
-//     $teknik_sipil->update($validatedData);
+    $teknik_sipil->update($validatedData);
 
-//     return redirect()->route('teknik_sipil.index')->with('success', 'Data berhasil diperbarui');
-// }
+    return redirect()->route('teknik_computer.index')->with('success', 'Data berhasil diperbarui');
+}
 
 
-//     // Menghapus data
-//     public function destroy($id)
-// {
-//     $teknik_sipil = TeknikSipil::findOrFail($id);
+    // Menghapus data
+    public function destroy($id)
+{
+    $teknik_computer = TeknikComputer::findOrFail($id);
 
-//     if ($teknik_sipil->thumbnail_path) {
-//         Storage::delete($teknik_sipil->thumbnail_path);
-//     }
+    if ($teknik_computer->thumbnail_path) {
+        Storage::delete($teknik_computer->thumbnail_path);
+    }
 
-//     $teknik_sipil->delete();
+    $teknik_sipil->delete();
 
-//     return redirect()->route('teknik_sipil.index')->with('success', 'Data berhasil dihapus');
-// }
+    return redirect()->route('teknik_computer.index')->with('success', 'Data berhasil dihapus');
+}
 }

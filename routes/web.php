@@ -121,8 +121,12 @@ Route::get('teknik_sipil/{teknik_sipil}/edit', [TeknikSipilController::class, 'e
 Route::put('teknik_sipil/{teknik_sipil}', [TeknikSipilController::class, 'update'])->name('teknik_sipil.update');
 Route::delete('teknik_sipil/{teknik_sipil}', [TeknikSipilController::class, 'destroy'])->name('teknik_sipil.destroy');
 
+
+
 Route::get('teknik_computer', [TeknikComputerController::class, 'index'])->name('teknik_computer.index');
 Route::get('teknik_computer/create', [TeknikComputerController::class, 'create'])->name('teknik_computer.create');
-// Route::post('teknik_sipil', [TeknikSipilController::class, 'store'])->name('teknik_sipil.store');
+Route::post('teknik_computer', [TeknikComputerController::class, 'store'])->name('teknik_computer.store');
+Route::get('teknik_computer/{teknik_computer}', [TeknikComputerController::class, 'show'])->name('teknik_computer.show');
+
 
 Route::get('/generate-thumbnail', [TeknikSipilController::class, 'generateThumbnailFromAPI']);
