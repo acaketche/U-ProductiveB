@@ -6,7 +6,7 @@
         <div class="col-md-10">
             <div class="d-flex justify-content-center align-items-center flex-wrap">
                 <form action="{{ route('video.index') }}" method="GET" class="d-flex flex-grow-1 flex-wrap justify-content-center align-items-center">
-                    <button class="btn btn-primary me-2 mb-2 mb-md-0" type="button" onclick="window.location.href='{{ route('video.create') }}';">
+                    <button class="btn btn-primary me-2 mb-2 mb-md-0" type="button" onclick="window.location.href='{{ route('tambah-video') }}';">
                         <i class="bi bi-plus-lg me-1"></i>Tambah
                     </button>
                     <div class="input-group me-2 mb-2 mb-md-0 flex-grow-1" style="max-width: 300px;">
