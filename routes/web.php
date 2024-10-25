@@ -38,7 +38,7 @@ Route::middleware('role:mahasiswa,dosen')->group(function() {
     Route::resource('articles', ArticleController::class)->except(['create', 'store']);
 
     // Videos
-    Route::get('/video/tambah', [VideoController::class, 'create'])->name('video.create');
+    Route::get('/tambah-video', [VideoController::class, 'create'])->name('tambah-video');
     Route::post('/video', [VideoController::class, 'store'])->name('video.store');
 
     // History & Profile
