@@ -1,15 +1,19 @@
 @extends('layout.navbar-guest')
 
+@push('styles')
+    <link rel="stylesheet" href="{{asset('style/forum.css')}}">
+@endpush
+
 @section('content')
-    <!-- Tambahkan margin-top pada container agar form komentar tidak tertutup oleh navbar -->
-    <div class="container-fluid mt-5" style="margin-top: 85px;"> <!-- Adjust this margin-top -->
+
+    <div class="container-fluid mt-4">
         <div class="row">
             <!-- Sidebar di sebelah kiri -->
             <div class="col-md-8">
                 <div class="sidebar1">
                     <div class="post-comment">
                         <div class="d-flex">
-                            <img src="{{ Auth::user() && Auth::user()->profile_picture ? Storage::url(Auth::user()->profile_picture) : asset('images/default-profile.png') }}" alt="User Image" class="rounded-image">
+                            <img src="{{ Auth::user() && Auth::user()->profile_picture ? Storage::url(Auth::user()->profile_picture) : asset('images/default-profile.png') }}"  alt="User Image" class="rounded-image">
                             <div>
                                 @if ($post->user)
                                     <p>{{ $post->user->name }}</p>
@@ -30,7 +34,7 @@
                         <!-- Mengirimkan ID postingan sebagai input tersembunyi -->
                         <input type="hidden" name="post_id" value="{{ $post->post_id }}">
                         <div class="d-flex mb-3">
-                            <img src="{{ asset('https://via.placeholder.com/40') }}" alt="User Image" class="rounded-image1 me-3">
+                            <img src="{{ asset('https://via.placeholder.com/50') }}" alt="User Image" class="rounded-image1 me-3">
                             <input type="text" name="content" id="commentContent" class="form-control rounded-pill" placeholder="Tuliskan Komentar Anda..." required>
                         </div>
                         <div class="form-actions">
@@ -61,36 +65,31 @@
             </div>
         </div>
     </div>
-@endsection
 
-@push('styles')
-    <link href="{{ asset('style/forum.css') }}" rel="stylesheet">
-@endpush
-
-@push('scripts')
+    <!-- Gunakan asset helper untuk memuat JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        $(document).ready(function() {
+       $(document).ready(function() {
             $('#commentForm').on('submit', function(e) {
                 e.preventDefault();
 
                 var content = $('#commentContent').val();
-                var postId = $(this).data('post-id');
-
-                if (content.trim() === "") {
-                    alert("Komentar tidak boleh kosong.");
-                    return;
-                }
+                var postId = $(this).data('post-id'); // Ambil post_id dari atribut data-post-id
 
                 $.ajax({
-                    url: '{{ route("comments.store") }}',
-                    method: 'POST',
+                    url: '{{ route("comments.store") }}', // Pastikan route ini benar
+                    method: 'POST', // Gunakan metode POST
                     data: {
                         _token: '{{ csrf_token() }}',
                         post_id: postId,
                         content: content
                     },
                     success: function(response) {
-                        if (response && response.user) {
+                        console.log(response); // Tambahkan ini untuk debugging
+                        // Pastikan respons server sesuai dengan apa yang Anda harapkan
+                        if (response) {
+
                             var commentHtml = `
                                 <div class="card mb-3">
                                     <div class="card-body">
@@ -101,8 +100,6 @@
                             `;
                             $('#commentsContainer').prepend(commentHtml);
                             $('#commentContent').val(''); // Reset input komentar
-                        } else {
-                            alert('Terjadi kesalahan dalam menerima respons dari server.');
                         }
                     },
                     error: function(xhr) {
@@ -111,5 +108,6 @@
                 });
             });
         });
+
     </script>
-@endpush
+@endsection

@@ -1,19 +1,21 @@
 /* General Body Styling */
 body {
     background-color: #f0f3f5;
+    padding-top: 75px; /* Tambahkan padding-top agar konten tidak tertutup navbar */
 }
 
 /* Navbar Styles */
 .navbar-energetic {
-    position: fixed; /* Keep navbar fixed on scroll */
+    position: fixed;
     top: 0;
     left: 0;
     width: 100%;
-    z-index: 1000; /* Ensure it stays on top */
+    z-index: 1000;
     background: linear-gradient(45deg, #7096e9 0%, #6f93c9 99%, #a0c1f3 100%);
     padding: 0.7rem 1rem;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
+
 
 /* Logo Styling */
 .logo {
@@ -89,7 +91,7 @@ body {
 
 /* Sidebar Menu */
 .sidebar .menu {
-    margin-top: 60px;
+    margin-top: 90px;
 }
 
 .sidebar .menu a {
@@ -125,14 +127,14 @@ body {
 /* Content Styles */
 .content {
     margin-left: 300px;
-    padding: 95px 20px 20px 20px;
+    padding: 50px 20px 20px 20px;
 }
 
 /* Additional Forum Styles */
 .comment-section {
     display: flex;
     align-items: center;
-    margin-top: 10px;
+    margin-top: 50px;
 }
 
 .comment-section .btn {

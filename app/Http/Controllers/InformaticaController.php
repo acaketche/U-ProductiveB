@@ -6,6 +6,7 @@ use App\Models\Informatica; // Pastikan sudah include model Informatica
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Intervention\Image\Facades\Image;
+use Illuminate\Support\Facades\Storage;
 
 class InformaticaController extends Controller
 {
@@ -60,11 +61,14 @@ class InformaticaController extends Controller
             'category_id' => 'required|exists:categories,category_id',
         ]);
 
+        // Simpan file PDF ke folder file_pdfs di storage/public
         $path = $request->file('file_pdf')->store('file_pdfs', 'public');
+
+        // Simpan informasi ke database
 
         Informatica::create([
             'title' => $request->title,
-            'file_pdf' => $path,
+            'file_pdf' => $path, // Simpan path file PDF
             'category_id' => $request->category_id,
         ]);
 
@@ -75,14 +79,11 @@ class InformaticaController extends Controller
     // Method untuk membuat thumbnail PDF
     private function generateThumbnail($path)
     {
-        // Path thumbnail
-        $thumbnailPath = 'thumbnails/' . basename($path, '.file_pdf') . '.jpg';
+        $thumbnailPath = 'thumbnails/' . basename($path, '.pdf') . '.jpg';
 
-        // Buat thumbnail jika belum ada
-        if (!\Storage::exists($thumbnailPath)) {
-            $pdfFullPath = storage_path('app/public/' . $path);
+        if (!Storage::exists($thumbnailPath)) {
+            $pdfFullPath = storage_path('public/storage/' . $path);
 
-            // Mengambil halaman pertama dari PDF menggunakan Imagick
             $imagick = new \Imagick();
             $imagick->setResolution(300, 300);
             $imagick->readImage($pdfFullPath . '[0]');
@@ -90,17 +91,28 @@ class InformaticaController extends Controller
             $imagick->clear();
             $imagick->destroy();
 
-            // Konversi ke format gambar menggunakan Intervention Image
             $image = Image::make($imageData);
             $image->resize(300, null, function ($constraint) {
                 $constraint->aspectRatio();
             });
 
-            // Simpan thumbnail
-            $image->save(storage_path('app/public/' . $thumbnailPath));
+            $image->save(storage_path('public/storage/' . $thumbnailPath));
         }
 
         return $thumbnailPath;
+    }
+
+    public function moveFile($path)
+    {
+        // Memeriksa apakah file ada di storage/app/public/file_pdfs
+        if (Storage::disk('public')->exists('file_pdfs/' . $path)) {
+            // Memindahkan file dari storage/app/public/file_pdfs ke public/storage/file_pdfs
+            Storage::disk('public')->move('file_pdfs/' . $path, 'file_pdfs/' . $path);
+
+            return response()->json(['message' => 'File berhasil dipindahkan'], 200);
+        }
+
+        return response()->json(['message' => 'File tidak ditemukan'], 404);
     }
 
 }

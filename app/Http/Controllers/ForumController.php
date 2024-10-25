@@ -75,17 +75,18 @@ class ForumController extends Controller
         return redirect()->route('favorite.index', ['post' => $postId])
                         ->with('success', 'Post telah ditambahkan ke favorit');
     }
-    public function toggleFavorite(Post $post)
-{
-    $user = Auth::user();
 
-    if ($user->favorites()->where('post_id', $post->id)->exists()) {
-        $user->favorites()->detach($post->id);
-        return response()->json(['message' => 'Favorit dihapus']);
-    } else {
-        $user->favorites()->attach($post->id);
-        return response()->json(['message' => 'Ditambahkan ke favorit']);
+    public function toggleFavorite(Post $post)
+    {
+        $user = Auth::user();
+
+        if ($user->favorites()->where('post_id', $post->id)->exists()) {
+            $user->favorites()->detach($post->id);
+            return response()->json(['message' => 'Favorit dihapus']);
+        } else {
+            $user->favorites()->attach($post->id);
+            return response()->json(['message' => 'Ditambahkan ke favorit']);
+        }
     }
 }
 
-}

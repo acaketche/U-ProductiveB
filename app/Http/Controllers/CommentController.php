@@ -21,7 +21,7 @@ class CommentController extends Controller
     {
         // Validasi input
         $validatedData = $request->validate([
-            'post_id' => 'required|exists:forum_post,post_id',
+            'post_id' => 'required|exists:forum_post,post_id', // Perbaiki nama tabel
             'content' => 'required|string|max:255',
         ]);
 
@@ -31,9 +31,6 @@ class CommentController extends Controller
         $comment->user_id = auth()->id(); // ID user yang saat ini login
         $comment->content = $validatedData['content'];
         $comment->save();
-
-        // // Ambil waktu pembuatan dari komentar yang baru saja disimpan
-        // $createdAt = $comment->created_at ? $comment->created_at->format('d M Y') : 'Waktu tidak tersedia';
 
         // Mengembalikan respons JSON
         return response()->json([

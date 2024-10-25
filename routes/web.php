@@ -58,7 +58,8 @@ Route::middleware('role:mahasiswa,dosen')->group(function() {
 
     // Comments
     Route::get('/comment/{post_id}', [CommentController::class, 'create'])->name('comments.create');
-    Route::post('/comment', [CommentController::class, 'store'])->name('comments.store');
+    Route::post('/comments/store', [CommentController::class, 'store'])->name('comments.store');
+
 
     // Informatica
     Route::get('/create/informatica', [InformaticaController::class, 'create'])->name('informatica.create');
@@ -99,6 +100,18 @@ Route::middleware('role:admin')->group(function() {
     Route::delete('/kelola-forum/comment/{id}', [AdminController::class, 'destroyComment'])->name('delete-comment');
 });
 
+// Route untuk halaman Informatics
+Route::prefix('informatica')->name('informatica.')->group(function () {
+    Route::get('/', [InformaticaController::class, 'index'])->name('index');
+    Route::get('/create', [InformaticaController::class, 'create'])->name('create');
+    Route::post('/', [InformaticaController::class, 'store'])->name('store');
+    Route::get('/{id}', [InformaticaController::class, 'show'])->name('show');
+    Route::get('/informatica/move-file', [InformaticaController::class, 'moveFile']);
+});
+
+
+
+// Route untuk menampilkan daftar teknik sipil (index)
 // Teknik Sipil Routes
 Route::get('teknik_sipil', [TeknikSipilController::class, 'index'])->name('teknik_sipil.index');
 Route::get('teknik_sipil/create', [TeknikSipilController::class, 'create'])->name('teknik_sipil.create');
