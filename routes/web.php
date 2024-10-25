@@ -132,6 +132,7 @@ Route::prefix('informatica')->name('informatica.')->group(function () {
     Route::get('/create', [InformaticaController::class, 'create'])->name('create');
     Route::post('/', [InformaticaController::class, 'store'])->name('store');
     Route::get('/{id}', [InformaticaController::class, 'show'])->name('show');
+    Route::get('/informatica/move-file', [InformaticaController::class, 'moveFile']);
 });
 
 
