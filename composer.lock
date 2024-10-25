@@ -4,11 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-<<<<<<< HEAD
-    "content-hash": "a000d7f09e697ef4f4df31686ade7c9f",
-=======
     "content-hash": "9bafa080408639bab68cc1dba2fa2ead",
->>>>>>> 70aed6c7440f2b9639ec3b057b1d743fb81daf2c
     "packages": [
         {
             "name": "barryvdh/laravel-dompdf",
@@ -3620,7 +3616,6 @@
             "time": "2024-04-27T21:32:50+00:00"
         },
         {
-<<<<<<< HEAD
             "name": "setasign/fpdf",
             "version": "1.8.2",
             "source": {
@@ -3697,40 +3692,6 @@
             "autoload": {
                 "psr-4": {
                     "setasign\\Fpdi\\": "src/"
-=======
-            "name": "sabberworm/php-css-parser",
-            "version": "v8.6.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/MyIntervals/PHP-CSS-Parser.git",
-                "reference": "d2fb94a9641be84d79c7548c6d39bbebba6e9a70"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/MyIntervals/PHP-CSS-Parser/zipball/d2fb94a9641be84d79c7548c6d39bbebba6e9a70",
-                "reference": "d2fb94a9641be84d79c7548c6d39bbebba6e9a70",
-                "shasum": ""
-            },
-            "require": {
-                "ext-iconv": "*",
-                "php": ">=5.6.20"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "^5.7.27"
-            },
-            "suggest": {
-                "ext-mbstring": "for parsing UTF-8 CSS"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-main": "9.0.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Sabberworm\\CSS\\": "src/"
->>>>>>> 70aed6c7440f2b9639ec3b057b1d743fb81daf2c
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -3739,7 +3700,6 @@
             ],
             "authors": [
                 {
-<<<<<<< HEAD
                     "name": "Jan Slabon",
                     "email": "jan.slabon@setasign.com",
                     "homepage": "https://www.setasign.com"
@@ -3828,31 +3788,6 @@
                 }
             ],
             "time": "2016-12-14T15:37:00+00:00"
-=======
-                    "name": "Raphael Schweikert"
-                },
-                {
-                    "name": "Oliver Klee",
-                    "email": "github@oliverklee.de"
-                },
-                {
-                    "name": "Jake Hotson",
-                    "email": "jake.github@qzdesign.co.uk"
-                }
-            ],
-            "description": "Parser for CSS Files written in PHP",
-            "homepage": "https://www.sabberworm.com/blog/2010/6/10/php-css-parser",
-            "keywords": [
-                "css",
-                "parser",
-                "stylesheet"
-            ],
-            "support": {
-                "issues": "https://github.com/MyIntervals/PHP-CSS-Parser/issues",
-                "source": "https://github.com/MyIntervals/PHP-CSS-Parser/tree/v8.6.0"
-            },
-            "time": "2024-07-01T07:33:21+00:00"
->>>>>>> 70aed6c7440f2b9639ec3b057b1d743fb81daf2c
         },
         {
             "name": "symfony/clock",
