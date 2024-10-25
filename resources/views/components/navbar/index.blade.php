@@ -12,6 +12,7 @@
                 <x-navbar.nav-item route="home" text="Home"/>
                 <x-navbar.nav-item route="articles.index" text="Artikel"/>
                 <x-navbar.nav-item route="video.index" text="Video"/>
+                <x-navbar.nav-item route="informatica.index" text="Informatika"/>
                 @guest
                     <li class="nav-item">
                         <a class="btn btn-login" href="{{ route('login') }}">Login</a>

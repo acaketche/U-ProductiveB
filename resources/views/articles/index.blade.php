@@ -118,14 +118,31 @@
     }
 
     .dropdown-menu {
-        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
-        border: none;
-        border-radius: 10px;
-    }
+    width: 350px; /* Atur lebar dropdown agar lebih besar */
+    padding: 15px; /* Menambah padding dalam dropdown */
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    border: none;
+    border-radius: 10px;
+}
 
     .form-label {
         font-weight: bold;
-        color: var(--text-color);
+        font-size: 1rem; /* Perbesar teks label */
+    }
+
+    .form-select {
+        font-size: 1rem; /* Perbesar ukuran teks dalam select */
+        padding: 0.75rem; /* Tambah padding pada dropdown option */
+    }
+
+    .dropdown-toggle {
+        font-size: 1rem; /* Perbesar ukuran teks tombol dropdown */
+        padding: 0.5rem 1rem; /* Sesuaikan padding pada tombol dropdown */
+    }
+
+    .dropdown-menu .btn-sm {
+        padding: 0.5rem 1rem; /* Sesuaikan ukuran tombol kecil */
+        font-size: 0.875rem; /* Sesuaikan ukuran font tombol kecil */
     }
 
     .article-card {

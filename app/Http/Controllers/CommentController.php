@@ -25,22 +25,19 @@ class CommentController extends Controller
             'content' => 'required|string|max:255',
         ]);
 
-        // Buat komentar baru
-        $comment = new Comment();
-        $comment->post_id = $validatedData['post_id'];
-        $comment->user_id = auth()->id(); // ID user yang saat ini login
-        $comment->content = $validatedData['content'];
+        $comment = new Comment;
+        $comment->post_id = $request->post_id;
+        $comment->content = $request->content;
+        $comment->user_id = auth()->user()->id;
         $comment->save();
 
-        // // Ambil waktu pembuatan dari komentar yang baru saja disimpan
-        // $createdAt = $comment->created_at ? $comment->created_at->format('d M Y') : 'Waktu tidak tersedia';
-
-        // Mengembalikan respons JSON
+        // Mengirim respons JSON yang benar
         return response()->json([
+            'success' => true,
             'user' => [
-                'name' => $comment->user->name,
+                'name' => auth()->user()->name,
             ],
-            'content' => $comment->content,
+            'content' => $comment->content
         ]);
     }
 }

@@ -67,29 +67,34 @@ class ArticleController extends Controller
 
     // Menyimpan artikel baru
     public function store(Request $request)
-    {
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'category_id' => 'required|exists:categories,category_id',
-            'content' => 'required|string',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+{
+    // Validasi input
+    $request->validate([
+        'title' => 'required|string|max:255',
+        'category_id' => 'required|exists:categories,category_id',
+        'content' => 'required|string',
+        'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+    ]);
 
-        ]);
+    // Simpan gambar ke direktori 'public/images'
+    $imagePath = $request->file('image')->store('images', 'public');
 
-        // Simpan gambar ke direktori 'public/images'
-        $imagePath = $request->file('image')->store('images', 'public');
-        $article = new Article;
-        $article->title = $request->input('title');
-        $article->category_id = $request->input('category_id');
-        $article->content = $request->input('content');
-        $article->image = $imagePath;
-        $article->user_id = Auth::id();  // Tambahkan ID pengguna yang sedang login
+    // Inisialisasi instance baru dari model Article
+    $article = new Article;
+    $article->title = $request->input('title');
+    $article->category_id = $request->input('category_id');
+    $article->content = $request->input('content');
+    $article->image = $imagePath;
+    $article->user_id = Auth::id();  // Tambahkan ID pengguna yang sedang login
+    $article->status = 'rejected';  // Set status artikel ke 'pending' atau 'waiting for approval'
 
-        $article->save();  // Simpan ke database
+    // Simpan artikel ke database
+    $article->save();
 
+    // Redirect setelah berhasil menambahkan artikel
+    return redirect()->route('articles.index')->with('success', 'Artikel berhasil ditambahkan!');
+}
 
-        return redirect()->route('articles.index')->with('success', 'Artikel berhasil ditambahkan!');
-    }
 
     // Menampilkan detail artikel
     public function show($id)
@@ -137,11 +142,20 @@ class ArticleController extends Controller
     }
 
     // Menampilkan daftar artikel untuk admin
-    public function kelolaArtikel()
+    public function kelolaArtikel(Request $request)
     {
-        $articles = Article::with('category')->paginate(10);
+        $status = $request->input('status', 'all'); // default tampilkan semua
+
+        $query = Article::with('category');
+
+        if ($status !== 'all') {
+            $query->where('status', $status);
+        }
+
+        $articles = $query->paginate(10);
         return view('admin.kelola-artikel', compact('articles'));
     }
+
 
     // Menyetujui artikel
     public function approve($id)
@@ -158,7 +172,7 @@ class ArticleController extends Controller
             $article->status = 'rejected';
             $article->save();
 
-            return redirect()->route('admin.kelolaArtikel')->with('success', 'Artikel berhasil ditolak!');
+            return redirect()->route('kelola.artikel')->with('success', 'Artikel berhasil ditolak!');
         }
 
 

@@ -88,5 +88,5 @@ class ForumController extends Controller
             return response()->json(['message' => 'Ditambahkan ke favorit']);
         }
     }
-
 }
+

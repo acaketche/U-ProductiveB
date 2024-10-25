@@ -121,7 +121,7 @@ class VideoController extends Controller
     private function extractYouTubeId($url)
     {
         preg_match('/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/i', $url, $matches);
-        return $matches[1] ?? null; // Return ID atau null jika tidak ditemukan
+        return $matches[1] ?? null;
     }
     public function kelolaVideo()
         {
@@ -146,7 +146,7 @@ class VideoController extends Controller
             return redirect()->route('kelola.video')->with('success', 'Artikel berhasil ditolak!');
         }
 
-    // Menghapus artikel
+
     public function destroy($id)
     {
         $video = Video::findOrFail($id);
