@@ -14,6 +14,8 @@ use App\Http\Controllers\CommentController;
 use App\Http\Controllers\UtamaController;
 use App\Http\Controllers\TeknikSipilController;
 use App\Http\Controllers\PDFExportController;
+use App\Http\Controllers\YourExistingController;
+
 
 Route::get('/export-pdf', [PDFExportController::class, 'exportPDF'])->name('export.pdf');
 
@@ -142,3 +144,6 @@ Route::get('teknik_sipil/{teknik_sipil}/edit', [TeknikSipilController::class, 'e
 Route::put('teknik_sipil/{teknik_sipil}', [TeknikSipilController::class, 'update'])->name('teknik_sipil.update');
 // Route untuk menghapus teknik sipil (destroy)
 Route::delete('teknik_sipil/{teknik_sipil}', [TeknikSipilController::class, 'destroy'])->name('teknik_sipil.destroy');
+
+Route::get('/convert-pdf/{pdfName}', [YourExistingController::class, 'convertPdfToImage']);
+

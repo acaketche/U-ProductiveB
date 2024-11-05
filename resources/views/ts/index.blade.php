@@ -1,6 +1,9 @@
 @extends('layout.navbar-guest')
 
 @section('content')
+
+<script src="{{ asset('js/pdf-thumbnail.js') }}"></script>
+
 <div class="container mt-4">
     <div class="d-flex justify-content-center align-items-center mb-4">
         <button class="btn btn-primary me-2" onclick="window.location.href='{{ route('teknik_sipil.create') }}';">
@@ -41,7 +44,7 @@
                             </div>
                         </div>
                         <div class="d-flex justify-content-between mt-3">
-                            <!-- Clear filters button -->
+                            <!-- Clear filters button  -->
                             <a href="{{ route('teknik_sipil.index') }}" class="btn btn-link text-danger p-0">Bersihkan filter</a>
                             <div>
                                 <button type="button" class="btn btn-outline-secondary btn-sm me-2" data-bs-dismiss="dropdown">Batal</button>
@@ -61,7 +64,7 @@
             <div class="card h-100 position-relative">
                 <!-- Gambar cover PDF -->
                 <a href="{{ route('teknik_sipil.show', $teknik_sipil->ts_id) }}">
-                    <img src="{{ asset('storage/' . $teknik_sipil->thumbnail_path) }}" class="card-img-top" alt="{{ $teknik_sipil->title }}">
+            <img src="{{ Storage::url($teknik_sipil->thumbnail_path) }}" class="card-img-top" {{ $teknik_sipil->title }}>
                 </a>
                 <div class="card-body">
                     <h5 class="card-title">{{ $teknik_sipil->title }}</h5>
@@ -80,4 +83,17 @@
 
 @push('styles')
 <link rel="stylesheet" href="{{ asset('style/teknik_sipil.css') }}">
+@endpush
+
+@push('scripts')
+<!-- Tambahkan file JavaScript pdf-thumbnail.js -->
+<script src="{{ asset('js/pdf-thumbnail.js') }}"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Pastikan fungsi dari pdf-thumbnail.js untuk menampilkan thumbnail PDF
+        if (typeof generatePdfThumbnails === "function") {
+            generatePdfThumbnails();
+        }
+    });
+</script>
 @endpush

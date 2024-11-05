@@ -31,7 +31,7 @@ class TeknikSipil extends Model
     // Relasi ke thumbnail
     public function thumbnail()
     {
-        return $this->hasOne(Thumbnail::class, 'teknik_sipil_id', 'ts_id');
+        return $this->hasOne(Thumbnail_path::class, 'teknik_sipil_id', 'ts_id');
     }
 
     // Metode untuk menghasilkan thumbnail dari PDF
