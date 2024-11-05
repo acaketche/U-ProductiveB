@@ -47,6 +47,11 @@ class VideoController extends Controller
 }
 
 
+public function __construct()
+{
+    // Tambahkan middleware auth untuk method tertentu
+    $this->middleware('auth')->only(['create', 'store']);
+}
     public function create()
     {
         // Ambil data kategori dari database

@@ -5,9 +5,17 @@
         <div class="col-md-10">
             <div class="d-flex justify-content-center align-items-center flex-wrap">
                 <form action="{{ route('articles.index') }}" method="GET" class="d-flex flex-grow-1 flex-wrap justify-content-center align-items-center">
-                    <button class="btn btn-primary me-2 mb-2 mb-md-0" type="button" onclick="window.location.href='{{ route('articles.create') }}';">
+                    @auth
+                    <button class="btn btn-primary me-2 mb-2 mb-md-0" type="button"
+                        onclick="window.location.href='{{ route('articles.create') }}';">
                         <i class="bi bi-plus-lg me-1"></i>Tambah
                     </button>
+                @else
+                    <button class="btn btn-primary me-2 mb-2 mb-md-0" type="button"
+                        onclick="window.location.href='{{ route('login') }}';">
+                        <i class="bi bi-plus-lg me-1"></i>Tambah
+                    </button>
+                @endauth
                     <div class="input-group me-2 mb-2 mb-md-0 flex-grow-1" style="max-width: 300px;">
                         <input type="text" name="search" class="form-control" placeholder="Cari Artikel" value="{{ request('search') }}">
                         <button class="btn btn-outline-secondary" type="submit">

@@ -3,7 +3,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\{
     AuthController, UserController, AdminController, ProfileController, ArticleController, KategoriController,
     VideoController, HistoryController, FavoriteController, ForumController, CommentController,
-    UtamaController, InformaticaController, TeknikSipilController, PDFExportController, TeknikComputerController
+    UtamaController, InformaticaController, TeknikSipilController, PDFExportController, TeknikComputerController, ProdiController
 };
 
 // General Routes
@@ -16,6 +16,15 @@ Route::get('/video', [VideoController::class, 'index'])->name('video.index');
 Route::get('/video/{video_id}', [VideoController::class, 'show'])->name('video.show');
 Route::get('/informatica', [InformaticaController::class, 'index'])->name('informatica.index');
 Route::get('/informatica/{id}', [InformaticaController::class, 'show'])->name('informatica.show');
+
+Route::middleware('auth')->group(function() {
+    Route::get('/articles/create', [ArticleController::class, 'create'])->name('articles.create');
+    Route::post('/articles', [ArticleController::class, 'store'])->name('articles.store');
+    Route::get('/tambah-video', [VideoController::class, 'create'])->name('tambah-video');
+    Route::post('/video', [VideoController::class, 'store'])->name('video.store');
+
+});
+
 
 // Guest Routes
 Route::middleware('guest')->group(function() {
@@ -33,13 +42,13 @@ Route::middleware('role:mahasiswa,dosen')->group(function() {
     Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
 
     // Articles
-    Route::get('/articles/create', [ArticleController::class, 'create'])->name('articles.create');
-    Route::post('/articles', [ArticleController::class, 'store'])->name('articles.store');
-    Route::resource('articles', ArticleController::class)->except(['create', 'store']);
+    Route::resource('articles', ArticleController::class)
+    ->only(['edit', 'update', 'destroy']);
+
 
     // Videos
-    Route::get('/tambah-video', [VideoController::class, 'create'])->name('tambah-video');
-    Route::post('/video', [VideoController::class, 'store'])->name('video.store');
+    Route::resource('video', VideoController::class)
+    ->only(['edit', 'update', 'destroy']);
 
     // History & Profile
     Route::get('/history', [HistoryController::class, 'index'])->name('history.index');
@@ -60,10 +69,6 @@ Route::middleware('role:mahasiswa,dosen')->group(function() {
     Route::get('/comment/{post_id}', [CommentController::class, 'create'])->name('comments.create');
     Route::post('/comments/store', [CommentController::class, 'store'])->name('comments.store');
 
-
-    // Informatica
-    Route::get('/create/informatica', [InformaticaController::class, 'create'])->name('informatica.create');
-    Route::post('/informaticas', [InformaticaController::class, 'store'])->name('informatica.store');
 });
 
 // Admin Routes
@@ -128,5 +133,12 @@ Route::get('teknik_computer/create', [TeknikComputerController::class, 'create']
 Route::post('teknik_computer', [TeknikComputerController::class, 'store'])->name('teknik_computer.store');
 Route::get('teknik_computer/{teknik_computer}', [TeknikComputerController::class, 'show'])->name('teknik_computer.show');
 
+// Informatica
+Route::get('/create/informatica', [InformaticaController::class, 'create'])->name('informatica.create');
+Route::post('/informaticas', [InformaticaController::class, 'store'])->name('informatica.store');
+
 
 Route::get('/generate-thumbnail', [TeknikSipilController::class, 'generateThumbnailFromAPI']);
+
+Route::get('prodi', [ProdiController::class, 'index'])->name('prodi.index');
+Route::get('prodi/{prodi_id}', [ProdiController::class, 'show'])->name('prodi.show');

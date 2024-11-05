@@ -3,7 +3,7 @@
 <div class="container mt-4">
     <!-- Profile Header -->
     <div class="profile-header">
-        <img src="{{ $user->profile_picture ? Storage::url($user->profile_picture) : asset('images/default-profile.png') }}" class="img-thumbnail" alt="Profile Picture">
+        <img src="{{ $user->profile_picture ? Storage::url($user->profile_picture) : asset('images/default-profile.png') }}" class="img-thumbnail">
         <div class="profile-details">
             <h3>{{ $user->name }}</h3>
             <p class="username">{{ '@' . strtolower(str_replace(' ', '_', $user->name)) }}</p>

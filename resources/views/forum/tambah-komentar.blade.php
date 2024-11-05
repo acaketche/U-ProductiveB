@@ -34,7 +34,7 @@
                         <!-- Mengirimkan ID postingan sebagai input tersembunyi -->
                         <input type="hidden" name="post_id" value="{{ $post->post_id }}">
                         <div class="d-flex mb-3">
-                            <img src="{{ asset('https://via.placeholder.com/50') }}" alt="User Image" class="rounded-image1 me-3">
+                            <img src="{{ Auth::user() && Auth::user()->profile_picture ? Storage::url(Auth::user()->profile_picture) : asset('images/default-profile.png') }}"  alt="User Image" class="rounded-image">
                             <input type="text" name="content" id="commentContent" class="form-control rounded-pill" placeholder="Tuliskan Komentar Anda..." required>
                         </div>
                         <div class="form-actions">
