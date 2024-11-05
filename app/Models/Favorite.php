@@ -34,6 +34,6 @@ class Favorite extends Model
 
     public function post()
     {
-        return $this->belongsTo(ForumPost::class, 'post_id');
+        return $this->belongsTo('App\Models\ForumPost');
     }
 }

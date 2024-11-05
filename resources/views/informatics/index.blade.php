@@ -61,7 +61,7 @@
             <div class="card h-100 position-relative">
                 <!-- Gambar dengan tautan -->
                 <a href="{{ route('informatica.show', $informatica->if_id) }}">
-                    <img src="{{ Storage::url($informatica->file_pdf) }}" class="card-img-top" alt="{{ $informatica->title }}">
+                    <img data-pdf-thumbnail-file="{{ asset('storage/file_pdfs/' . $informatica->file_pdf) }}" data-pdf-thumbnail-width="200" width="200">
                 </a>
                 <div class="card-body">
                     <h5 class="card-title">{{ $informatica->title }}</h5>
@@ -83,45 +83,29 @@
 @endpush
 
 @push('scripts')
-<script src="https://mozilla.github.io/pdf.js/build/pdf.js"></script>
-
+<script src="{{ asset('js/pdf.js') }}"></script>
 <script>
-    // Path untuk library PDF.js
-    var pdfjsLib = window['pdfjs-dist/build/pdf'];
-    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://chrome.github.io/pdf.js/build/pdf.worker.js';
+    document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll('img[data-pdf-thumbnail-file]').forEach(function (imgElement) {
+            const pdfUrl = imgElement.getAttribute('data-pdf-thumbnail-file');
+            const pdfThumbnailWidth = imgElement.getAttribute('data-pdf-thumbnail-width');
 
+            pdfjsLib.getDocument(pdfUrl).promise.then(function (pdf) {
+                pdf.getPage(1).then(function (page) {
+                    const viewport = page.getViewport({ scale: pdfThumbnailWidth / page.getViewport({ scale: 1 }).width });
+                    const canvas = document.createElement("canvas");
+                    const context = canvas.getContext("2d");
+                    canvas.height = viewport.height;
+                    canvas.width = viewport.width;
 
-    // Fungsi untuk menampilkan thumbnail
-    function renderPDF(url, canvasId) {
-        var pdfUrl = '/path/to/pdf/' + pdfFile.file_pdfs;
-        var loadingTask = pdfjsLib.getDocument(url);
-        loadingTask.promise.then(function(pdf) {
-            // Ambil halaman pertama PDF
-            pdf.getPage(1).then(function(page) {
-                var scale = 1.5;
-                var viewport = page.getViewport({scale: scale});
-
-                // Setup canvas untuk thumbnail
-                var canvas = document.getElementById(canvasId);
-                var context = canvas.getContext('2d');
-                canvas.height = viewport.height;
-                canvas.width = viewport.width;
-
-                // Render halaman pertama PDF ke dalam canvas
-                var renderContext = {
-                    canvasContext: context,
-                    viewport: viewport
-                };
-                page.render(renderContext);
+                    page.render({ canvasContext: context, viewport: viewport }).promise.then(function () {
+                        imgElement.src = canvas.toDataURL();
+                    });
+                });
             });
         });
-    }
-
-    // Panggil fungsi untuk setiap PDF
-    @foreach($informatics as $informatica)
-        renderPDF("{{ asset('storage/' . $informatica->file_pdf) }}", "pdf-thumbnail-{{ $informatica->if_id }}");
-    @endforeach
+    });
 </script>
-
 @endpush
+
 

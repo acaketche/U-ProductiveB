@@ -45,9 +45,15 @@
 
                     <div class="comment-section">
                         <!-- Ikon bintang untuk menambahkan favorite -->
-                        <i class="bi {{ $post->is_favorite ? 'bi-star-fill' : 'bi-star' }} favorite-icon" 
-                           style="font-size: 1.5em; cursor: pointer; color: {{ $post->is_favorite ? 'gold' : 'gray' }};" 
-                           data-post-id="{{ $post->post_id }}"></i>
+                        <div class="favorite-action" >
+                            <a class="animate-left add-to-fav" title="Favorite" post-slug="{{$post->slug }}" href="">
+                                <i class="bi-star"></i>
+                            </a>
+                        </div>
+                        <!-- Pemberitahuan -->
+                        <div id="notification-{{ $post->post_id }}" class="notification" style="display:none; margin-top: 10px; color: green;">
+                            Postingan sudah masuk ke dalam favorit!
+                        </div>
 
                         <!-- Form untuk menambahkan komentar -->
                         <form action="{{ route('comments.create', ['post_id' => $post->post_id]) }}" method="GET">
@@ -65,53 +71,53 @@
     <style>
         /* CSS untuk mengubah ikon favorit saat aktif */
         .favorite-icon.bi-star-fill {
-            color: gold; /* Warna saat ikon aktif (bintang penuh) */
+            color: blue; /* Warna saat ikon aktif (bintang penuh) */
         }
         .favorite-icon.bi-star {
             color: gray; /* Warna saat ikon tidak aktif */
         }
+        /* Styling pemberitahuan favorit */
+        .notification {
+            color: green;
+            font-weight: bold;
+        }
     </style>
 @endpush
 
+
 @push('scripts')
+    <!-- Load jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // Mengambil semua ikon bintang
-            const favoriteIcons = document.querySelectorAll('.favorite-icon');
+        $(document).on('click', function() {
+            var postId = $(this).data('post-id');
+            var icon = $(this);
 
-            favoriteIcons.forEach(icon => {
-                icon.addEventListener('click', (event) => {
-                    const postId = event.target.getAttribute('data-post-id');
-
-                    if (postId) {
-                        // Mengirim permintaan POST ke server
-                        fetch(`/favorite/${postId}`, {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                            },
-                            body: JSON.stringify({ postId: postId })
-                        })
-                        .then(response => response.json())
-                        .then(data => {
-                            // Mengubah ikon berdasarkan status favorit
-                            if (data.is_favorite) {
-                                icon.classList.remove('bi-star');
-                                icon.classList.add('bi-star-fill');
-                                icon.style.color = 'gold'; // Bintang aktif
-                            } else {
-                                icon.classList.remove('bi-star-fill');
-                                icon.classList.add('bi-star');
-                                icon.style.color = 'gray'; // Bintang tidak aktif
-                            }
-                        })
-                        .catch(error => console.error('Error:', error));
-                    } else {
-                        console.error('Post ID not found!');
+            // Toggle status favorit
+            $.ajax({
+                url: '/favorite/' + postId,
+                method: 'POST',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                },
+                success: function(response) {
+                    console.log("Response:", response); // Debug respons dari server
+                    if (response.success) {
+                        if (response.is_favorite) {
+                            icon.removeClass('bi-star').addClass('bi-star-fill').css('color', 'blue');
+                        } else {
+                            icon.removeClass('bi-star-fill').addClass('bi-star').css('color', 'gray');
+                        }
+                        $('#notification-' + postId).text("Postingan telah masuk ke halaman favorit!").fadeIn().delay(2000).fadeOut();
                     }
-                });
+                },
+                error: function(xhr) {
+                    console.error("Error:", xhr.responseText); // Debug jika ada error
+                    alert("Terjadi kesalahan. Silakan coba lagi.");
+                }
             });
         });
     </script>
 @endpush
+

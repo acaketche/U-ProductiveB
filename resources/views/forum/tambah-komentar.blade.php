@@ -11,19 +11,23 @@
             <!-- Sidebar di sebelah kiri -->
             <div class="col-md-8">
                 <div class="sidebar1">
-                    <div class="post-comment">
-                        <div class="d-flex">
-                            <img src="{{ Auth::user() && Auth::user()->profile_picture ? Storage::url(Auth::user()->profile_picture) : asset('images/default-profile.png') }}"  alt="User Image" class="rounded-image">
-                            <div>
-                                @if ($post->user)
-                                    <p>{{ $post->user->name }}</p>
-                                @else
-                                    <p class="card-text">User Tidak Ditemukan</p>
-                                @endif
-                                <p class="card-text">
-                                    <small class="text-muted">{{ date('d M Y', strtotime($post->created_at)) }}</small>
-                                </p>
-                                <p class="card-text">{{ $post->content }}</p>
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <div class="post-comment">
+                                <div class="d-flex">
+                                    <img src="{{ $post->user && $post->user->profile_picture ? Storage::url($post->user->profile_picture) : asset('images/default-profile.png') }}" alt="User Image" class="rounded-image" style="width: 50px; height: 50px;">
+                                    <div class="ms-3">
+                                        @if ($post->user)
+                                            <p class="mb-1 fw-bold">{{ $post->user->name }}</p>
+                                        @else
+                                            <p class="card-text">User Tidak Ditemukan</p>
+                                        @endif
+                                        <p class="card-text">
+                                            <small class="text-muted">{{ date('d M Y', strtotime($post->created_at)) }}</small>
+                                        </p>
+                                        <p class="card-text">{{ $post->content }}</p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -34,7 +38,7 @@
                         <!-- Mengirimkan ID postingan sebagai input tersembunyi -->
                         <input type="hidden" name="post_id" value="{{ $post->post_id }}">
                         <div class="d-flex mb-3">
-                            <img src="{{ asset('https://via.placeholder.com/50') }}" alt="User Image" class="rounded-image1 me-3">
+                            <img src="{{ Auth::user() && Auth::user()->profile_picture ? Storage::url(Auth::user()->profile_picture) : asset('images/default-profile.png') }}" alt="User Image" class="rounded-image1 me-3">
                             <input type="text" name="content" id="commentContent" class="form-control rounded-pill" placeholder="Tuliskan Komentar Anda..." required>
                         </div>
                         <div class="form-actions">

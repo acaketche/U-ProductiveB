@@ -66,28 +66,29 @@
             <h3>My Favorite Posts</h3>
         </div>
         @foreach ($favorites as $post)
-        <div class="card mb-3">
-            <div class="card-header">
-                {{ Carbon\Carbon::parse($post->created_at)->diffForHumans() }}
+            <div class="card mb-3">
+                <div class="card-header">
+                    {{ Carbon\Carbon::parse($post->created_at)->diffForHumans() }}
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">{{ $post->title }}</h5>
+                    <p class="card-text">{{ $post->content }}</p>
+                </div>
+                @if (Auth::check())
+                <div class="card-footer text-muted">
+                    <favorite
+                        :post={{ $post->id }}
+                        :favorited={{ $post->favorited() ? 'true' : 'false' }}
+                        >
+                    </favorite>
+                    <form action="{{ url('/post/' . $post->post_id . '/unfavorite') }}" method="POST">
+                        @csrf
+                        <button type="submit">Hapus dari Favorit</button>
+                    </form>
+                </div>
+                @endif
+                <div colspan="4">You have no favorite product</div>
             </div>
-            <div class="card-body">
-                <h5 class="card-title">{{ $post->title }}</h5>
-                <p class="card-text">{{ $post->content }}</p>
-            </div>
-            @if (Auth::check())
-            <div class="card-footer text-muted">
-                <favorite
-                    :post={{ $post->id }}
-                    :favorited={{ $post->favorited() ? 'true' : 'false' }}
-                    >
-                </favorite>
-                <form action="{{ url('/post/' . $post->post_id . '/unfavorite') }}" method="POST">
-                    @csrf
-                    <button type="submit">Hapus dari Favorit</button>
-                </form>
-            </div>
-            @endif
-        </div>
         @endforeach
     </div>
 </div>

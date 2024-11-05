@@ -5,56 +5,119 @@ namespace App\Http\Controllers;
 use App\Models\Favorite;
 use App\Models\ForumPost;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use Auth;
 
 class FavoriteController extends Controller
 {
-    public function toggle(ForumPost $post)
-    {
-        try {
-            $user = Auth::user();
+    // public function toggleFavorite($postId)
+    // {
+    //     // Dapatkan user ID yang sedang login
+    //     $userId = Auth::id();
 
-            if (!$user) {
-                return response()->json(['message' => 'Unauthorized'], 401);
-            }
+    //     // Cari apakah favorit untuk postingan ini sudah ada
+    //     $favorite = Favorite::where('post_id', $postId)->where('user_id', $userId)->first();
 
-            // Logika untuk menambah atau menghapus postingan dari favorit
-            $user->favorites()->toggle($post->id);
+    //     if ($favorite) {
+    //         // Jika sudah ada, hapus dari favorit
+    //         $favorite->delete();
+    //         $isFavorite = false;
+    //     } else {
+    //         // Jika belum ada, tambahkan ke favorit
+    //         Favorite::create([
+    //             'post_id' => $postId,
+    //             'user_id' => $userId,
+    //         ]);
+    //         $isFavorite = true;
+    //     }
 
-            return response()->json(['message' => 'Favorite updated!'], 200);
-        } catch (\Exception $e) {
-            // Log error di Laravel log dan kembalikan respons 500
-            \Log::error($e->getMessage());
-            return response()->json(['message' => 'An error occurred'], 500);
-        }
-    }
+    //     return response()->json([
+    //         'success' => true,
+    //         'is_favorite' => $isFavorite,
+    //     ]);
+    // }
+
+    // public function index()
+    // {
+    //     $user = auth()->user();
+    //     $favorites = $user->favorites()->with(['article', 'video'])->get();
+
+    //     return view('favorite.index', compact('favorites', 'user'));
+    // }
+
+    // public function favorite(ForumPost $post)
+    // {
+    //     Auth::user()->favorites()->attach($post->id);
+    //     return back();
+    // }
+
+    // public function unfavorite($postId)
+    // {
+    //     $post = ForumPost::findOrFail($postId);
+
+    //     // Hapus dari tabel favorit
+    //     Favorite::where('user_id', Auth::id())
+    //             ->where('post_id', $post->post_id)
+    //             ->delete();
+
+    //     return redirect()->route('favorite.index', ['post' => $postId])
+    //                     ->with('success', 'Post telah dihapus dari favorit');
+    // }
+
+    // public function __construct()
+	// {
+	// 	parent::__construct();
+
+	// 	$this->middleware('auth');
+	// }
 
     public function index()
-    {
+	{
         $user = auth()->user();
         $favorites = $user->favorites()->with(['article', 'video'])->get();
+		$favorites = Favorite::where('user_id', \Auth::user()->id)
+			->orderBy('created_at', 'desc')->paginate(10);
 
-        return view('favorite.index', compact('favorites', 'user'));
-    }
+		$this->data['favorites'] = $favorites;
 
-    public function favorite(ForumPost $post)
-    {
-        Auth::user()->favorites()->attach($post->id);
-        return back();
-    }
+		return view('favorite.index', compact('favorites', 'user'));
+	}
 
-    public function unfavorite($postId)
-    {
-        $post = ForumPost::findOrFail($postId);
+    public function store(Request $request)
+	{
+		$request->validate(
+			[
+				'product_slug' => 'required',
+			]
+		);
 
-        // Hapus dari tabel favorit
-        Favorite::where('user_id', Auth::id())
-                ->where('post_id', $post->post_id)
-                ->delete();
+		$product = Product::where('slug', $request->get('product_slug'))->firstOrFail();
 
-        return redirect()->route('favorite.index', ['post' => $postId])
-                        ->with('success', 'Post telah dihapus dari favorit');
-    }
-    
+		$favorite = Favorite::where('user_id', \Auth::user()->id)
+			->where('product_id', $product->id)
+			->first();
+		if ($favorite) {
+			return response('You have added this product to your favorite before', 422);
+		}
+
+		Favorite::create(
+			[
+				'user_id' => \Auth::user()->id,
+				'product_id' => $product->id,
+			]
+		);
+
+		return response('The product has been added to your favorite', 200);
+	}
+
+    public function destroy($id)
+	{
+		$favorite = Favorite::findOrFail($id);
+		$favorite->delete();
+
+		\Session::flash('success', 'Your favorite has been removed');
+
+		return redirect('favorites');
+	}
+
+
 }
-

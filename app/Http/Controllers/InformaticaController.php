@@ -75,45 +75,5 @@ class InformaticaController extends Controller
         return redirect()->route('informatica.index')->with('success', 'Informatica item added successfully.');
     }
 
-
-    // Method untuk membuat thumbnail PDF
-    private function generateThumbnail($path)
-    {
-        $thumbnailPath = 'thumbnails/' . basename($path, '.pdf') . '.jpg';
-
-        if (!Storage::exists($thumbnailPath)) {
-            $pdfFullPath = storage_path('public/storage/' . $path);
-
-            $imagick = new \Imagick();
-            $imagick->setResolution(300, 300);
-            $imagick->readImage($pdfFullPath . '[0]');
-            $imageData = $imagick->getImageBlob();
-            $imagick->clear();
-            $imagick->destroy();
-
-            $image = Image::make($imageData);
-            $image->resize(300, null, function ($constraint) {
-                $constraint->aspectRatio();
-            });
-
-            $image->save(storage_path('public/storage/' . $thumbnailPath));
-        }
-
-        return $thumbnailPath;
-    }
-
-    public function moveFile($path)
-    {
-        // Memeriksa apakah file ada di storage/app/public/file_pdfs
-        if (Storage::disk('public')->exists('file_pdfs/' . $path)) {
-            // Memindahkan file dari storage/app/public/file_pdfs ke public/storage/file_pdfs
-            Storage::disk('public')->move('file_pdfs/' . $path, 'file_pdfs/' . $path);
-
-            return response()->json(['message' => 'File berhasil dipindahkan'], 200);
-        }
-
-        return response()->json(['message' => 'File tidak ditemukan'], 404);
-    }
-
 }
 
