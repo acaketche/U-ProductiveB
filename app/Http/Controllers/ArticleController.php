@@ -8,6 +8,8 @@ use App\Models\History;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
+use PDF;
+use Illuminate\Support\Facades\Storage;
 
 class ArticleController extends Controller
 {
@@ -148,14 +150,61 @@ class ArticleController extends Controller
     }
 
     // Menampilkan daftar artikel untuk admin
-    public function kelolaArtikel(Request $request)
-    {
+    private function exportArticlePDF($articles)
+{
+    // Memastikan relasi di-load
+    $articles->load(['user', 'category']);
 
-        $query = Article::with('category');
-        $articles = $query->paginate(20);
-        return view('admin.kelola-artikel', compact('articles'));
+    $data = [
+        'articles' => $articles,
+        'exported_at' => now()->format('d-m-Y H:i:s')
+    ];
+
+    $pdf = PDF::loadView('admin.pdf.articles', $data);
+
+    $filename = 'articles-report-' . time() . '.pdf';
+    Storage::put('public/temp/' . $filename, $pdf->output());
+
+    return response()->download(storage_path('app/public/temp/' . $filename))
+        ->deleteFileAfterSend(true);
+}
+
+public function kelolaArtikel(Request $request)
+{
+    $query = Article::with(['category', 'user']);
+
+    // Search
+    if ($request->filled('search')) {
+        $search = $request->search;
+        $query->where(function($q) use ($search) {
+            $q->where('title', 'LIKE', "%{$search}%")
+              ->orWhere('article_id', 'LIKE', "%{$search}%")
+              ->orWhere('user_id', 'LIKE', "%{$search}%");
+        });
     }
 
+    // Filter by date range
+    if ($request->filled(['start_date', 'end_date'])) {
+        $start = Carbon::parse($request->start_date)->startOfDay();
+        $end = Carbon::parse($request->end_date)->endOfDay();
+        $query->whereBetween('created_at', [$start, $end]);
+    }
+
+    // Filter by status
+    if ($request->filled('status')) {
+        $query->where('status', $request->status);
+    }
+
+    // Export PDF
+    if ($request->has('export')) {
+        return $this->exportArticlePDF($query->get());
+    }
+
+    // Pagination dengan query parameters
+    $articles = $query->latest()->paginate(10)->withQueryString();
+
+    return view('admin.kelola-artikel', compact('articles'));
+}
 
     // Menyetujui artikel
     public function approve($id)

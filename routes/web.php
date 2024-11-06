@@ -77,7 +77,7 @@ Route::middleware('role:admin')->group(function() {
     Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
 
     // User Management
-    Route::get('/admin/kelola-user', [UserController::class, 'kelolaUser'])->name('kelola.user');
+    Route::get('/admin/kelola-user', [Admincontroller::class, 'kelolaUser'])->name('kelola.user');
     Route::delete('/user/{id}', [UserController::class, 'destroy'])->name('delete-user');
 
     // Category Management
