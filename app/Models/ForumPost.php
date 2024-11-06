@@ -25,9 +25,9 @@ class ForumPost extends Model
 
    // Relasi dengan model User
    public function user()
-   {
-       return $this->belongsTo(User::class, 'user_id');
-   }
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
 
     // Relasi dengan model Comment
 
@@ -56,6 +56,11 @@ class ForumPost extends Model
         // Misalkan Anda punya tabel favorites dengan kolom user_id dan post_id
         return $this->hasOne(Favorite::class, 'post_id')
                     ->where('user_id', Auth::id());
+    }
+
+    public function favorites()
+    {
+        return $this->belongsToMany(ForumPost::class, 'favorites', 'user_id', 'post_id');
     }
 
 }

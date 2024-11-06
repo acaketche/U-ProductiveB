@@ -16,50 +16,49 @@ class ArticleController extends Controller
 
     // Menampilkan daftar artikel
     public function index(Request $request)
-    {
-        \Log::info('Accessed articles.index');
-        // Ambil nilai pencarian, kategori, dan waktu
-        $search = $request->input('search');
-        $category = $request->input('category');
-        $time = $request->input('time');
+{
+    \Log::info('Accessed articles.index');
+    // Ambil nilai pencarian, kategori, dan waktu
+    $search = $request->input('search');
+    $time = $request->input('time');
 
-        // Mulai query
-        $query = Article::query();
+    // Mulai query
+    $query = Article::query();
 
-        $query->where('status','approved');
+    $query->where('status', 'approved');
 
-        // Filter berdasarkan pencarian
-        if ($search) {
-            $query->where('title', 'like', '%' . $search . '%');
-        }
-
-
-        // Filter berdasarkan kategori
-        if ($category) {
-            $query->where('category_id', $category);
-        }
-
-        // Filter berdasarkan waktu (contoh sederhana)
-        if ($time == '24 Jam') {
-            $query->where('created_at', '>=', now()->subDay());
-        } elseif ($time == '1 Minggu') {
-            $query->where('created_at', '>=', now()->subWeek());
-        } elseif ($time == '1 Bulan') {
-            $query->where('created_at', '>=', now()->subMonth());
-        }
-
-        // Urutkan berdasarkan artikel terbaru
-        $query->orderBy('created_at', 'desc');
-
-        // Ambil hasil dengan pagination
-        $articles = $query->paginate(6);
-
-        // Ambil data kategori dari database
-        $categories = Category::all();
-
-        // Kirim data ke view
-        return view('articles.index', compact('articles', 'categories'));
+    // Filter berdasarkan pencarian
+    if ($search) {
+        $query->where('title', 'like', '%' . $search . '%');
     }
+
+    // Filter berdasarkan kategori
+    if ($request->filled('category_id')) {
+        $query->where('category_id', $request->input('category_id'));
+    }
+
+    // Filter berdasarkan waktu
+    if ($time == '24 Jam') {
+        $query->where('created_at', '>=', now()->subDay());
+    } elseif ($time == '1 Minggu') {
+        $query->where('created_at', '>=', now()->subWeek());
+    } elseif ($time == '1 Bulan') {
+        $query->where('created_at', '>=', now()->subMonth());
+    }
+
+    // Urutkan berdasarkan artikel terbaru
+    $query->orderBy('created_at', 'desc');
+
+    // Ambil hasil dengan pagination
+    $articles = $query->paginate(6);
+
+    // Ambil data kategori dari database
+    $categories = Category::all();
+
+    // Kirim data ke view
+    return view('articles.index', compact('articles', 'categories'));
+}
+
 
     public function __construct()
 {

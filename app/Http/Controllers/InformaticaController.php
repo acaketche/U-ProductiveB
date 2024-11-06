@@ -7,12 +7,14 @@ use App\Models\Category;
 use Illuminate\Http\Request;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
 
 class InformaticaController extends Controller
 {
     public function index(Request $request)
     {
         $categories = Category::all();
+
         $query = Informatica::query();
 
         // Filter pencarian
@@ -28,11 +30,11 @@ class InformaticaController extends Controller
         // Filter berdasarkan waktu
         if ($request->filled('time')) {
             if ($request->time === '24 Jam') {
-                $query->where('created_at', '>=', now()->subDay());
+                $query->where('create_at', '>=', now()->subDay());
             } elseif ($request->time === '1 Minggu') {
-                $query->where('created_at', '>=', now()->subWeek());
+                $query->where('create_at', '>=', now()->subWeek());
             } elseif ($request->time === '1 Bulan') {
-                $query->where('created_at', '>=', now()->subMonth());
+                $query->where('create_at', '>=', now()->subMonth());
             }
         }
 
@@ -43,7 +45,15 @@ class InformaticaController extends Controller
 
     public function show($id)
     {
-        $informatics = Informatica::findOrFail($id);
+        $informatics = Informatica::with('user', 'category')->findOrFail($id);
+
+        // Simpan riwayat ke tabel histories
+        // History::create([
+        //     'user_id' => auth()->id(),
+        //     'if_id' => $informatics->if_id, // Pastikan menggunakan primary key yang benar
+        //     'viewed_at' => now(),
+        // ]);
+
         return view('informatics.show', compact('informatics'));
     }
 
@@ -64,55 +74,26 @@ class InformaticaController extends Controller
         // Simpan file PDF ke folder file_pdfs di storage/public
         $path = $request->file('file_pdf')->store('file_pdfs', 'public');
 
-        // Simpan informasi ke database
+        // Inisialisasi instance baru dari model Informatica
+        $informatics = new Informatica;
+        $informatics->title = $request->input('title');
+        $informatics->category_id = $request->input('category_id');
+        $informatics->file_pdf = $path;
+        $informatics->user_id = Auth::id();  // Tambahkan ID pengguna yang sedang login
+        // $article->status = 'rejected';  // Set status artikel ke 'pending' atau 'waiting for approval'
 
-        Informatica::create([
-            'title' => $request->title,
-            'file_pdf' => $path, // Simpan path file PDF
-            'category_id' => $request->category_id,
-        ]);
+        // Simpan informatica ke database
+        $informatics->save();
+
+        // Simpan informasi ke database
+        // Informatica::create([
+        //     'title' => $request->title,
+        //     'file_pdf' => $path,
+        //     'category_id' => $request->category_id,
+        //     'user_id' => Auth::id(), // Menyimpan ID pengguna yang login
+        // ]);
 
         return redirect()->route('informatica.index')->with('success', 'Informatica item added successfully.');
-    }
-
-
-    // Method untuk membuat thumbnail PDF
-    private function generateThumbnail($path)
-    {
-        $thumbnailPath = 'thumbnails/' . basename($path, '.pdf') . '.jpg';
-
-        if (!Storage::exists($thumbnailPath)) {
-            $pdfFullPath = storage_path('public/storage/' . $path);
-
-            $imagick = new \Imagick();
-            $imagick->setResolution(300, 300);
-            $imagick->readImage($pdfFullPath . '[0]');
-            $imageData = $imagick->getImageBlob();
-            $imagick->clear();
-            $imagick->destroy();
-
-            $image = Image::make($imageData);
-            $image->resize(300, null, function ($constraint) {
-                $constraint->aspectRatio();
-            });
-
-            $image->save(storage_path('public/storage/' . $thumbnailPath));
-        }
-
-        return $thumbnailPath;
-    }
-
-    public function moveFile($path)
-    {
-        // Memeriksa apakah file ada di storage/app/public/file_pdfs
-        if (Storage::disk('public')->exists('file_pdfs/' . $path)) {
-            // Memindahkan file dari storage/app/public/file_pdfs ke public/storage/file_pdfs
-            Storage::disk('public')->move('file_pdfs/' . $path, 'file_pdfs/' . $path);
-
-            return response()->json(['message' => 'File berhasil dipindahkan'], 200);
-        }
-
-        return response()->json(['message' => 'File tidak ditemukan'], 404);
     }
 
 }

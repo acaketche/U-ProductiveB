@@ -66,7 +66,7 @@
                                         @csrf
                                         @method('DELETE')
                                         <button class="btn btn-danger btn-sm" type="submit" onclick="return confirm('Apakah Anda yakin ingin menghapus user ini?')">
-                                            <i class="bi bi-trash"></i>
+                                            <i class="bi bi-trash"></i> Hapus
                                         </button>
                                     </form>
                                 </td>
