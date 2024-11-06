@@ -19,7 +19,7 @@
         <div class="card-body">
             <h1 class="card-title">{{ $article->title }}</h1>
             <p class="card-text">
-                <strong>Author:</strong> {{ $article->author }} <br>
+                <strong>Author:</strong> {{ $article->user->name }} <br>
                 <strong>Category:</strong> {{ $article->category->name }} <br>
                 <strong>Published on:</strong> {{ Carbon::parse($article->created_at)->format('F j, Y') }}
             </p>

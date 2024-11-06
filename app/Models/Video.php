@@ -13,7 +13,7 @@ class Video extends Model
 
     protected $table = 'videos';
     protected $primaryKey = 'video_id';
-    public $timestamps = true;
+    public $timestamps = false;
 
     protected $fillable = [
         'title',

@@ -1,21 +1,18 @@
 @extends('layout.navbar-guest')
 
 @section('content')
-
-<script src="{{ asset('js/pdf-thumbnail.js') }}"></script>
-
 <div class="container mt-4">
     <div class="d-flex justify-content-center align-items-center mb-4">
-        <button class="btn btn-primary me-2" onclick="window.location.href='{{ route('teknik_sipil.create') }}';">
+        <button class="btn btn-primary me-2" onclick="window.location.href='{{route ('informatica.create')}}';">
             <i class="bi bi-plus me-2"></i>Tambah
         </button>
         <div class="d-flex">
-            <!-- Form to handle search and filter -->
-            <form action="{{ route('teknik_sipil.index') }}" method="GET" class="d-flex">
-                <!-- Search input -->
-                <input type="text" name="search" class="form-control me-2" placeholder="Cari Teknik Sipil" value="{{ request('search') }}">
+            <!-- Form untuk pencarian dan filter -->
+            <form action="{{ route('informatica.index') }}" method="GET" class="d-flex">
+                <!-- Input pencarian -->
+                <input type="text" name="search" class="form-control me-2" placeholder="Cari Informatika" value="{{ request('search') }}">
 
-                <!-- Filter Dropdown -->
+                <!-- Dropdown Filter -->
                 <div class="dropdown">
                     <button class="btn btn-outline-primary dropdown-toggle" type="button" id="filterDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                         Filter
@@ -44,11 +41,11 @@
                             </div>
                         </div>
                         <div class="d-flex justify-content-between mt-3">
-                            <!-- Clear filters button  -->
-                            <a href="{{ route('teknik_sipil.index') }}" class="btn btn-link text-danger p-0">Bersihkan filter</a>
+                            <!-- Tombol untuk membersihkan filter -->
+                            <a href="{{ route('informatica.index') }}" class="btn btn-link text-danger p-0">Bersihkan filter</a>
                             <div>
                                 <button type="button" class="btn btn-outline-secondary btn-sm me-2" data-bs-dismiss="dropdown">Batal</button>
-                                <!-- Apply filters button -->
+                                <!-- Tombol untuk menerapkan filter -->
                                 <button type="submit" class="btn btn-primary btn-sm">Terapkan</button>
                             </div>
                         </div>
@@ -59,15 +56,15 @@
     </div>
 
     <div class="row">
-        @foreach ($teknik_sipils as $teknik_sipil)
+        @foreach ($informatics as $informatica)
         <div class="col-md-4 mb-4">
             <div class="card h-100 position-relative">
-                <!-- Gambar cover PDF -->
-                <a href="{{ route('teknik_sipil.show', $teknik_sipil->ts_id) }}">
-            <img data-pdf-thumbnail-file="{{ asset('storage/' . $teknik_sipil->file_pdf) }}" data-pdf-thumbnail-width="500" width="350" height="300">
+                <!-- Gambar dengan tautan -->
+                <a href="{{ route('informatica.show', $informatica->if_id) }}">
+                    <img src="{{ Storage::url($informatica->file_pdf) }}" class="card-img-top" alt="{{ $informatica->title }}">
                 </a>
                 <div class="card-body">
-                    <h5 class="card-title">{{ $teknik_sipil->title }}</h5>
+                    <h5 class="card-title">{{ $informatica->title }}</h5>
                 </div>
             </div>
         </div>
@@ -76,17 +73,55 @@
 
     <!-- Pagination -->
     <nav aria-label="Page navigation">
-    {{ $teknik_sipils->links('pagination::bootstrap-5') }}
+        {{ $informatics->links('pagination::bootstrap-5') }}
     </nav>
 </div>
 @endsection
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset('style/teknik_sipil.css') }}">
+<link rel="stylesheet" href="{{ asset('style/informatica.css') }}">
 @endpush
 
-<!-- Tambahkan file JavaScript pdf-thumbnail.js -->
-    <script
-            src="{{ asset('storage/pdfThumbnails.js') }}"
-            data-pdfjs-src= "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.5.207/pdf.js">
-    </script>
+@push('scripts')
+<script src="https://mozilla.github.io/pdf.js/build/pdf.js"></script>
+
+<script>
+    // Path untuk library PDF.js
+    var pdfjsLib = window['pdfjs-dist/build/pdf'];
+    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://chrome.github.io/pdf.js/build/pdf.worker.js';
+
+
+    // Fungsi untuk menampilkan thumbnail
+    function renderPDF(url, canvasId) {
+        var pdfUrl = '/path/to/pdf/' + pdfFile.file_pdfs;
+        var loadingTask = pdfjsLib.getDocument(url);
+        loadingTask.promise.then(function(pdf) {
+            // Ambil halaman pertama PDF
+            pdf.getPage(1).then(function(page) {
+                var scale = 1.5;
+                var viewport = page.getViewport({scale: scale});
+
+                // Setup canvas untuk thumbnail
+                var canvas = document.getElementById(canvasId);
+                var context = canvas.getContext('2d');
+                canvas.height = viewport.height;
+                canvas.width = viewport.width;
+
+                // Render halaman pertama PDF ke dalam canvas
+                var renderContext = {
+                    canvasContext: context,
+                    viewport: viewport
+                };
+                page.render(renderContext);
+            });
+        });
+    }
+
+    // Panggil fungsi untuk setiap PDF
+    @foreach($informatics as $informatica)
+        renderPDF("{{ asset('storage/' . $informatica->file_pdf) }}", "pdf-thumbnail-{{ $informatica->if_id }}");
+    @endforeach
+</script>
+
+@endpush
+

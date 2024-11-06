@@ -74,14 +74,10 @@ class TeknikSipilController extends Controller
         // Simpan file PDF ke folder storage/app/public/pdfs
         $pdfPath = $request->file('file_pdf')->store('pdfs', 'public');
 
-        // Generate thumbnail secara otomatis dari PDF
-        $thumbnailPath = $this->generateThumbnail(storage_path('app/public/' . $pdfPath));
-
         // Simpan data ke database
         TeknikSipil::create([
             'title' => $request->title,
             'file_pdf' => $pdfPath,
-            'thumbnail_path' => $thumbnailPath, // Simpan path thumbnail yang dihasilkan
             'category_id' => $request->category_id,
         ]);
 
@@ -89,32 +85,34 @@ class TeknikSipilController extends Controller
     }
 
     // Fungsi untuk menghasilkan thumbnail dari PDF
-    public function generateThumbnail($pdfPath)
+    private function generateThumbnail($path)
     {
-        $thumbnailName = 'thumbnail_' . Str::random(10) . '.jpg';
-        $thumbnailPath = storage_path('app/public/thumbnails/' . $thumbnailName);
+        // Path thumbnail
+        $thumbnailPath = 'thumbnails/' . basename($path, '.file_pdf') . '.jpg';
 
-        // Membuat direktori thumbnails jika belum ada
-        if (!file_exists(storage_path('app/public/thumbnails'))) {
-            mkdir(storage_path('app/public/thumbnails'), 0755, true);
+        // Buat thumbnail jika belum ada
+        if (!\Storage::exists($thumbnailPath)) {
+            $pdfFullPath = storage_path('app/public/' . $path);
+
+            // Mengambil halaman pertama dari PDF menggunakan Imagick
+            $imagick = new \Imagick();
+            $imagick->setResolution(300, 300);
+            $imagick->readImage($pdfFullPath . '[0]');
+            $imageData = $imagick->getImageBlob();
+            $imagick->clear();
+            $imagick->destroy();
+
+            // Konversi ke format gambar menggunakan Intervention Image
+            $image = Image::make($imageData);
+            $image->resize(300, null, function ($constraint) {
+                $constraint->aspectRatio();
+            });
+
+            // Simpan thumbnail
+            $image->save(storage_path('app/public/' . $thumbnailPath));
         }
 
-        // Jika Imagick tersedia, gunakan untuk membuat thumbnail
-        if (extension_loaded('imagick')) {
-            try {
-                $imagick = new \Imagick();
-                $imagick->setResolution(150, 150); // Resolusi thumbnail
-                $imagick->readImage($pdfPath . '[0]'); // Halaman pertama PDF
-                $imagick->setImageFormat('jpg');
-                $imagick->writeImage($thumbnailPath);
-                return 'thumbnails/' . $thumbnailName;
-            } catch (\Exception $e) {
-                // Log error jika perlu
-                return null;
-            }
-        }
-
-        return null;
+        return $thumbnailPath;
     }
 
     // Menampilkan detail data

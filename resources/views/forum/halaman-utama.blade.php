@@ -45,8 +45,8 @@
 
                     <div class="comment-section">
                         <!-- Ikon bintang untuk menambahkan favorite -->
-                        <i class="bi {{ $post->is_favorite ? 'bi-star-fill' : 'bi-star' }} favorite-icon" 
-                           style="font-size: 1.5em; cursor: pointer; color: {{ $post->is_favorite ? 'gold' : 'gray' }};" 
+                        <i class="bi {{ $post->is_favorite ? 'bi-star-fill' : 'bi-star' }} favorite-icon"
+                           style="font-size: 1.5em; cursor: pointer; color: {{ $post->is_favorite ? 'gold' : 'gray' }};"
                            data-post-id="{{ $post->post_id }}"></i>
 
                         <!-- Form untuk menambahkan komentar -->

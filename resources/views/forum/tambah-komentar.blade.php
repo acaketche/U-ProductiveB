@@ -1,43 +1,10 @@
-<!DOCTYPE html>
-<html lang="id">
+@extends('layout.navbar-guest')
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tambah Komentar - Forum U-Productive</title>
-    <!-- Gunakan asset helper untuk memuat CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
-    <link href="{{ asset('style/forum.css') }}" rel="stylesheet">
-</head>
+@push('styles')
+    <link rel="stylesheet" href="{{asset('style/forum.css')}}">
+@endpush
 
-<body>
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-custom">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#">
-                <img src="{{ asset('logo.png') }}" >
-                U-Productive
-            </a>
-            <ul class="navbar-nav ms-auto d-flex flex-row mb-2 mb-lg-0">
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('articles.index') }}">Artikel</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('video.index') }}">Video</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link active text-black" href="{{ route('forum.index') }}">Forum</a>
-                </li>
-            </ul>
-            <a href="#" class="navbar-icon">
-                <img src="{{ asset('https://via.placeholder.com/24') }}" alt="User Icon">
-            </a>
-        </div>
-    </nav>
+@section('content')
 
     <div class="container-fluid mt-4">
         <div class="row">
@@ -67,7 +34,7 @@
                         <!-- Mengirimkan ID postingan sebagai input tersembunyi -->
                         <input type="hidden" name="post_id" value="{{ $post->post_id }}">
                         <div class="d-flex mb-3">
-                            <img src="{{ asset('https://via.placeholder.com/50') }}" alt="User Image" class="rounded-image1 me-3">
+                            <img src="{{ Auth::user() && Auth::user()->profile_picture ? Storage::url(Auth::user()->profile_picture) : asset('images/default-profile.png') }}"  alt="User Image" class="rounded-image">
                             <input type="text" name="content" id="commentContent" class="form-control rounded-pill" placeholder="Tuliskan Komentar Anda..." required>
                         </div>
                         <div class="form-actions">
@@ -90,11 +57,6 @@
                                 @else
                                     <p class="card-text">User Tidak Ditemukan</p>
                                 @endif
-                                <p class="card-text">
-                                    <small class="text-muted">
-                                        {{ date('d M Y', strtotime($comment->created_at)) }}
-                                    </small>
-                                </p>
                                 <p class="card-text">{{ $comment->content }}</p>
                             </div>
                         </div>
@@ -127,20 +89,11 @@
                         console.log(response); // Tambahkan ini untuk debugging
                         // Pastikan respons server sesuai dengan apa yang Anda harapkan
                         if (response) {
-                            // Format waktu di sisi klien
-                            var formattedDate = new Date(response.created_at).toLocaleDateString('id-ID', {
-                                day: 'numeric',
-                                month: 'short',
-                                year: 'numeric'
-                            });
 
                             var commentHtml = `
                                 <div class="card mb-3">
                                     <div class="card-body">
                                         <p>${response.user.name}</p>
-                                        <p class="card-text">
-                                            <small class="text-muted">${response.created_at}</small>
-                                        </p>
                                         <p class="card-text">${response.content}</p>
                                     </div>
                                 </div>
@@ -157,6 +110,4 @@
         });
 
     </script>
-</body>
-
-</html>
+@endsection

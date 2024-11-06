@@ -47,6 +47,11 @@ class VideoController extends Controller
 }
 
 
+public function __construct()
+{
+    // Tambahkan middleware auth untuk method tertentu
+    $this->middleware('auth')->only(['create', 'store']);
+}
     public function create()
     {
         // Ambil data kategori dari database
@@ -108,11 +113,11 @@ class VideoController extends Controller
         $video_Id = $this->extractYouTubeId($video->url); // Mendapatkan ID YouTube dari
 
          // Simpan riwayat ke tabel histories
-    History::create([
-        'user_id' => auth()->id(),
-        'video_id' => $video->video_id,
-        'viewed_at' => now(),
-    ]);
+         History::create([
+            'user_id' => auth()->id(),
+            'video_id' => $id,
+            'viewed_at' => now(),
+        ]);
 
         return view('video.show', compact('video', 'video_Id')); // Mengirimkan data video dan video_Id ke view
     }
@@ -121,7 +126,7 @@ class VideoController extends Controller
     private function extractYouTubeId($url)
     {
         preg_match('/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/i', $url, $matches);
-        return $matches[1] ?? null; // Return ID atau null jika tidak ditemukan
+        return $matches[1] ?? null;
     }
     public function kelolaVideo()
         {
@@ -146,7 +151,7 @@ class VideoController extends Controller
             return redirect()->route('kelola.video')->with('success', 'Artikel berhasil ditolak!');
         }
 
-    // Menghapus artikel
+
     public function destroy($id)
     {
         $video = Video::findOrFail($id);

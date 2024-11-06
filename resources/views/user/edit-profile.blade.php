@@ -1,7 +1,4 @@
-@extends('layout.navbar-user')
-
-@section('judul', 'Edit Profile')
-
+@extends('layout.navbar-guest')
 @section('content')
 <div class="container mt-4">
     <h1>Edit Profile</h1>
@@ -39,15 +36,16 @@
             <input type="email" name="email" id="email" class="form-control" value="{{ old('email', $user->email) }}" required>
         </div>
 
-        <!-- Input Password Lama -->
         <div class="mb-3">
-            <label for="current_password" class="form-label">Password Lama</label>
-            <input type="password" name="current_password" id="current_password" class="form-control" required>
-            <small class="form-text text-muted">Masukkan password saat ini sebelum mengubah password baru.</small>
-
-            <label for="password" class="form-label">Password</label>
+            <label for="password" class="form-label">New Password</label>
             <input type="password" name="password" id="password" class="form-control">
-            <small class="form-text text-muted">Kosongkan jika tidak ingin mengubah password.</small>
+            <small class="form-text text-muted">Leave blank if you do not want to change the password.</small>
+        </div>
+
+        <!-- Input Konfirmasi Password Baru -->
+        <div class="mb-3">
+            <label for="password_confirmation" class="form-label">Confirm New Password</label>
+            <input type="password" name="password_confirmation" id="password_confirmation" class="form-control">
         </div>
 
         <!-- Input Foto Profil -->

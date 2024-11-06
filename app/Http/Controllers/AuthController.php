@@ -54,46 +54,44 @@ class AuthController extends Controller
     }
 
     public function login(Request $request)
-    {
-        // Validasi input
-        $request->validate([
-            'name' => 'required|string',
-            'password' => 'required|string',
-        ]);
+{
+    // Validasi input
+    $request->validate([
+        'name' => 'required|string',
+        'password' => 'required|string',
+    ]);
 
-        // Ambil input name dan password
-        $credentials = $request->only('name', 'password');
-        Log::info('Login attempt', $credentials);
+    // Ambil input name dan password
+    $credentials = $request->only('name', 'password');
 
-        // Cari user berdasarkan name
-        $user = User::where('name', $credentials['name'])->first();
+    // Cari user berdasarkan name
+    $user = User::where('name', $credentials['name'])->first();
 
-        // Verifikasi user dan password
-        if ($user && Hash::check($credentials['password'], $user->password)) {
-            // Set session untuk login user
-            auth()->login($user);
+    // Verifikasi user dan password
+    if ($user && Hash::check($credentials['password'], $user->password)) {
+        // Set session untuk login user
+        auth()->login($user);
 
-            // Regenerate session untuk keamanan
-            $request->session()->regenerate();
+        // Regenerate session untuk keamanan
+        $request->session()->regenerate();
 
-            // Cek role dan redirect ke halaman sesuai
-            if ($user->hasRole('admin')) {
-                return redirect()->intended('/admin/dashboard');
-            } elseif ($user->hasRole('mahasiswa')) {
-                return redirect()->intended('/userprofile');
-            } elseif ($user->hasRole('dosen')) {
-                return redirect()->intended('/userprofile');
-            } else {
-                return redirect()->intended('/home');
-            }
-
+        // Cek role dan redirect ke halaman sesuai
+        if ($user->hasRole('admin')) {
+            return redirect()->intended('/admin/dashboard');
+        } elseif ($user->hasRole('mahasiswa')) {
+            return redirect()->intended('/userprofile');
+        } elseif ($user->hasRole('dosen')) {
+            return redirect()->intended('/userprofile');
+        } else {
+            return redirect()->intended('/home');
+        }
+    } else {
         // Jika login gagal
         return back()->withErrors([
-            'name' => 'The provided credentials do not match our records.',
+            'name' => 'Username atau password tidak valid. Silakan coba lagi.',
         ])->onlyInput('name');
     }
 }
-
 
     public function logout(Request $request)
     {

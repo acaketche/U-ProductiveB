@@ -1,19 +1,16 @@
 @extends('layout.navbar-guest')
 
 @section('content')
-
-<script src="{{ asset('js/pdf-thumbnail.js') }}"></script>
-
 <div class="container mt-4">
     <div class="d-flex justify-content-center align-items-center mb-4">
-        <button class="btn btn-primary me-2" onclick="window.location.href='{{ route('teknik_sipil.create') }}';">
+        <button class="btn btn-primary me-2" onclick="window.location.href='{{ route('teknik_computer.create') }}';">
             <i class="bi bi-plus me-2"></i>Tambah
         </button>
         <div class="d-flex">
             <!-- Form to handle search and filter -->
-            <form action="{{ route('teknik_sipil.index') }}" method="GET" class="d-flex">
+            <form action="{{ route('teknik_computer.index') }}" method="GET" class="d-flex">
                 <!-- Search input -->
-                <input type="text" name="search" class="form-control me-2" placeholder="Cari Teknik Sipil" value="{{ request('search') }}">
+                <input type="text" name="search" class="form-control me-2" placeholder="Cari Tugas Akhir" value="{{ request('search') }}">
 
                 <!-- Filter Dropdown -->
                 <div class="dropdown">
@@ -44,8 +41,8 @@
                             </div>
                         </div>
                         <div class="d-flex justify-content-between mt-3">
-                            <!-- Clear filters button  -->
-                            <a href="{{ route('teknik_sipil.index') }}" class="btn btn-link text-danger p-0">Bersihkan filter</a>
+                            <!-- Clear filters button -->
+                            <a href="{{ route('teknik_computer.index') }}" class="btn btn-link text-danger p-0">Bersihkan filter</a>
                             <div>
                                 <button type="button" class="btn btn-outline-secondary btn-sm me-2" data-bs-dismiss="dropdown">Batal</button>
                                 <!-- Apply filters button -->
@@ -59,15 +56,15 @@
     </div>
 
     <div class="row">
-        @foreach ($teknik_sipils as $teknik_sipil)
+        @foreach ($teknik_computers as $teknik_computer)
         <div class="col-md-4 mb-4">
             <div class="card h-100 position-relative">
                 <!-- Gambar cover PDF -->
-                <a href="{{ route('teknik_sipil.show', $teknik_sipil->ts_id) }}">
-            <img data-pdf-thumbnail-file="{{ asset('storage/' . $teknik_sipil->file_pdf) }}" data-pdf-thumbnail-width="500" width="350" height="300">
+                <a href="{{ route('teknik_computer.show', $teknik_computer->tk_id) }}">
+                    <img src="{{ asset('storage/' . $teknik_computer->thumbnail_path) }}" class="card-img-top" alt="{{ $teknik_computer->title }}">
                 </a>
                 <div class="card-body">
-                    <h5 class="card-title">{{ $teknik_sipil->title }}</h5>
+                    <h5 class="card-title">{{ $teknik_computer->title }}</h5>
                 </div>
             </div>
         </div>
@@ -76,7 +73,7 @@
 
     <!-- Pagination -->
     <nav aria-label="Page navigation">
-    {{ $teknik_sipils->links('pagination::bootstrap-5') }}
+    {{ $teknik_computers->links('pagination::bootstrap-5') }}
     </nav>
 </div>
 @endsection
@@ -84,9 +81,3 @@
 @push('styles')
 <link rel="stylesheet" href="{{ asset('style/teknik_sipil.css') }}">
 @endpush
-
-<!-- Tambahkan file JavaScript pdf-thumbnail.js -->
-    <script
-            src="{{ asset('storage/pdfThumbnails.js') }}"
-            data-pdfjs-src= "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.5.207/pdf.js">
-    </script>
