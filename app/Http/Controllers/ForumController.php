@@ -18,7 +18,7 @@ class ForumController extends Controller
     public function index()
     {
         // Mengambil semua forum post dengan relasi yang diperlukan
-        $posts = ForumPost::orderBy('created_at', 'desc')->get();
+        $posts = ForumPost::with('user')->orderBy('created_at', 'desc')->get();
 
         $user = Auth::user();
 

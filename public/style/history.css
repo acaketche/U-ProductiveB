@@ -11,7 +11,7 @@ body {
     left: 0;
     width: 100%;
     z-index: 1000;
-    background: linear-gradient(45deg, #7096e9 0%, #6f93c9 99%, #a0c1f3 100%);
+    background: linear-gradient(45deg, #a570e9 40%, #6f9dc9 99%, #a0c1f3 100%);
     padding: 0.7rem 1rem;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }

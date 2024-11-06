@@ -12,12 +12,18 @@ class History extends Model
     protected $primaryKey = 'history_id';
     public $timestamps = false;
 
-    protected $fillable = ['user_id', 'article_id', 'video_id', 'viewed_at'];
+    protected $fillable = ['user_id', 'article_id', 'video_id', 'ts_id' , 'viewed_at'];
 
     // Relasi ke model User
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    // Relasi ke model TeknikSipil
+    public function teknik_sipil()
+    {
+        return $this->belongsTo(TeknikSipil::class, 'teknik_sipil_id');
     }
 
     // Di dalam model History
@@ -29,11 +35,6 @@ public function article()
 public function video()
 {
     return $this->belongsTo(Video::class, 'video_id');
-}
-
-public function forumPost()
-{
-    return $this->belongsTo(ForumPost::class, 'post_id');
 }
 
 }

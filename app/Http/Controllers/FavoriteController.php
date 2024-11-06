@@ -9,23 +9,25 @@ use Illuminate\Support\Facades\Auth;
 
 class FavoriteController extends Controller
 {
-    public function toggle(ForumPost $post)
+    public function toggle(Request $request)
     {
-        try {
-            $user = Auth::user();
+        $postId = $request->input('post_id');
+        $userId = Auth::id(); // Dapatkan ID user yang sedang login
 
-            if (!$user) {
-                return response()->json(['message' => 'Unauthorized'], 401);
-            }
+        // Cek apakah postingan sudah difavoritkan oleh user
+        $favorite = Favorite::where('post_id', $postId)->where('user_id', $userId)->first();
 
-            // Logika untuk menambah atau menghapus postingan dari favorit
-            $user->favorites()->toggle($post->id);
-
-            return response()->json(['message' => 'Favorite updated!'], 200);
-        } catch (\Exception $e) {
-            // Log error di Laravel log dan kembalikan respons 500
-            \Log::error($e->getMessage());
-            return response()->json(['message' => 'An error occurred'], 500);
+        if ($favorite) {
+            // Jika sudah ada, hapus dari favorit
+            $favorite->delete();
+            return response()->json(['status' => 'removed']);
+        } else {
+            // Jika belum ada, tambahkan ke favorit
+            Favorite::create([
+                'post_id' => $postId,
+                'user_id' => $userId,
+            ]);
+            return response()->json(['status' => 'added']);
         }
     }
 
@@ -35,6 +37,24 @@ class FavoriteController extends Controller
         $favorites = $user->favorites()->with(['article', 'video'])->get();
 
         return view('favorite.index', compact('favorites', 'user'));
+    }
+
+    public function store($postId)
+    {
+        try {
+            // Cek apakah post dengan ID tersebut ada
+            $post = ForumPost::findOrFail($postId);
+
+            // Logika untuk menambah atau menghapus favorit
+            $user = Auth::user();
+            $user->favorites()->toggle($postId);
+
+            return response()->json(['message' => 'Post favorit berhasil diperbarui'], 200);
+        } catch (\Exception $e) {
+            // Log error untuk debugging
+            \Log::error('Error saat menyimpan favorit: ' . $e->getMessage());
+            return response()->json(['message' => 'Gagal menyimpan favorit'], 500);
+        }
     }
 
     public function favorite(ForumPost $post)
@@ -55,6 +75,5 @@ class FavoriteController extends Controller
         return redirect()->route('favorite.index', ['post' => $postId])
                         ->with('success', 'Post telah dihapus dari favorit');
     }
-    
-}
 
+}

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Informatica extends Model
@@ -15,6 +16,7 @@ class Informatica extends Model
         'title',
         'file_pdf',
         'category_id',
+        'user_id',
     ];
 
     // Relasi ke model Category (jika ada)
@@ -22,8 +24,10 @@ class Informatica extends Model
     {
         return $this->belongsTo(Category::class, 'category_id');
     }
+
     public function user()
     {
-        return $this->belongsTo(User::class, 'user_id', 'user_id'); // Pastikan 'user_id' di sini sesuai dengan kolom di database
+        return $this->belongsTo(User::class, 'user_id', 'user_id'); // Sesuaikan 'id' dengan primary key pada tabel users
     }
+
 }

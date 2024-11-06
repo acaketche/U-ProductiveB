@@ -143,4 +143,14 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(ForumPost::class, 'favorites', 'user_id', 'post_id');
     }
+
+    public function informatics()
+    {
+        return $this->hasMany(Informatica::class, 'user_id', 'user_id');
+    }
+
+    public function sipils()
+    {
+        return $this->hasMany(Sipil::class, 'user_id', 'user_id');
+    }
 }

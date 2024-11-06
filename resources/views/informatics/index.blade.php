@@ -3,7 +3,7 @@
 @section('content')
 <div class="container mt-4">
     <div class="d-flex justify-content-center align-items-center mb-4">
-        <button class="btn btn-primary me-2" onclick="window.location.href='{{route ('informatica.create')}}';">
+        <button class="btn btn-primary me-2" onclick="window.location.href='{{route('informatica.create')}}';">
             <i class="bi bi-plus me-2"></i>Tambah
         </button>
         <div class="d-flex">
@@ -61,7 +61,7 @@
             <div class="card h-100 position-relative">
                 <!-- Gambar dengan tautan -->
                 <a href="{{ route('informatica.show', $informatica->if_id) }}">
-                    <img src="{{ Storage::url($informatica->file_pdf) }}" class="card-img-top" alt="{{ $informatica->title }}">
+                    <img data-pdf-thumbnail-file="{{ asset('storage/' . $informatica->file_pdf) }}" data-pdf-thumbnail-width="500" width="350" height="300">
                 </a>
                 <div class="card-body">
                     <h5 class="card-title">{{ $informatica->title }}</h5>
@@ -76,52 +76,15 @@
         {{ $informatics->links('pagination::bootstrap-5') }}
     </nav>
 </div>
+
 @endsection
 
 @push('styles')
 <link rel="stylesheet" href="{{ asset('style/informatica.css') }}">
 @endpush
 
-@push('scripts')
-<script src="https://mozilla.github.io/pdf.js/build/pdf.js"></script>
-
-<script>
-    // Path untuk library PDF.js
-    var pdfjsLib = window['pdfjs-dist/build/pdf'];
-    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://chrome.github.io/pdf.js/build/pdf.worker.js';
-
-
-    // Fungsi untuk menampilkan thumbnail
-    function renderPDF(url, canvasId) {
-        var pdfUrl = '/path/to/pdf/' + pdfFile.file_pdfs;
-        var loadingTask = pdfjsLib.getDocument(url);
-        loadingTask.promise.then(function(pdf) {
-            // Ambil halaman pertama PDF
-            pdf.getPage(1).then(function(page) {
-                var scale = 1.5;
-                var viewport = page.getViewport({scale: scale});
-
-                // Setup canvas untuk thumbnail
-                var canvas = document.getElementById(canvasId);
-                var context = canvas.getContext('2d');
-                canvas.height = viewport.height;
-                canvas.width = viewport.width;
-
-                // Render halaman pertama PDF ke dalam canvas
-                var renderContext = {
-                    canvasContext: context,
-                    viewport: viewport
-                };
-                page.render(renderContext);
-            });
-        });
-    }
-
-    // Panggil fungsi untuk setiap PDF
-    @foreach($informatics as $informatica)
-        renderPDF("{{ asset('storage/' . $informatica->file_pdf) }}", "pdf-thumbnail-{{ $informatica->if_id }}");
-    @endforeach
+<script
+    src="{{asset('storage/pdfThumbnails.js')}}"
+    data-pdfjs-src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.5.207/pdf.js">
 </script>
-
-@endpush
 

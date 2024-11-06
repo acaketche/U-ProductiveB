@@ -20,6 +20,7 @@ class TeknikSipil extends Model
         'title',
         'file_pdf',
         'category_id',
+        'user_id',
     ];
 
     // Relasi ke kategori
@@ -28,6 +29,10 @@ class TeknikSipil extends Model
         return $this->belongsTo(Category::class, 'category_id', 'category_id');
     }
 
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id','user_id');
+    }
     // Relasi ke thumbnail
     public function thumbnail()
     {
