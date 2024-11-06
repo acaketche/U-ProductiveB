@@ -31,7 +31,7 @@
                                         </span>
                                     </td>
                                     <td>
-                                        @if($article->status != 'rejected')
+                                        @if($article->status = 'rejected')
                                         <form action="{{ route('admin.approve-article', $article->article_id) }}" method="POST" style="display:inline;">
                                             @csrf
                                             <button type="submit" class="btn btn-sm btn-success">Setujui</button>

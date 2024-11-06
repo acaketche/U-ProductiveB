@@ -3,7 +3,7 @@
 @section('content')
 <div class="container mt-4">
     <div class="d-flex justify-content-center align-items-center mb-4">
-        <button class="btn btn-primary me-2" onclick="window.location.href='{{route ('informatica.create')}}';">
+        <button class="btn btn-primary me-2" onclick="window.location.href='{{route('informatica.create')}}';">
             <i class="bi bi-plus me-2"></i>Tambah
         </button>
         <div class="d-flex">
@@ -61,7 +61,7 @@
             <div class="card h-100 position-relative">
                 <!-- Gambar dengan tautan -->
                 <a href="{{ route('informatica.show', $informatica->if_id) }}">
-                    <img data-pdf-thumbnail-file="{{ asset('storage/file_pdfs/' . $informatica->file_pdf) }}" data-pdf-thumbnail-width="200" width="200">
+                    <img data-pdf-thumbnail-file="{{ asset('storage/' . $informatica->file_pdf) }}" data-pdf-thumbnail-width="500" width="350" height="300">
                 </a>
                 <div class="card-body">
                     <h5 class="card-title">{{ $informatica->title }}</h5>
@@ -76,36 +76,15 @@
         {{ $informatics->links('pagination::bootstrap-5') }}
     </nav>
 </div>
+
 @endsection
 
 @push('styles')
 <link rel="stylesheet" href="{{ asset('style/informatica.css') }}">
 @endpush
 
-@push('scripts')
-<script src="{{ asset('js/pdf.js') }}"></script>
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        document.querySelectorAll('img[data-pdf-thumbnail-file]').forEach(function (imgElement) {
-            const pdfUrl = imgElement.getAttribute('data-pdf-thumbnail-file');
-            const pdfThumbnailWidth = imgElement.getAttribute('data-pdf-thumbnail-width');
-
-            pdfjsLib.getDocument(pdfUrl).promise.then(function (pdf) {
-                pdf.getPage(1).then(function (page) {
-                    const viewport = page.getViewport({ scale: pdfThumbnailWidth / page.getViewport({ scale: 1 }).width });
-                    const canvas = document.createElement("canvas");
-                    const context = canvas.getContext("2d");
-                    canvas.height = viewport.height;
-                    canvas.width = viewport.width;
-
-                    page.render({ canvasContext: context, viewport: viewport }).promise.then(function () {
-                        imgElement.src = canvas.toDataURL();
-                    });
-                });
-            });
-        });
-    });
+<script
+    src="{{asset('storage/pdfThumbnails.js')}}"
+    data-pdfjs-src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.5.207/pdf.js">
 </script>
-@endpush
-
 

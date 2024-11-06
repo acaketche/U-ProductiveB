@@ -3,7 +3,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\{
     AuthController, UserController, AdminController, ProfileController, ArticleController, KategoriController,
     VideoController, HistoryController, FavoriteController, ForumController, CommentController,
-    UtamaController, InformaticaController, TeknikSipilController, PDFExportController, TeknikComputerController
+    UtamaController, InformaticaController, TeknikSipilController, PDFExportController, TeknikComputerController, ProdiController
 };
 
 // General Routes
@@ -16,6 +16,18 @@ Route::get('/video', [VideoController::class, 'index'])->name('video.index');
 Route::get('/video/{video_id}', [VideoController::class, 'show'])->name('video.show');
 Route::get('/informatica', [InformaticaController::class, 'index'])->name('informatica.index');
 Route::get('/informatica/{id}', [InformaticaController::class, 'show'])->name('informatica.show');
+
+Route::middleware('auth')->group(function() {
+    Route::get('/articles/create', [ArticleController::class, 'create'])->name('articles.create');
+    Route::post('/articles', [ArticleController::class, 'store'])->name('articles.store');
+    Route::get('/tambah-video', [VideoController::class, 'create'])->name('tambah-video');
+    Route::post('/video', [VideoController::class, 'store'])->name('video.store');
+    Route::post('/informatica', [InformaticaController::class, 'store'])->name('informatica.store');
+    Route::get('/informatics/create', [InformaticaController::class, 'create'])->name('informatica.create'); // Route untuk create
+    Route::get('/informatica/move-file', [InformaticaController::class, 'moveFile']);
+
+});
+
 
 // Guest Routes
 Route::middleware('guest')->group(function() {
@@ -33,22 +45,27 @@ Route::middleware('role:mahasiswa,dosen')->group(function() {
     Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
 
     // Articles
-    Route::get('/articles/create', [ArticleController::class, 'create'])->name('articles.create');
-    Route::post('/articles', [ArticleController::class, 'store'])->name('articles.store');
-    Route::resource('articles', ArticleController::class)->except(['create', 'store']);
+    Route::resource('articles', ArticleController::class)
+    ->only(['edit', 'update', 'destroy']);
+
+    //informatics
+    Route::resource('informatics', InformaticaController::class)
+    ->only(['edit', 'update', 'destroy']);
 
     // Videos
-    Route::get('/tambah-video', [VideoController::class, 'create'])->name('tambah-video');
-    Route::post('/video', [VideoController::class, 'store'])->name('video.store');
+    Route::resource('video', VideoController::class)
+    ->only(['edit', 'update', 'destroy']);
 
     // History & Profile
     Route::get('/history', [HistoryController::class, 'index'])->name('history.index');
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
 
     // Favorites
-    Route::post('/post/{post}/toggle-favorite', [FavoriteController::class, 'toggleFavorite'])->name('post.toggleFavorite');
+    Route::post('/favorite/toggle', [FavoriteController::class, 'toggle'])->name('favorite.toggle');
     Route::get('/favorites', [FavoriteController::class, 'index'])->name('favorite.index');
     Route::post('/post/{post}/unfavorite', [FavoriteController::class, 'unfavorite'])->name('post.unfavorite');
+    Route::post('/post/{post}/favorite', [FavoriteController::class, 'favorite'])->name('post.favorite');
+    Route::post('/favorite/{postId}', [FavoriteController::class, 'store'])->name('favorite.store');
 
 
     // Forum
@@ -97,15 +114,6 @@ Route::middleware('role:admin')->group(function() {
     Route::delete('/kelola-forum/comment/{id}', [AdminController::class, 'destroyComment'])->name('delete-comment');
 });
 
-// Route untuk halaman Informatics
-Route::prefix('informatica')->name('informatica.')->group(function () {
-    Route::get('/', [InformaticaController::class, 'index'])->name('index');
-    Route::post('/', [InformaticaController::class, 'store'])->name('store');
-    Route::get('/create', [InformaticaController::class, 'create'])->name('create'); // Pindahkan route create ke sini
-    Route::get('/{id}', [InformaticaController::class, 'show'])->name('show');
-    Route::get('/move-file', [InformaticaController::class, 'moveFile']);
-});
-
 
 // Route untuk menampilkan daftar teknik sipil (index)
 // Teknik Sipil Routes
@@ -117,12 +125,15 @@ Route::get('teknik_sipil/{teknik_sipil}/edit', [TeknikSipilController::class, 'e
 Route::put('teknik_sipil/{teknik_sipil}', [TeknikSipilController::class, 'update'])->name('teknik_sipil.update');
 Route::delete('teknik_sipil/{teknik_sipil}', [TeknikSipilController::class, 'destroy'])->name('teknik_sipil.destroy');
 
+
+
 Route::get('teknik_computer', [TeknikComputerController::class, 'index'])->name('teknik_computer.index');
 Route::get('teknik_computer/create', [TeknikComputerController::class, 'create'])->name('teknik_computer.create');
-// Route::post('teknik_sipil', [TeknikSipilController::class, 'store'])->name('teknik_sipil.store');
+Route::post('teknik_computer', [TeknikComputerController::class, 'store'])->name('teknik_computer.store');
+Route::get('teknik_computer/{teknik_computer}', [TeknikComputerController::class, 'show'])->name('teknik_computer.show');
 
- // Informatica
- Route::get('/create/informatica', [InformaticaController::class, 'create'])->name('informatica.create');
- Route::post('/informaticas', [InformaticaController::class, 'store'])->name('informatica.store');
 
 Route::get('/generate-thumbnail', [TeknikSipilController::class, 'generateThumbnailFromAPI']);
+
+Route::get('prodi', [ProdiController::class, 'index'])->name('prodi.index');
+Route::get('prodi/{prodi_id}', [ProdiController::class, 'show'])->name('prodi.show');

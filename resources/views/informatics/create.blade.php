@@ -16,8 +16,8 @@
         <form action="{{ route('informatica.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="mb-3">
-                <label for="judulArtikel" class="form-label">Judul Tugas Akhir</label>
-                <input type="text" class="form-control" id="judulArtikel" name="title" placeholder="Masukkan Judul Artikel" required>
+                <label for="judulTugasAkhir" class="form-label">Judul Tugas Akhir</label>
+                <input type="text" class="form-control" id="judulTugasAkhir" name="title" placeholder="Masukkan Judul Tugas Akhir" required>
             </div>
             <div class="mb-3">
                 <label for="kategoriArtikel" class="form-label">Kategori</label>

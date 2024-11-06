@@ -19,7 +19,7 @@
         </iframe>        <div class="card-body">
             <h1 class="card-title">{{ $teknik_sipils->title }}</h1>
             <p class="card-text">
-                <strong>Author:</strong> {{ $teknik_sipils->user }} <br>
+                <strong>Author:</strong> {{ $teknik_sipils->user->name }} <br>
                 <strong>Category:</strong> {{ $teknik_sipils->category->name }} <br>
                 <strong>Published on:</strong> {{ Carbon::parse($teknik_sipils->created_at)->format('F j, Y') }}
             </p>

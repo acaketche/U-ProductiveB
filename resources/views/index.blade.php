@@ -61,7 +61,7 @@
         background-color: #f8f9fa;
     }
     .container {
-        max-width: 1000px;
+        max-width: 1135px;
     }
     .card {
         border-radius: 15px;

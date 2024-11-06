@@ -13,7 +13,7 @@
             </div>
         @endif
 
-        <form action="{{ route('teknik_sipil.store') }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('teknik_computer.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="mb-3">
                 <label for="judulTugasAkhir" class="form-label">Judul Tugas Akhir</label>

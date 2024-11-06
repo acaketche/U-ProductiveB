@@ -21,7 +21,7 @@
         <div class="card-body">
             <h1 class="card-title">{{ $informatics->title }}</h1>
             <p class="card-text">
-                <strong>Author:</strong> {{ $informatics->user }} <br>
+                <strong>Author:</strong> {{ $informatics->user->name }} <br>
                 <strong>Category:</strong> {{ $informatics->category->name }} <br>
                 <strong>Published on:</strong> {{ Carbon::parse($informatics->created_at)->format('F j, Y') }}
             </p>
@@ -29,7 +29,11 @@
             <div class="card-footer">
                 <small>Last updated on {{ Carbon::parse($informatics->updated_at)->format('F j, Y') }}</small>
             </div>
+        </div>
     </div>
+
+    <!-- Canvas for PDF Thumbnail (if using renderPDF) -->
+    <canvas id="pdf-thumbnail" style="display:none;"></canvas>
 </div>
 @endsection
 
@@ -38,8 +42,9 @@
 @endpush
 
 @push('scripts')
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.min.js"></script>
 <script>
-// Render thumbnail PDF jika ada
+// Render PDF thumbnail if available
 var pdfUrl = "{{ asset('storage/' . $informatics->file_pdf) }}";
 renderPDF(pdfUrl, "pdf-thumbnail");
 </script>

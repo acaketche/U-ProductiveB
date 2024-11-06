@@ -21,6 +21,7 @@
 
         <!-- Kolom Deskripsi dan Kategori -->
         <div class="col-md-4">
+            <p><strong>Sender:</strong> {{ $video->user->name }}</p>
             <p><strong>Kategori:</strong> {{ $video->category->name }}</p>
             <p><strong>Deskripsi:</strong> {{ $video->description }}</p>
         </div>

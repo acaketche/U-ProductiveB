@@ -15,6 +15,7 @@ class ArticleController extends Controller
     // Menampilkan daftar artikel
     public function index(Request $request)
     {
+        \Log::info('Accessed articles.index');
         // Ambil nilai pencarian, kategori, dan waktu
         $search = $request->input('search');
         $category = $request->input('category');
@@ -58,6 +59,11 @@ class ArticleController extends Controller
         return view('articles.index', compact('articles', 'categories'));
     }
 
+    public function __construct()
+{
+    // Tambahkan middleware auth untuk method tertentu
+    $this->middleware('auth')->only(['create', 'store']);
+}
     // Menampilkan form tambah artikel
     public function create()
     {
@@ -144,15 +150,9 @@ class ArticleController extends Controller
     // Menampilkan daftar artikel untuk admin
     public function kelolaArtikel(Request $request)
     {
-        $status = $request->input('status', 'all'); // default tampilkan semua
 
         $query = Article::with('category');
-
-        if ($status !== 'all') {
-            $query->where('status', $status);
-        }
-
-        $articles = $query->paginate(10);
+        $articles = $query->paginate(20);
         return view('admin.kelola-artikel', compact('articles'));
     }
 

@@ -1,45 +1,6 @@
-<!-- resources/views/favorite.blade.php -->
-<!DOCTYPE html>
-<html lang="id">
+@extends('layout.navbar-guest')
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Favorite U-Productive</title>
-    <!-- Gunakan asset helper untuk memuat CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
-    <link href="{{ asset('style/favorite.css') }}" rel="stylesheet">
-</head>
-
-<body>
-    <!-- Navbar -->
-    <nav class="navbar navbar-custom">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#">
-                <img src="https://via.placeholder.com/30" alt="Logo">
-                U-Productive
-            </a>
-            <ul class="navbar-nav ms-auto d-flex flex-row mb-2 mb-lg-0">
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{route('articles.index')}}">Artikel</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{route('video.index')}}">Video</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{route('forum.index')}}">Forum</a>
-                </li>
-            </ul>
-            <a href="#" class="navbar-icon">
-                <img src="https://via.placeholder.com/24" alt="User Icon">
-            </a>
-        </div>
-    </nav>
-
+@section('content')
     <!-- Sidebar -->
     <div class="sidebar">
         <img src="{{ asset('storage/' . $user->profile_picture) }}" alt="Profile Picture">
@@ -87,15 +48,12 @@
                     </form>
                 </div>
                 @endif
-                <div colspan="4">You have no favorite product</div>
             </div>
         @endforeach
     </div>
-</div>
 
-</div>
+@endsection
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-
-</html>
+@push('styles')
+    <link href="{{asset('style/favorite.css')}}" rel="stylesheet">
+@endpush

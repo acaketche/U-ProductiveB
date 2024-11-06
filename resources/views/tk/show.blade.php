@@ -8,24 +8,24 @@
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
-            <li class="breadcrumb-item"><a href="{{ route('teknik_sipil.index') }}">Teknik Sipil</a></li>
-            <li class="breadcrumb-item active" aria-current="page">{{ $teknik_sipils->title }}</li>
+            <li class="breadcrumb-item"><a href="{{ route('teknik_computer.index') }}">Teknik komputer</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{{ $teknik_computers->title }}</li>
         </ol>
     </nav>
     <div class="card">
-        <iframe src="{{ Storage::url($teknik_sipils->file_pdf) }}" width="100%" height="600px">
+        <iframe src="{{ Storage::url($teknik_computers->file_pdf) }}" width="100%" height="600px">
             Your browser does not support PDFs.
-            <a href="{{ Storage::url($teknik_sipils->file_pdf) }}">Download the PDF</a>
+            <a href="{{ Storage::url($teknik_computers->file_pdf) }}">Download the PDF</a>
         </iframe>        <div class="card-body">
-            <h1 class="card-title">{{ $teknik_sipils->title }}</h1>
+            <h1 class="card-title">{{ $teknik_computers->title }}</h1>
             <p class="card-text">
-                <strong>Author:</strong> {{ $teknik_sipils->user }} <br>
-                <strong>Category:</strong> {{ $teknik_sipils->category->name }} <br>
-                <strong>Published on:</strong> {{ Carbon::parse($teknik_sipils->created_at)->format('F j, Y') }}
+                <strong>Author:</strong> {{ $teknik_computers->user->name }} <br>
+                <strong>Category:</strong> {{ $teknik_computers->category->name }} <br>
+                <strong>Published on:</strong> {{ Carbon::parse($teknik_computers->created_at)->format('F j, Y') }}
             </p>
-            <p class="card-text">{{ $teknik_sipils->content }}</p>
+            <p class="card-text">{{ $teknik_computers->content }}</p>
             <div class="card-footer">
-                <small>Last updated on {{ Carbon::parse($teknik_sipils->updated_at)->format('F j, Y') }}</small>
+                <small>Last updated on {{ Carbon::parse($teknik_computers->updated_at)->format('F j, Y') }}</small>
             </div>
     </div>
 </div>
