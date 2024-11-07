@@ -48,6 +48,15 @@
                         </a>
                     </p>
                 @endif
+
+                @if($history->informatics)
+                    <p class="card-text">
+                        <strong>Informatika:</strong>
+                        <a href="{{ route('informatica.show', $history->informatics->if_id) }}">
+                            {{ $history->informatics->title ?? 'Judul tidak tersedia' }}
+                        </a>
+                    </p>
+                @endif
                 <p class="text-muted small mb-0">
                     {{ $history->viewed_at ? \Carbon\Carbon::parse($history->viewed_at)->timezone('Asia/Jakarta')->format('d M Y, H:i') : 'Tanggal tidak tersedia' }}
                 </p>

@@ -1,36 +1,46 @@
 @extends('layout.navbar-guest')
-
 @section('content')
 <div class="container mt-4">
-    <div class="d-flex justify-content-center align-items-center mb-4">
-        <button class="btn btn-primary me-2" onclick="window.location.href='{{route('informatica.create')}}';">
-            <i class="bi bi-plus me-2"></i>Tambah
-        </button>
-        <div class="d-flex">
-            <!-- Form untuk pencarian dan filter -->
-            <form action="{{ route('informatica.index') }}" method="GET" class="d-flex">
-                <!-- Input pencarian -->
-                <input type="text" name="search" class="form-control me-2" placeholder="Cari Informatika" value="{{ request('search') }}">
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-8">
+            <form action="{{ route('informatica.index') }}" method="GET" class="d-flex flex-wrap justify-content-center gap-2">
+                @auth
+                    <button class="btn btn-primary" type="button" onclick="window.location.href='{{route('informatica.create')}}';">
+                        <i class="bi bi-plus me-2"></i>Tambah
+                    </button>
+                @else
+                    <button class="btn btn-primary" type="button" onclick="window.location.href='{{ route('login') }}';">
+                        <i class="bi bi-plus-lg me-1"></i>Tambah
+                    </button>
+                @endauth
 
-                <!-- Dropdown Filter -->
+                <div class="input-group" style="width: auto;">
+                    <input type="text" name="search" class="form-control" placeholder="Cari Informatika" value="{{ request('search') }}">
+                    <button class="btn btn-outline-secondary" type="submit">
+                        <i class="bi bi-search"></i>
+                    </button>
+                </div>
+
                 <div class="dropdown">
                     <button class="btn btn-outline-primary dropdown-toggle" type="button" id="filterDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                        Filter
+                        <i class="bi bi-funnel me-1"></i>Filter
                     </button>
-                    <div class="dropdown-menu p-3" style="width: 600px;">
+                    <div class="dropdown-menu p-3">
                         <div class="row g-3">
-                            <div class="col-6">
+                            <div class="col-md-6">
                                 <label for="kategori" class="form-label">Kategori</label>
                                 <select class="form-select" id="kategori" name="category">
                                     <option value="">Pilih</option>
                                     @foreach ($categories as $category)
-                                        <option value="{{ $category->category_id }}" {{ request('category') == $category->category_id ? 'selected' : '' }}>
-                                            {{ $category->name }}
-                                        </option>
-                                    @endforeach
+                                            @if($category->prodi_id === 1 )
+                                                <option value="{{ $category->category_id }}" {{ request('category') == $category->category_id ? 'selected' : '' }}>
+                                                    {{ $category->name }}
+                                                </option>
+                                            @endif
+                                        @endforeach
                                 </select>
                             </div>
-                            <div class="col-6">
+                            <div class="col-md-6">
                                 <label for="waktu" class="form-label">Waktu</label>
                                 <select class="form-select" id="waktu" name="time">
                                     <option value="" {{ request('time') == '' ? 'selected' : '' }}>Semua Waktu</option>
@@ -41,11 +51,9 @@
                             </div>
                         </div>
                         <div class="d-flex justify-content-between mt-3">
-                            <!-- Tombol untuk membersihkan filter -->
                             <a href="{{ route('informatica.index') }}" class="btn btn-link text-danger p-0">Bersihkan filter</a>
                             <div>
                                 <button type="button" class="btn btn-outline-secondary btn-sm me-2" data-bs-dismiss="dropdown">Batal</button>
-                                <!-- Tombol untuk menerapkan filter -->
                                 <button type="submit" class="btn btn-primary btn-sm">Terapkan</button>
                             </div>
                         </div>
@@ -55,11 +63,11 @@
         </div>
     </div>
 
-    <div class="row">
+    <!-- Rest of your code remains the same -->
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mt-4">
         @foreach ($informatics as $informatica)
         <div class="col-md-4 mb-4">
             <div class="card h-100 position-relative">
-                <!-- Gambar dengan tautan -->
                 <a href="{{ route('informatica.show', $informatica->if_id) }}">
                     <img data-pdf-thumbnail-file="{{ asset('storage/' . $informatica->file_pdf) }}" data-pdf-thumbnail-width="500" width="350" height="300">
                 </a>
@@ -71,20 +79,215 @@
         @endforeach
     </div>
 
-    <!-- Pagination -->
-    <nav aria-label="Page navigation">
+    <nav aria-label="Page navigation" class="mt-4">
         {{ $informatics->links('pagination::bootstrap-5') }}
     </nav>
 </div>
-
 @endsection
+
+@push('styles')
+<style>
+    :root {
+        --primary-color: #FFD166;
+        --secondary-color: #af8585;
+        --text-color: #000000;
+        --background-color: #f8f9fa;
+    }
+    .input-group {
+        width: auto;
+        min-width: 250px;
+        max-width: 300px;
+    }
+    body {
+        background-color: var(--background-color);
+        color: var(--text-color);
+    }
+
+    .btn-primary {
+        background-color: var(--primary-color);
+        border: none;
+        color: var(--text-color);
+        font-weight: bold;
+        transition: all 0.3s ease;
+    }
+
+    .btn-primary:hover {
+        background-color: #ffc233;
+        transform: translateY(-2px);
+    }
+
+    .btn-outline-primary {
+        color: var(--secondary-color);
+        border-color: var(--secondary-color);
+    }
+
+    .btn-outline-primary:hover {
+        background-color: var(--secondary-color);
+        color: white;
+    }
+
+    .dropdown-menu {
+        width: 350px;
+        padding: 15px;
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+        border: none;
+        border-radius: 10px;
+    }
+
+    .form-label {
+        font-weight: bold;
+        font-size: 1rem;
+    }
+
+    .form-select {
+        font-size: 1rem;
+        padding: 0.75rem;
+    }
+
+    .dropdown-toggle {
+        font-size: 1rem;
+        padding: 0.5rem 1rem;
+    }
+
+    .dropdown-menu .btn-sm {
+        padding: 0.5rem 1rem;
+        font-size: 0.875rem;
+    }
+
+    .article-card {
+        border: none;
+        border-radius: 15px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+        overflow: hidden;
+    }
+
+    .article-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .card-img-top {
+        border-top-left-radius: 15px;
+        border-top-right-radius: 15px;
+        object-fit: cover;
+        height: 200px;
+        transition: all 0.3s ease;
+    }
+
+    .card-img-link:hover .card-img-top {
+        transform: scale(1.05);
+    }
+
+    .card-title {
+        font-size: 1.2rem;
+        font-weight: bold;
+        color: var(--text-color);
+    }
+
+    .pagination .page-link {
+        color: var(--text-color);
+        border: none;
+        margin: 0 2px;
+        border-radius: 5px;
+    }
+
+    .pagination .page-link:hover,
+    .pagination .page-item.active .page-link {
+        background-color: var(--primary-color);
+        color: var(--text-color);
+    }
+
+    /* Additional styles for alignment and responsiveness */
+    .input-group {
+        height: 38px;
+    }
+
+    .btn-primary,
+    .btn-outline-primary,
+    .input-group .form-control,
+    .input-group .btn {
+        height: 38px;
+        display: flex;
+        align-items: center;
+    }
+
+    .dropdown-toggle {
+        height: 38px;
+        display: flex;
+        align-items: center;
+    }
+
+    .bi {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* Card grid improvements */
+    .card {
+        border: none;
+        border-radius: 15px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+    }
+
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .card img {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+        border-top-left-radius: 15px;
+        border-top-right-radius: 15px;
+    }
+
+    @media (max-width: 768px) {
+        .d-flex {
+            flex-wrap: wrap;
+        }
+
+        .btn-primary,
+        .input-group,
+        .dropdown {
+            margin-bottom: 0.5rem;
+        }
+
+        .dropdown-menu {
+            width: 100% !important;
+        }
+
+        .row > .col-6 {
+            width: 100%;
+        }
+
+        form.d-flex {
+            flex-direction: column;
+            align-items: stretch !important;
+        }
+
+        .input-group {
+            max-width: 100% !important;
+        }
+
+        .btn-primary,
+        .input-group,
+        .dropdown {
+            width: 100%;
+            margin-right: 0 !important;
+        }
+    }
+</style>
+@endpush
 
 @push('styles')
 <link rel="stylesheet" href="{{ asset('style/informatica.css') }}">
 @endpush
 
 <script
-    src="{{asset('storage/pdfThumbnails.js')}}"
+    src="{{ asset('storage/pdfThumbnails.js') }}"
     data-pdfjs-src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.5.207/pdf.js">
 </script>
-

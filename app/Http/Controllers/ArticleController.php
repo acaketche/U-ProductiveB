@@ -8,56 +8,57 @@ use App\Models\History;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
+use PDF;
+use Illuminate\Support\Facades\Storage;
 
 class ArticleController extends Controller
 {
 
     // Menampilkan daftar artikel
     public function index(Request $request)
-    {
-        \Log::info('Accessed articles.index');
-        // Ambil nilai pencarian, kategori, dan waktu
-        $search = $request->input('search');
-        $category = $request->input('category');
-        $time = $request->input('time');
+{
+    \Log::info('Accessed articles.index');
+    // Ambil nilai pencarian, kategori, dan waktu
+    $search = $request->input('search');
+    $time = $request->input('time');
 
-        // Mulai query
-        $query = Article::query();
+    // Mulai query
+    $query = Article::query();
 
-        $query->where('status','approved');
+    $query->where('status', 'approved');
 
-        // Filter berdasarkan pencarian
-        if ($search) {
-            $query->where('title', 'like', '%' . $search . '%');
-        }
-
-
-        // Filter berdasarkan kategori
-        if ($category) {
-            $query->where('category_id', $category);
-        }
-
-        // Filter berdasarkan waktu (contoh sederhana)
-        if ($time == '24 Jam') {
-            $query->where('created_at', '>=', now()->subDay());
-        } elseif ($time == '1 Minggu') {
-            $query->where('created_at', '>=', now()->subWeek());
-        } elseif ($time == '1 Bulan') {
-            $query->where('created_at', '>=', now()->subMonth());
-        }
-
-        // Urutkan berdasarkan artikel terbaru
-        $query->orderBy('created_at', 'desc');
-
-        // Ambil hasil dengan pagination
-        $articles = $query->paginate(6);
-
-        // Ambil data kategori dari database
-        $categories = Category::all();
-
-        // Kirim data ke view
-        return view('articles.index', compact('articles', 'categories'));
+    // Filter berdasarkan pencarian
+    if ($search) {
+        $query->where('title', 'like', '%' . $search . '%');
     }
+
+    // Filter berdasarkan kategori
+    if ($request->filled('category_id')) {
+        $query->where('category_id', $request->input('category_id'));
+    }
+
+    // Filter berdasarkan waktu
+    if ($time == '24 Jam') {
+        $query->where('created_at', '>=', now()->subDay());
+    } elseif ($time == '1 Minggu') {
+        $query->where('created_at', '>=', now()->subWeek());
+    } elseif ($time == '1 Bulan') {
+        $query->where('created_at', '>=', now()->subMonth());
+    }
+
+    // Urutkan berdasarkan artikel terbaru
+    $query->orderBy('created_at', 'desc');
+
+    // Ambil hasil dengan pagination
+    $articles = $query->paginate(6);
+
+    // Ambil data kategori dari database
+    $categories = Category::all();
+
+    // Kirim data ke view
+    return view('articles.index', compact('articles', 'categories'));
+}
+
 
     public function __construct()
 {
@@ -148,14 +149,61 @@ class ArticleController extends Controller
     }
 
     // Menampilkan daftar artikel untuk admin
-    public function kelolaArtikel(Request $request)
-    {
+    private function exportArticlePDF($articles)
+{
+    // Memastikan relasi di-load
+    $articles->load(['user', 'category']);
 
-        $query = Article::with('category');
-        $articles = $query->paginate(20);
-        return view('admin.kelola-artikel', compact('articles'));
+    $data = [
+        'articles' => $articles,
+        'exported_at' => now()->format('d-m-Y H:i:s')
+    ];
+
+    $pdf = PDF::loadView('admin.pdf.articles', $data);
+
+    $filename = 'articles-report-' . time() . '.pdf';
+    Storage::put('public/temp/' . $filename, $pdf->output());
+
+    return response()->download(storage_path('app/public/temp/' . $filename))
+        ->deleteFileAfterSend(true);
+}
+
+public function kelolaArtikel(Request $request)
+{
+    $query = Article::with(['category', 'user']);
+
+    // Search
+    if ($request->filled('search')) {
+        $search = $request->search;
+        $query->where(function($q) use ($search) {
+            $q->where('title', 'LIKE', "%{$search}%")
+              ->orWhere('article_id', 'LIKE', "%{$search}%")
+              ->orWhere('user_id', 'LIKE', "%{$search}%");
+        });
     }
 
+    // Filter by date range
+    if ($request->filled(['start_date', 'end_date'])) {
+        $start = Carbon::parse($request->start_date)->startOfDay();
+        $end = Carbon::parse($request->end_date)->endOfDay();
+        $query->whereBetween('created_at', [$start, $end]);
+    }
+
+    // Filter by status
+    if ($request->filled('status')) {
+        $query->where('status', $request->status);
+    }
+
+    // Export PDF
+    if ($request->has('export')) {
+        return $this->exportArticlePDF($query->get());
+    }
+
+    // Pagination dengan query parameters
+    $articles = $query->latest()->paginate(10)->withQueryString();
+
+    return view('admin.kelola-artikel', compact('articles'));
+}
 
     // Menyetujui artikel
     public function approve($id)

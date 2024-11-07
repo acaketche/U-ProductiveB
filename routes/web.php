@@ -31,6 +31,9 @@ Route::get('/video', [VideoController::class, 'index'])->name('video.index');
 Route::get('/video/{video_id}', [VideoController::class, 'show'])->name('video.show');
 Route::get('/informatica', [InformaticaController::class, 'index'])->name('informatica.index');
 Route::get('/informatica/{id}', [InformaticaController::class, 'show'])->name('informatica.show');
+Route::get('teknik_sipil', [TeknikSipilController::class, 'index'])->name('teknik_sipil.index');
+Route::get('teknik_sipil/{teknik_sipil}', [TeknikSipilController::class, 'show'])->name('teknik_sipil.show');
+
 
 Route::middleware('auth')->group(function() {
     Route::get('/articles/create', [ArticleController::class, 'create'])->name('articles.create');
@@ -40,6 +43,8 @@ Route::middleware('auth')->group(function() {
     Route::post('/informatica', [InformaticaController::class, 'store'])->name('informatica.store');
     Route::get('/informatics/create', [InformaticaController::class, 'create'])->name('informatica.create'); // Route untuk create
     Route::get('/informatica/move-file', [InformaticaController::class, 'moveFile']);
+    Route::post('teknik_sipil', [TeknikSipilController::class, 'store'])->name('teknik_sipil.store');
+    Route::get('/teknik_sipils/create', [TeknikSipilController::class, 'create'])->name('teknik_sipil.create');
 
 });
 
@@ -65,6 +70,10 @@ Route::middleware('role:mahasiswa,dosen')->group(function() {
 
     //informatics
     Route::resource('informatics', InformaticaController::class)
+    ->only(['edit', 'update', 'destroy']);
+
+    //teknik sipil
+    Route::resource('teknik_sipils', TeknikSipilController::class)
     ->only(['edit', 'update', 'destroy']);
 
     // Videos
@@ -102,7 +111,7 @@ Route::middleware('role:admin')->group(function() {
     Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
 
     // User Management
-    Route::get('/admin/kelola-user', [UserController::class, 'kelolaUser'])->name('kelola.user');
+    Route::get('/admin/kelola-user', [Admincontroller::class, 'kelolaUser'])->name('kelola.user');
     Route::delete('/user/{id}', [UserController::class, 'destroy'])->name('delete-user');
 
     // Category Management
@@ -135,25 +144,6 @@ Route::get('teknik_computer', [TeknikComputerController::class, 'index'])->name(
 Route::get('teknik_computer/create', [TeknikComputerController::class, 'create'])->name('teknik_computer.create');
 Route::post('teknik_computer', [TeknikComputerController::class, 'store'])->name('teknik_computer.store');
 Route::get('teknik_computer/{teknik_computer}', [TeknikComputerController::class, 'show'])->name('teknik_computer.show');
-
-
-Route::get('/generate-thumbnail', [TeknikSipilController::class, 'generateThumbnailFromAPI']);
-
-
-Route::get('teknik_sipil', [TeknikSipilController::class, 'index'])->name('teknik_sipil.index');
-// Route untuk menyimpan data teknik sipil baru (store)
-Route::post('teknik_sipil', [TeknikSipilController::class, 'store'])->name('teknik_sipil.store');
-// Route untuk menampilkan detail teknik sipil (show)
-Route::get('teknik_sipil/{teknik_sipil}', [TeknikSipilController::class, 'show'])->name('teknik_sipil.show');
-// Route untuk menampilkan form edit teknik sipil (edit)
-Route::get('teknik_sipil/{teknik_sipil}/edit', [TeknikSipilController::class, 'edit'])->name('teknik_sipil.edit');
-Route::get('/teknik_sipil/create', [TeknikSipilController::class, 'create'])->name('teknik_sipil.create');
-// Route untuk memperbarui data teknik sipil (update)
-Route::put('teknik_sipil/{teknik_sipil}', [TeknikSipilController::class, 'update'])->name('teknik_sipil.update');
-// Route untuk menghapus teknik sipil (destroy)
-Route::delete('teknik_sipil/{teknik_sipil}', [TeknikSipilController::class, 'destroy'])->name('teknik_sipil.destroy');
-
-Route::get('/convert-pdf/{pdfName}', [YourExistingController::class, 'convertPdfToImage']);
 
 Route::get('prodi', [ProdiController::class, 'index'])->name('prodi.index');
 Route::get('prodi/{prodi_id}', [ProdiController::class, 'show'])->name('prodi.show');

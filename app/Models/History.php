@@ -12,7 +12,7 @@ class History extends Model
     protected $primaryKey = 'history_id';
     public $timestamps = false;
 
-    protected $fillable = ['user_id', 'article_id', 'video_id', 'ts_id' , 'viewed_at'];
+    protected $fillable = ['user_id', 'article_id', 'video_id', 'ts_id' ,'if_id', 'viewed_at'];
 
     // Relasi ke model User
     public function user()
@@ -35,6 +35,11 @@ public function article()
 public function video()
 {
     return $this->belongsTo(Video::class, 'video_id');
+}
+
+public function informatics()
+{
+    return $this->belongsTo(Informatica::class, 'if_id');
 }
 
 }

@@ -6,8 +6,8 @@ use App\Models\Category;
 use App\Models\TeknikSipil;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
-use Imagick;
+use Illuminate\Support\Facades\Auth;
+
 
 class TeknikSipilController extends Controller
 {
@@ -58,6 +58,7 @@ class TeknikSipilController extends Controller
     public function create()
     {
         $categories = Category::all();
+
         return view('ts.create', compact('categories'));
     }
 
@@ -74,46 +75,18 @@ class TeknikSipilController extends Controller
         // Simpan file PDF ke folder storage/app/public/pdfs
         $pdfPath = $request->file('file_pdf')->store('pdfs', 'public');
 
-        // Simpan data ke database
-        TeknikSipil::create([
-            'title' => $request->title,
-            'file_pdf' => $pdfPath,
-            'category_id' => $request->category_id,
-        ]);
+        $teknik_sipils = new TeknikSipil;
+        $teknik_sipils->title = $request->input('title');
+        $teknik_sipils->category_id = $request->input('category_id');
+        $teknik_sipils->file_pdf = $path;
+        $teknik_sipils->user_id = Auth::id();  // Tambahkan ID pengguna yang sedang login
+        // $article->status = 'rejected';  // Set status artikel ke 'pending' atau 'waiting for approval'
 
+        // Simpan informatica ke database
+        $teknik_sipils->save();
         return redirect()->route('teknik_sipil.index')->with('success', 'Data berhasil ditambahkan');
     }
 
-    // Fungsi untuk menghasilkan thumbnail dari PDF
-    private function generateThumbnail($path)
-    {
-        // Path thumbnail
-        $thumbnailPath = 'thumbnails/' . basename($path, '.file_pdf') . '.jpg';
-
-        // Buat thumbnail jika belum ada
-        if (!\Storage::exists($thumbnailPath)) {
-            $pdfFullPath = storage_path('app/public/' . $path);
-
-            // Mengambil halaman pertama dari PDF menggunakan Imagick
-            $imagick = new \Imagick();
-            $imagick->setResolution(300, 300);
-            $imagick->readImage($pdfFullPath . '[0]');
-            $imageData = $imagick->getImageBlob();
-            $imagick->clear();
-            $imagick->destroy();
-
-            // Konversi ke format gambar menggunakan Intervention Image
-            $image = Image::make($imageData);
-            $image->resize(300, null, function ($constraint) {
-                $constraint->aspectRatio();
-            });
-
-            // Simpan thumbnail
-            $image->save(storage_path('app/public/' . $thumbnailPath));
-        }
-
-        return $thumbnailPath;
-    }
 
     // Menampilkan detail data
     public function show($id)
@@ -171,37 +144,4 @@ class TeknikSipilController extends Controller
         return redirect()->route('teknik_sipil.index')->with('success', 'Data berhasil dihapus');
     }
 
-    // Fungsi untuk mengonversi PDF menjadi gambar
-    public function convertPdfToImage($pdfName)
-    {
-        $loc = storage_path('app/public/pdfs/'); // Path folder PDF
-        $pdf = $pdfName; // Nama file PDF
-        $format = "jpg";
-        $dest = "$loc" . basename($pdf, '.pdf') . ".$format";
-
-        // Cek apakah file gambar sudah ada
-        if (file_exists($dest)) {
-            $im = new Imagick();
-            $im->readImage($dest); // Baca gambar yang sudah ada
-            header("Content-Type: image/jpg");
-            echo $im;
-            exit;
-        } else {
-            // Jika gambar belum ada, buat dari halaman pertama file PDF
-            $im = new Imagick($loc . $pdf . '[0]');
-            $im->setImageFormat($format); // Set format menjadi JPG
-
-            // Ambil tinggi gambar dan gunakan untuk crop
-            $width = $im->getImageheight();
-            $im->cropImage($width, $width, 0, 0); // Crop gambar menjadi persegi
-            $im->scaleImage(110, 167, true); // Atur ulang ukuran gambar
-
-            $im->writeImage($dest); // Simpan gambar hasil konversi
-
-            // Tampilkan gambar di browser
-            header("Content-Type: image/jpg");
-            echo $im;
-            exit;
-        }
-    }
 }
