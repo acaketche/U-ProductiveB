@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Informatica; // Pastikan sudah include model Informatica
 use App\Models\Category;
+use App\Models\History;
 use Illuminate\Http\Request;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Storage;
@@ -50,11 +51,11 @@ class InformaticaController extends Controller
         $informatics = Informatica::with('user', 'category')->findOrFail($id);
 
         // Simpan riwayat ke tabel histories
-        // History::create([
-        //     'user_id' => auth()->id(),
-        //     'if_id' => $informatics->if_id, // Pastikan menggunakan primary key yang benar
-        //     'viewed_at' => now(),
-        // ]);
+        History::create([
+            'user_id' => auth()->id(),
+            'if_id' => $informatics->if_id, // Pastikan menggunakan primary key yang benar
+            'viewed_at' => now(),
+        ]);
 
         return view('informatics.show', compact('informatics'));
     }

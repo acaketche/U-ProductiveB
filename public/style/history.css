@@ -1,15 +1,19 @@
+/* General Body Styling */
 body {
-    background-color: #f5f5f5;
+    background-color: #f0f3f5;
+    padding-top: 75px; /* Tambahkan padding-top agar konten tidak tertutup navbar */
 }
 
 /* Navbar Styles */
-.navbar-custom {
-    background-color: #4a90e2;
-    padding: 10px 20px;
+.navbar-energetic {
     position: fixed;
     top: 0;
+    left: 0;
     width: 100%;
     z-index: 1000;
+    background: linear-gradient(45deg, #a570e9 40%, #6f9dc9 99%, #a0c1f3 100%);
+    padding: 0.7rem 1rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .navbar-brand {
@@ -50,14 +54,15 @@ body {
 }
 
 /* Sidebar Styles */
+/* Sidebar Styles */
 .sidebar {
     background-color: #e6ebf3;
     padding: 1rem;
     width: 250px;
-    position: absolute;
-    top: 50px;
-    height: 700px;
-    overflow-y: auto;
+    position: fixed; /* Mengubah posisi sidebar menjadi fixed */
+    top: 60px; /* Memberikan jarak dari atas, disesuaikan dengan tinggi navbar */
+    bottom: 0; /* Membuat sidebar tetap sampai bawah */
+    overflow-y: auto; /* Menambahkan scrollbar jika konten sidebar melebihi tinggi layar */
 }
 
 .sidebar img {
@@ -121,7 +126,7 @@ body {
 
 /* Content Styles */
 .content {
-    margin-left: 270px;
+    margin-left: 270px; /* Memberikan jarak konten dari kiri untuk menghindari overlap dengan sidebar */
     padding: 80px 20px 20px 20px;
 }
 

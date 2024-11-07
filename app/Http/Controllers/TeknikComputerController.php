@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Spatie\PdfToImage\Pdf;
+use App\Models\History;
+
 
 class TeknikComputerController extends Controller
 {
@@ -79,8 +81,17 @@ class TeknikComputerController extends Controller
     public function show($id)
     {
         $teknik_computers = TeknikComputer::with('user','category')->findOrFail($id);
+
+        // Simpan riwayat ke tabel histories
+        History::create([
+            'user_id' => auth()->id(),
+            'tk_id' => $teknik_computers->tk_id, // Pastikan menggunakan primary key yang benar
+            'viewed_at' => now(),
+        ]);
+
         return view('tk.show', compact('teknik_computers'));
     }
+
 
     public function edit($id)
     {

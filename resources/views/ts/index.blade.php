@@ -94,7 +94,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
 @endpush
 
-<script
+<script>
     src="{{ asset('storage/pdfThumbnails.js') }}"
     data-pdfjs-src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.5.207/pdf.js">
 </script>

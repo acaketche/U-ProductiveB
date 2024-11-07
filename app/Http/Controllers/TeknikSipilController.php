@@ -5,9 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\TeknikSipil;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
+use App\Models\History;
+use Carbon\Carbon; // Mengimpor Carbon dengan benar
 
 class TeknikSipilController extends Controller
 {
@@ -50,11 +51,13 @@ class TeknikSipilController extends Controller
     public function create()
     {
         $categories = Category::all();
+
         return view('ts.create', compact('categories'));
     }
 
     // Menyimpan data baru
     public function store(Request $request)
+
 {
     // Validasi input
     $request->validate([
@@ -77,11 +80,18 @@ class TeknikSipilController extends Controller
 
     return redirect()->route('teknik_sipil.index')->with('success', 'Data berhasil ditambahkan');
 }
-
     // Menampilkan detail data
     public function show($id)
     {
         $teknik_sipils = TeknikSipil::with('user','category')->findOrFail($id);
+
+        // Simpan riwayat ke tabel histories
+        History::create([
+            'user_id' => auth()->id(),
+            'ts_id' => $teknik_sipils->ts_id, // Pastikan menggunakan primary key yang benar
+            'viewed_at' => now(),
+        ]);
+
         return view('ts.show', compact('teknik_sipils'));
     }
 
@@ -95,44 +105,43 @@ class TeknikSipilController extends Controller
 
     // Memperbarui data
     public function update(Request $request, $id)
-{
-    $validatedData = $request->validate([
-        'title' => 'required|max:255',
-        'content' => 'required',
-        'category_id' => 'required|integer',
-        'thumbnail_path' => 'nullable|image',
-    ]);
+    {
+        $validatedData = $request->validate([
+            'title' => 'required|max:255',
+            'content' => 'required',
+            'category_id' => 'required|integer',
+            'thumbnail_path' => 'nullable|image',
+        ]);
 
-    $teknik_sipil = TeknikSipil::findOrFail($id);
+        $teknik_sipil = TeknikSipil::findOrFail($id);
 
-    // Update gambar jika ada
-    if ($request->hasFile('thumbnail_path')) {
+        // Update gambar jika ada
+        if ($request->hasFile('thumbnail_path')) {
+            if ($teknik_sipil->thumbnail_path) {
+                Storage::delete($teknik_sipil->thumbnail_path);
+            }
+
+            $path = $request->file('thumbnail_path')->store('public/images');
+            $validatedData['thumbnail_path'] = $path;
+        }
+
+        $teknik_sipil->update($validatedData);
+
+        return redirect()->route('teknik_sipil.index')->with('success', 'Data berhasil diperbarui');
+    }
+
+    // Menghapus data
+    public function destroy($id)
+    {
+        $teknik_sipil = TeknikSipil::findOrFail($id);
+
         if ($teknik_sipil->thumbnail_path) {
             Storage::delete($teknik_sipil->thumbnail_path);
         }
 
-        $path = $request->file('thumbnail_path')->store('public/images');
-        $validatedData['thumbnail_path'] = $path;
+        $teknik_sipil->delete();
+
+        return redirect()->route('teknik_sipil.index')->with('success', 'Data berhasil dihapus');
     }
-
-    $teknik_sipil->update($validatedData);
-
-    return redirect()->route('teknik_sipil.index')->with('success', 'Data berhasil diperbarui');
-}
-
-
-    // Menghapus data
-    public function destroy($id)
-{
-    $teknik_sipil = TeknikSipil::findOrFail($id);
-
-    if ($teknik_sipil->thumbnail_path) {
-        Storage::delete($teknik_sipil->thumbnail_path);
-    }
-
-    $teknik_sipil->delete();
-
-    return redirect()->route('teknik_sipil.index')->with('success', 'Data berhasil dihapus');
-}
 
 }

@@ -1,10 +1,25 @@
 <?php
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\{
-    AuthController, UserController, AdminController, ProfileController, ArticleController, KategoriController,
-    VideoController, HistoryController, FavoriteController, ForumController, CommentController,
-    UtamaController, InformaticaController, TeknikSipilController, PDFExportController, TeknikComputerController, ProdiController
-};
+
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ArticleController;
+use App\Http\Controllers\KategoriController;
+use App\Http\Controllers\VideoController;
+use App\Http\Controllers\HistoryController;
+use App\Http\Controllers\FavoriteController;
+use App\Http\Controllers\ForumController;
+use App\Http\Controllers\CommentController;
+use App\Http\Controllers\UtamaController;
+use App\Http\Controllers\TeknikSipilController;
+use App\Http\Controllers\InformaticaController;
+use App\Http\Controllers\TeknikComputerController;
+use App\Http\Controllers\ProdiController;
+use App\Http\Controllers\PDFExportController;
+use App\Http\Controllers\YourExistingController;
+
 
 // General Routes
 Route::get('/export-pdf', [PDFExportController::class, 'exportPDF'])->name('export.pdf');
@@ -30,10 +45,12 @@ Route::middleware('auth')->group(function() {
     Route::post('/informatica', [InformaticaController::class, 'store'])->name('informatica.store');
     Route::get('/informatics/create', [InformaticaController::class, 'create'])->name('informatica.create'); // Route untuk create
     Route::get('/informatica/move-file', [InformaticaController::class, 'moveFile']);
+
     Route::get('teknik_computers/create', [TeknikComputerController::class, 'create'])->name('teknik_computer.create');
     Route::post('teknik_computer', [TeknikComputerController::class, 'store'])->name('teknik_computer.store');
     Route::get('teknik_sipils/create', [TeknikSipilController::class, 'create'])->name('teknik_sipil.create');
     Route::post('teknik_sipil', [TeknikSipilController::class, 'store'])->name('teknik_sipil.store');
+
 
 });
 
@@ -61,6 +78,10 @@ Route::middleware('role:mahasiswa,dosen')->group(function() {
     Route::resource('informatics', InformaticaController::class)
     ->only(['edit', 'update', 'destroy']);
 
+    //teknik sipil
+    Route::resource('teknik_sipils', TeknikSipilController::class)
+    ->only(['edit', 'update', 'destroy']);
+
     // Videos
     Route::resource('video', VideoController::class)
     ->only(['edit', 'update', 'destroy']);
@@ -77,6 +98,7 @@ Route::middleware('role:mahasiswa,dosen')->group(function() {
     Route::post('/favorite/toggle', [FavoriteController::class, 'toggle'])->name('favorite.toggle');
     Route::get('/favorites', [FavoriteController::class, 'index'])->name('favorite.index');
     Route::post('/post/{post}/unfavorite', [FavoriteController::class, 'unfavorite'])->name('post.unfavorite');
+    //Route::post('/favorite/{post_Id}', [ForumController::class, 'favorite'])->name('forum.favorite');
     Route::post('/post/{post}/favorite', [FavoriteController::class, 'favorite'])->name('post.favorite');
     Route::post('/favorite/{postId}', [FavoriteController::class, 'store'])->name('favorite.store');
 
@@ -140,6 +162,7 @@ Route::middleware('role:admin')->group(function() {
 
 
 });
+
 
 
 Route::get('prodi', [ProdiController::class, 'index'])->name('prodi.index');

@@ -33,4 +33,9 @@ class TeknikComputer extends Model
         return $this->belongsTo(User::class, 'user_id', 'user_id'); // Sesuaikan 'id' dengan primary key pada tabel users
     }
 
+    public function histories()
+    {
+        return $this->hasMany(History::class, 'tk_id', 'tk_id');
+    }
+
 }

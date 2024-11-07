@@ -30,4 +30,10 @@ class Informatica extends Model
         return $this->belongsTo(User::class, 'user_id', 'user_id'); // Sesuaikan 'id' dengan primary key pada tabel users
     }
 
+    // Relasi ke model History (untuk menyatakan riwayat artikel)
+    public function histories()
+    {
+        return $this->hasMany(History::class, 'if_id', 'if_id');
+    }
+
 }

@@ -20,6 +20,7 @@ class TeknikSipil extends Model
         'title',
         'file_pdf',
         'category_id',
+        'user_id',
     ];
 
     // Relasi ke kategori
@@ -29,8 +30,15 @@ class TeknikSipil extends Model
     }
 
     public function user()
+
     {
         return $this->belongsTo(User::class, 'user_id', 'user_id'); // Sesuaikan 'id' dengan primary key pada tabel users
+    }
+
+    // Relasi ke model History (untuk menyatakan riwayat artikel)
+    public function histories()
+    {
+        return $this->hasMany(History::class, 'ts_id', 'ts_id');
     }
 
 }

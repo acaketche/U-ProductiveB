@@ -80,6 +80,7 @@ class VideoController extends Controller
         return redirect()->route('video.index')->with('success', 'Video berhasil ditambahkan.');
     }
 
+
     public function show($id)
     {
         $video = Video::with('user', 'category')->findOrFail($id);
@@ -110,14 +111,12 @@ class VideoController extends Controller
             'description' => 'nullable|string|max:5000',
         ]);
 
-        if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('images', 'public');
-            $video->update(['thumbnail_url' => $imagePath]);
-        }
+        $requestData = $request->all();
+        $requestData['user_id'] = auth()->id(); // Menambahkan user_id dari user yang login
 
-        $video->update($request->only('title', 'category_id', 'description'));
+        $video->update($requestData);
 
-        return redirect()->route('video.index')->with('success', 'Video berhasil diperbarui!');
+        return redirect()->route('video.index')->with('success', 'Video berhasil diperbarui.');
     }
 
     private function exportVideoPDF($videos)

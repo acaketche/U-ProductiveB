@@ -148,4 +148,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Informatica::class, 'user_id', 'user_id');
     }
+
+    public function sipils()
+    {
+        return $this->hasMany(Sipil::class, 'user_id', 'user_id');
+    }
 }
