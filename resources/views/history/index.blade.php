@@ -57,6 +57,25 @@
                         </a>
                     </p>
                 @endif
+
+                @if($history->teknik_sipils)
+                    <p class="card-text">
+                        <strong>Teknik Sipil:</strong>
+                        <a href="{{ route('teknik_sipil.show', $history->teknik_sipils->ts_id) }}">
+                            {{ $history->teknik_sipils->title ?? 'Judul tidak tersedia' }}
+                        </a>
+                    </p>
+                @endif
+
+                @if($history->teknik_computers)
+                    <p class="card-text">
+                        <strong>Teknik Komputer:</strong>
+                        <a href="{{ route('teknik_computer.show', $history->teknik_computers->tk_id) }}">
+                            {{ $history->teknik_computers->title ?? 'Judul tidak tersedia' }}
+                        </a>
+                    </p>
+                @endif
+
                 <p class="text-muted small mb-0">
                     {{ $history->viewed_at ? \Carbon\Carbon::parse($history->viewed_at)->timezone('Asia/Jakarta')->format('d M Y, H:i') : 'Tanggal tidak tersedia' }}
                 </p>

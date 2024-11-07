@@ -23,7 +23,11 @@
                 <label for="kategoriTeknikSipil" class="form-label">Kategori</label>
                 <select name="category_id" class="form-select" required>
                     @foreach ($categories as $category)
-                        <option value="{{ $category->category_id }}">{{ $category->name }}</option>
+                    @if($category->prodi_id === 3) <!-- Menampilkan kategori untuk prodi Komputer -->
+                    <option value="{{ $category->category_id }}" {{ request('category') == $category->category_id ? 'selected' : '' }}>
+                        {{ $category->name }}
+                    </option>
+                @endif
                     @endforeach
                 </select>
             </div>

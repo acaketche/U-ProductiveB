@@ -161,15 +161,6 @@
                 </button>
             </div>
 
-            <div class="mb-4">
-                <label for="role" class="form-label">Login as</label>
-                <select id="role" name="role" required>
-                    <option value="Mahasiswa">Mahasiswa</option>
-                    <option value="Dosen">Dosen</option>
-                    <option value="Admin">Admin</option>
-                </select>
-            </div>
-
             <button type="submit">Login</button>
         </form>
 

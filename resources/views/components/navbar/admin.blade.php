@@ -22,6 +22,9 @@
             <li class="nav-item">
                 <x-navbar.nav-item1 route="kelola.forum" text="Kelola Data Forum" icon="message-circle"/>
             </li>
+            <li class="nav-item">
+                <x-navbar.nav-item1 route="kelola.prodi" text="Kelola Prodi" icon="book"/>
+            </li>
         </ul>
     </div>
 </nav>

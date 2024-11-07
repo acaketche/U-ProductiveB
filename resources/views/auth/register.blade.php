@@ -117,11 +117,10 @@
                 </div>
             </div>
             <div class="mb-3">
-                <label for="role" class="form-label">Login as</label>
+                <label for="role" class="form-label">Register as</label>
                 <select class="form-select" id="role" name="role" required>
                     <option value="Mahasiswa">Mahasiswa</option>
                     <option value="Dosen">Dosen</option>
-                    <option value="Admin">Admin</option>
                 </select>
             </div>
             <button type="submit" class="btn btn-primary">Register</button>

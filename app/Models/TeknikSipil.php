@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
-use Imagick;
+
 
 class TeknikSipil extends Model
 {
@@ -30,39 +30,15 @@ class TeknikSipil extends Model
     }
 
     public function user()
+
     {
-        return $this->belongsTo(User::class, 'user_id','user_id');
-    }
-    // Relasi ke thumbnail
-    public function thumbnail()
-    {
-        return $this->hasOne(Thumbnail_path::class, 'teknik_sipil_id', 'ts_id');
+        return $this->belongsTo(User::class, 'user_id', 'user_id'); // Sesuaikan 'id' dengan primary key pada tabel users
     }
 
-    // Metode untuk menghasilkan thumbnail dari PDF
-    public function generateThumbnail($pdfPath)
+    // Relasi ke model History (untuk menyatakan riwayat artikel)
+    public function histories()
     {
-        // Tentukan path thumbnail
-        $thumbnailPath = 'thumbnails/' . basename($pdfPath, '.pdf') . '.jpg';
-
-        // Periksa apakah thumbnail sudah ada
-        if (!Storage::exists($thumbnailPath)) {
-            // Membuat thumbnail dari PDF menggunakan Imagick
-            try {
-                $imagick = new Imagick();
-                $imagick->setResolution(300, 300); // Resolusi untuk thumbnail
-                $imagick->readImage($pdfPath . '[0]'); // Ambil halaman pertama
-                $imagick->setImageFormat('jpg');
-                $imagick->thumbnailImage(300, 0); // Mengubah ukuran thumbnail
-                $imagick->writeImage(storage_path('app/' . $thumbnailPath));
-                $imagick->clear();
-                $imagick->destroy();
-            } catch (\Exception $e) {
-                // Menangani kesalahan jika terjadi
-                return null;
-            }
-        }
-
-        return $thumbnailPath;
+        return $this->hasMany(History::class, 'ts_id', 'ts_id');
     }
+
 }

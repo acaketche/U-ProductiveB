@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use App\Models\ForumPost;
 use App\Models\Comment;
+use Carbon\Carbon;
 use PDF;
 use Illuminate\Support\Facades\Storage;
 
@@ -16,6 +17,29 @@ class AdminController extends Controller
         return view('admin.dashboard');
     }
 
+    public function createUser()
+{
+    return view('admin.tambah-user');
+}
+
+public function storeUser(Request $request)
+{
+    $validatedData = $request->validate([
+        'name' => 'required|string|max:255',
+        'email' => 'required|email|unique:users,email',
+        'password' => 'required|string|min:8',
+        'role' => 'required|in:admin,dosen,mahasiswa',
+    ]);
+
+    $user = User::create([
+        'name' => $request->input('name'),
+        'email' => $request->input('email'),
+        'password' =>$request->input('password'),
+        'role' => $request->input('role'),
+    ]);
+
+    return redirect()->route('kelola.user')->with('success', 'User baru berhasil ditambahkan.');
+}
     public function kelolaUser(Request $request)
     {
         $query = User::query();
@@ -68,10 +92,43 @@ class AdminController extends Controller
         return redirect('/login');
     }
 
-    public function kelolaForum()
+    public function kelolaForum(Request $request)
     {
-        $forumPosts = ForumPost::with('user')->get();
-        return view('admin.kelola-forum', compact('forumPosts'));
+        $query = ForumPost::with('user');
+
+    // Search
+    if ($request->filled('search')) {
+        $query->where('content', 'like', '%' . $request->search . '%');
+    }
+
+    // Filter by user
+    if ($request->filled('user')) {
+        $query->where('user_id', $request->user);
+    }
+
+    // Filter by date range
+    if ($request->filled('date_range')) {
+        switch ($request->date_range) {
+            case 'today':
+                $query->whereDate('created_at', Carbon::today());
+                break;
+            case 'week':
+                $query->whereBetween('created_at', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()]);
+                break;
+            case 'month':
+                $query->whereMonth('created_at', Carbon::now()->month)
+                      ->whereYear('created_at', Carbon::now()->year);
+                break;
+        }
+    }
+
+    // Get all users for the filter dropdown
+    $users = User::all();
+
+    // Get paginated results
+    $forumPosts = $query->orderBy('created_at', 'desc')->paginate(10);
+
+    return view('admin.kelola-forum', compact('forumPosts', 'users'));
     }
 
     public function destroyPost($id)
@@ -81,11 +138,28 @@ class AdminController extends Controller
         return redirect()->route('kelola.forum')->with('success','Post Berhasil dihapus.');
     }
 
-    public function viewComments($id)
+    public function viewComments(Request $request, $id)
     {
         $post = ForumPost::findOrFail($id);
-        $comments = $post->comments()->with('user')->get();
-        return view('admin.kelola-comments', compact('comments','post'));
+        $query = Comment::with('user')->where('post_id', $id);
+
+        // Search
+        if ($request->filled('search')) {
+            $query->where('content', 'like', '%' . $request->search . '%');
+        }
+
+        // Filter by user
+        if ($request->filled('user')) {
+            $query->where('user_id', $request->user);
+        }
+
+        // Get all users for the filter dropdown
+        $users = User::all();
+
+        // Get paginated results
+        $comments = $query->orderBy('created_at', 'desc')->paginate(10);
+
+        return view('admin.kelola-comments', compact('post', 'comments', 'users'));
     }
 
     public function destroyComment($id)
