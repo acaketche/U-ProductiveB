@@ -1,109 +1,77 @@
 @extends('layout.navbar-guest')
 @section('content')
-<div class="container mt-4">
-    <div class="row">
-        <!-- Artikel Populer Section -->
-        <div class="col-md-6 mb-4">
-            <div class="card card-hover shadow-lg">
-                <div class="card-header bg-gradient-primary text-white">
-                    <h4 class="mb-0"><i class="fas fa-newspaper mr-2"></i>Artikel Populer</h4>
-                </div>
-                <ul class="list-group list-group-flush">
-                    @forelse($articles as $article)
-                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                        <span class="article-title"><i class="fas fa-star text-warning mr-2"></i>{{ $article->title }}</span>
-                        <a href="{{ route('articles.show', $article->article_id) }}" class="btn btn-sm btn-outline-primary">Baca</a>
-                    </li>
-                    @empty
-                    <li class="list-group-item">Belum ada artikel.</li>
-                    @endforelse
-                </ul>
-            </div>
-        </div>
-        <!-- Video Populer Section -->
-        <div class="col-md-6 mb-4">
-            <div class="card card-hover shadow-lg">
-                <div class="card-header bg-gradient-success text-white">
-                    <h4 class="mb-0"><i class="fas fa-video mr-2"></i>Video Populer</h4>
-                </div>
-                <ul class="list-group list-group-flush">
-                    @forelse($videos as $video)
-                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                        <span class="video-title"><i class="fas fa-play-circle text-danger mr-2"></i>{{ $video->title }}</span>
-                        <a href="{{ $video->url }}" target="_blank" class="btn btn-sm btn-outline-success">Tonton</a>
-                    </li>
-                    @empty
-                    <li class="list-group-item">Belum ada video.</li>
-                    @endforelse
-                </ul>
-            </div>
-        </div>
-    </div>
-    <!-- E-Book Section -->
-    <div class="row mt-4">
-        <div class="col-md-12">
-            <div class="card card-hover shadow-lg">
-                <div class="card-body bg-gradient-info text-white">
-                    <h4 class="card-title"><i class="fas fa-book mr-2"></i>E-BOOK</h4>
-                    <p class="card-text">Temukan pengetahuan baru dalam e-book kami. Klik untuk mengeksplorasi dunia pengetahuan yang menunggu Anda!</p>
-                    <a href="https://www.gramedia.com/blog/rekomendasi-e-book-paling-banyak-dibaca-di-gramedia-digital/?srsltid=AfmBOoqO2T6k_rZrTGDY9wdcGpnVrjEttMvdAjPbJlmWvOJ6XIOSzoyO" target="_blank" class="btn btn-light">Baca E-Book</a>
-                </div>
-            </div>
-        </div>
+
+<div class="video-background">
+    <video autoplay muted loop id="background-video">
+        <source src="{{ asset('storage/video/videoopening.mp4') }}" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+    <div class="video-overlay">
+        <h1 class="display-4 font-weight-bold text-white">WELCOME TO U-PRODUCTIVITY</h1>
+        <p class="lead text-white">Master Your university Life</p>
+        <a href="{{ route('login') }}" class="btn btn-lg btn-primary-soft">Want To Join Us?</a>
     </div>
 </div>
-@endsection
 
+@endsection
 
 @push('styles')
 <style>
-    body {
-        background-color: #f8f9fa;
+    /* Remove body margin and padding to prevent any unwanted scrolling */
+    body, html {
+        margin: 0;
+        padding: 0;
+        overflow: hidden; /* Prevent scrolling */
+        width: 100%;
+        height: 100%;
     }
-    .container {
-        max-width: 1135px;
-    }
-    .card {
-        border-radius: 15px;
+
+    /* Fullscreen Video Background */
+    .video-background {
+        position: fixed; /* Fixed positioning to cover viewport */
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh; /* Full viewport height */
         overflow: hidden;
-        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: -1;
     }
-    .card-hover:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 10px 20px rgba(0,0,0,0.2) !important;
+
+    #background-video {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 100vw;
+        height: 100vh;
+        object-fit: cover;
+        transform: translate(-50%, -50%);
     }
-    .card-header {
+
+    /* Video Overlay Text */
+    .video-overlay {
+        position: relative;
+        z-index: 1;
+        color: #fff;
+        text-align: center;
+        /* background-color: rgba(0, 0, 0, 0.5); Dark overlay for readability */
+        padding: 20px;
         font-weight: bold;
-        padding: 1rem;
     }
-    .bg-gradient-primary {
-        background: linear-gradient(45deg, #4e73df, #224abe);
-    }
-    .bg-gradient-success {
-        background: linear-gradient(45deg, #1cc88a, #13855c);
-    }
-    .bg-gradient-info {
-        background: linear-gradient(45deg, #36b9cc, #258391);
-    }
-    .list-group-item {
-        border: none;
-        padding: 1rem;
-        transition: background-color 0.3s ease;
-    }
-    .list-group-item:hover {
-        background-color: #f8f9fa;
-    }
-    .article-title, .video-title {
-        font-weight: 500;
-        color: #5a5c69;
-    }
-    .btn-sm {
-        border-radius: 20px;
-        padding: 0.25rem 0.75rem;
-    }
-    .shadow-lg {
-        box-shadow: 0 1rem 3rem rgba(0,0,0,.175)!important;
-    }
+
+    /* Custom class for a softer button */
+.btn-primary-soft {
+    background-color: #5b9aec; /* Softer blue color */
+    color: #fff;
+    border: none;
+}
+
+.btn-primary-soft:hover {
+    background-color: #5b8dcc; /* Slightly darker shade for hover effect */
+}
+
 </style>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 @endpush

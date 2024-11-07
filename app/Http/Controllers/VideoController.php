@@ -83,6 +83,8 @@ class VideoController extends Controller
     public function show($id)
     {
         $video = Video::with('user', 'category')->findOrFail($id);
+         // Ekstraksi ID video YouTube
+        $videoId = $this->extractYouTubeId($video->url);
 
         History::create([
             'user_id' => auth()->id(),
@@ -90,7 +92,7 @@ class VideoController extends Controller
             'viewed_at' => now(),
         ]);
 
-        return view('video.show', compact('video'));
+        return view('video.show', compact('video', 'videoId'));
     }
 
     public function edit(Video $video)

@@ -103,6 +103,11 @@ Route::middleware('role:admin')->group(function() {
     Route::get('/admin/if', [ProdiController::class, 'kelolaInformatika'])->name('kelola.informatika');
     Route::delete('/if/{id}', [ProdiController::class, 'destroy'])->name('delete-if');
 
+    Route::get('/admin/tk', [ProdiController::class, 'kelolaKomputer'])->name('kelola.komputer');
+    Route::delete('/tk/{id}', [ProdiController::class, 'destroytk'])->name('delete-tk');
+
+    Route::get('/admin/ts', [ProdiController::class, 'kelolaSipil'])->name('kelola.sipil');
+    Route::delete('/ts/{id}', [ProdiController::class, 'destroyts'])->name('delete-ts');
     // User Management
     Route::get('/admin/kelola-user', [Admincontroller::class, 'kelolaUser'])->name('kelola.user');
     Route::get('/admin/users/create', [AdminController::class, 'createUser'])->name('create-user');

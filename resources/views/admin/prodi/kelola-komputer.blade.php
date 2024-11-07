@@ -3,13 +3,13 @@
 @section('judul2','Tugas Akhir IF')
 @section('content')
 <div class="content">
-    <h3>Manajemen Tugas AKhir Informatika</h3>
-    <p>Manajemen Tugas Akhir Prodi Informatika STT Payakumbuh</p>
+    <h3>Manajemen Tugas AKhir Komputer</h3>
+    <p>Manajemen Tugas Akhir Prodi Komputer STT Payakumbuh</p>
 
     <!-- Search and Filter Form -->
     <div class="card mb-4">
         <div class="card-body">
-            <form action="{{ route('kelola.informatika') }}" method="GET" class="row g-3">
+            <form action="{{ route('kelola.komputer') }}" method="GET" class="row g-3">
                 <!-- Search -->
                 <div class="col-md-4">
                     <input type="text"
@@ -41,7 +41,7 @@
                     <button type="submit" class="btn btn-primary">
                         <i class="fas fa-search"></i> Cari
                     </button>
-                    <a href="{{ route('kelola.informatika') }}" class="btn btn-secondary">
+                    <a href="{{ route('kelola.komputer') }}" class="btn btn-secondary">
                         <i class="fas fa-sync"></i> Reset
                     </a>
                     <button type="submit" name="export" value="1" class="btn btn-success float-end">
@@ -69,16 +69,16 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($informatics as $informatic)
+                        @foreach($teknik_computers as $teknik_computer)
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
-                                <td>{{ $informatic->title }}</td>
-                                <td>{{ $informatic->file_pdf }}</td>
-                                <td>{{ $informatic->category->name }}</td>
-                                <td>{{ optional($informatic->user)->name ?? 'Unknown User' }}</td>
-                                <td>{{ $informatic->create_at ?? 'No Date Available' }}</td>
+                                <td>{{ $teknik_computer->title }}</td>
+                                <td>{{ $teknik_computer->file_pdf }}</td>
+                                <td>{{ $teknik_computer->category->name }}</td>
+                                <td>{{ optional($teknik_computer->user)->name ?? 'Unknown User' }}</td>
+                                <td>{{ $teknik_computer->create_at ?? 'No Date Available' }}</td>
                                 <td>
-                                    <form action="{{ route('delete-if', $informatic->if_id) }}" method="POST" style="display:inline;">
+                                    <form action="{{ route('delete-tk', $teknik_computer->tk_id) }}" method="POST" style="display:inline;">
                                         @csrf
                                         @method('DELETE')
                                         <button class="btn btn-danger btn-sm" type="submit"
@@ -95,7 +95,7 @@
 
             <!-- Updated Pagination -->
             <div class="d-flex justify-content-center mt-4">
-                {{ $informatics->links('pagination::bootstrap-4') }}
+                {{ $teknik_computers->links('pagination::bootstrap-4') }}
             </div>
         </div>
     </div>
@@ -126,3 +126,5 @@
     }
 </style>
 @endpush
+
+

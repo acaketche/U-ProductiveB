@@ -19,7 +19,7 @@
                             <div class="card-body">
                                 <h5 class="card-title">Prodi Teknik Sipil</h5>
                                 <p class="card-text">Manajeman Data Tugas Akhir Mahasiswa Prodi Teknik Sipil</p>
-                                <a href="#" class="btn btn-primary">Teknik Sipil</a>
+                                <a href="{{route('kelola.sipil')}}" class="btn btn-primary">Teknik Sipil</a>
                             </div>
                         </div>
                     </div>
@@ -28,7 +28,7 @@
                             <div class="card-body">
                                 <h5 class="card-title">Prodi Teknik Komputer</h5>
                                 <p class="card-text">Manajeman Data Tugas Akhir Mahasiswa Prodi Teknik Komputer</p>
-                                <a href="#" class="btn btn-primary">Teknik Komputer</a>
+                                <a href="{{route('kelola.komputer')}}" class="btn btn-primary">Teknik Komputer</a>
                             </div>
                         </div>
                     </div>
