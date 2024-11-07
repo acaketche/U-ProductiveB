@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 
 class FavoriteController extends Controller
 {
+    // Metode untuk menambahkan/menghapus favorit
     public function toggle(Request $request)
     {
         $postId = $request->input('post_id');
@@ -31,31 +32,35 @@ class FavoriteController extends Controller
         }
     }
 
+    // Menampilkan daftar favorit
     public function index()
     {
         $user = auth()->user();
-        $favorites = $user->favorites()->with(['article', 'video'])->get();
+        $favorites = $user->favorites()->with(['article', 'video'])->orderBy('created_at', 'desc')->get();
 
         return view('favorite.index', compact('favorites', 'user'));
     }
 
-    public function store($postId)
+    // Menyimpan favorit untuk artikel atau forum post
+    public function store(Request $request, $post_id)
     {
-        try {
-            // Cek apakah post dengan ID tersebut ada
-            $post = ForumPost::findOrFail($postId);
+        // Logika untuk menambah favorit
+        $favorite = new Favorite;
+        $favorite->user_id = Auth::id();
+        $favorite->post_id = $post_id;
+        $favorite->save();
 
-            // Logika untuk menambah atau menghapus favorit
-            $user = Auth::user();
-            $user->favorites()->toggle($postId);
-
-            return response()->json(['message' => 'Post favorit berhasil diperbarui'], 200);
-        } catch (\Exception $e) {
-            // Log error untuk debugging
-            \Log::error('Error saat menyimpan favorit: ' . $e->getMessage());
-            return response()->json(['message' => 'Gagal menyimpan favorit'], 500);
-        }
+        return back()->with('success', 'Favorite berhasil ditambahkan');
     }
+
+    public function destroy(Request $request, $post_id)
+    {
+        // Logika untuk menghapus favorit
+        Favorite::where('user_id', Auth::id())->where('post_id', $post_id)->delete();
+
+        return back()->with('success', 'Favorite berhasil dihapus');
+    }
+
 
     public function favorite(ForumPost $post)
     {
@@ -75,5 +80,4 @@ class FavoriteController extends Controller
         return redirect()->route('favorite.index', ['post' => $postId])
                         ->with('success', 'Post telah dihapus dari favorit');
     }
-
 }

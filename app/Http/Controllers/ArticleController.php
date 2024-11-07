@@ -184,4 +184,5 @@ class ArticleController extends Controller
 
         return redirect()->route('kelola.artikel')->with('success', 'Artikel berhasil dihapus!');
     }
+
 }

@@ -173,3 +173,9 @@ body {
 .active {
     color: blue !important;
 }
+
+.btn-primary1{
+    background-color: #e9c836;
+    color: #110f0f;
+    border: none;
+}

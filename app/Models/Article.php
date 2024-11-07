@@ -49,4 +49,11 @@ class Article extends Model
     {
         return $this->hasMany(History::class, 'article_id', 'article_id');
     }
+
+    // Define the relationship between Article and Favorite
+    public function favorites()
+    {
+        return $this->hasMany(Favorite::class, 'post_id', 'article_id')
+                    ->where('post_type', 'article'); // Make sure to filter by post_type
+    }
 }

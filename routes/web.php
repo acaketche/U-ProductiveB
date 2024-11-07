@@ -63,8 +63,8 @@ Route::middleware('role:mahasiswa,dosen')->group(function() {
     // Favorites
     Route::post('/favorite/toggle', [FavoriteController::class, 'toggle'])->name('favorite.toggle');
     Route::get('/favorites', [FavoriteController::class, 'index'])->name('favorite.index');
-    Route::post('/post/{post}/unfavorite', [FavoriteController::class, 'unfavorite'])->name('post.unfavorite');
-    Route::post('/post/{post}/favorite', [FavoriteController::class, 'favorite'])->name('post.favorite');
+    Route::post('/post/{post_id}/favorite', [FavoriteController::class, 'store'])->name('post.favorite');
+    Route::post('/post/{post_id}/unfavorite', [FavoriteController::class, 'destroy'])->name('post.unfavorite');
     Route::post('/favorite/{postId}', [FavoriteController::class, 'store'])->name('favorite.store');
 
 

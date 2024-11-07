@@ -32,7 +32,9 @@
             <div class="card mb-4">
                 <div class="card-body">
                     @if (Auth::check())
-                        <p>{{ $post->user->name ?? 'User Tidak Ditemukan' }}</p>
+                        <p> <img src="{{ $post->user && $post->user->profile_picture ? Storage::url($post->user->profile_picture) : asset('images/default-profile.png') }}" alt="User Image" class="rounded-image" style="width: 50px; height: 50px;">
+                            {{ $post->user->name ?? 'User Tidak Ditemukan' }}
+                        </p>
                     @endif
                     <p class="card-text">
                         <small class="text-muted">
@@ -43,9 +45,11 @@
 
                     <div class="comment-section">
                         <div class="text-muted text-primary">
-                            <i class="bi bi-star me-3 {{ $post->isFavorited ? 'text-primary' : '' }}"
-                               style="font-size: 1.5em; cursor: pointer; {{ $post->isFavorited ? 'color: blue;' : '' }}"
-                               data-post-id="{{ $post->post_id }}" id="favorite-icon-{{ $post->post_id }}"></i>
+                            <!-- Gunakan Blade untuk menentukan apakah ikon sudah difavoritkan -->
+                            <i class="bi bi-star-fill me-3 {{ $post->isFavorited ? 'favorited text-primary' : '' }}"
+                                style="font-size: 1.5em; cursor: pointer;"
+                                data-post-id="{{ $post->post_id }}" id="favorite-icon-{{ $post->post_id }}"
+                                data-is-favorited="{{ $post->isFavorited ? 'true' : 'false' }}"></i>
 
                             <!-- Form untuk menambah atau menghapus favorit -->
                             @if ($post->isFavorited)
@@ -53,17 +57,23 @@
                                     @csrf
                                     <button type="submit" style="display: none;"></button>
                                 </form>
+
+                                <!-- Notifikasi -->
+                                <div id="favorite-notification" style="display: none; background-color: #28a745; color: white; padding: 20px; border-radius: 5px; position: fixed; bottom: 20px; right: 20px; z-index: 9999; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+                                    Favorite berhasil dihapus!
+                                </div>
+
                             @else
                                 <form action="{{ url('/post/' . $post->post_id . '/favorite') }}" method="POST" class="favorite-form">
                                     @csrf
                                     <button type="submit" style="display: none;"></button>
                                 </form>
-                            @endif
-                        </div>
 
-                        <!-- Notifikasi -->
-                        <div id="favorite-notification" style="display: none; background-color: #28a745; color: white; padding: 10px; border-radius: 5px;">
-                            Favorite berhasil ditambahkan!
+                                <!-- Notifikasi -->
+                                <div id="favorite-notification" style="display: none; background-color: #28a745; color: white; padding: 20px; border-radius: 5px; position: fixed; bottom: 20px; right: 20px; z-index: 9999; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+                                    Favorite berhasil ditambahkan!
+                                </div>
+                            @endif
                         </div>
 
                         <!-- Form untuk menambahkan komentar -->
@@ -83,38 +93,87 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', () => {
-        const starIcons = document.querySelectorAll('.bi-star');
+        const starIcons = document.querySelectorAll('.bi-star-fill');
 
         starIcons.forEach(icon => {
-            icon.addEventListener('click', (event) => {
-                const postId = event.target.getAttribute('data-post-id');
-                const isFavorited = event.target.style.color === 'blue'; // Cek apakah ikon sudah berwarna biru
+            const postId = icon.getAttribute('data-post-id');
+            const isFavorited = icon.getAttribute('data-is-favorited') === 'true';
 
-                // Update warna ikon (menggunakan CSS inline)
-                const iconElement = document.getElementById(`favorite-icon-${postId}`);
-                if (isFavorited) {
-                    iconElement.style.color = ''; // Reset warna jika sudah biru
-                } else {
-                    iconElement.style.color = 'blue'; // Ubah warna menjadi biru
+            // Cek jika ikon ini sudah pernah difavoritkan sebelumnya dan ubah tampilannya
+            if (isFavorited) {
+                icon.style.color = 'blue';
+                icon.classList.add('favorited');
+            } else {
+                icon.style.color = ''; // reset ke warna default
+                icon.classList.remove('favorited');
+            }
+
+            // Cek localStorage untuk status favorit agar tetap berwarna biru ketika reload/pindah halaman
+            const storedFavoriteStatus = localStorage.getItem('favorite-' + postId);
+            if (storedFavoriteStatus === 'true') {
+                icon.style.color = 'blue';
+                icon.classList.add('favorited');
+            }
+
+            // Event listener untuk klik ikon
+            icon.addEventListener('click', async (event) => {
+                const isCurrentlyFavorited = icon.classList.contains('favorited');
+
+                // Jika sudah dalam status "favorited" dan user mengklik, hapus favorit
+                if (isCurrentlyFavorited) {
+                    const response = await toggleFavorite(postId, 'unfavorite', icon);
+                    if (response) {
+                        // Set warna kembali ke default dan ubah atribut
+                        icon.style.color = '';
+                        icon.classList.remove('favorited');
+                        localStorage.setItem('favorite-' + postId, 'false');
+                        showFavoriteNotification('Favorite berhasil dihapus!');
+                    }
                 }
-
-                // Kirim form untuk mengubah status favorit
-                const form = event.target.closest('div').querySelector('.favorite-form');
-                form.querySelector('button').click(); // Submit form secara otomatis
-
-                // Tampilkan notifikasi favorit berhasil ditambahkan
-                showFavoriteNotification();
+                // Jika belum favorited dan user mengklik, tambahkan ke favorit
+                else {
+                    const response = await toggleFavorite(postId, 'favorite', icon);
+                    if (response) {
+                        icon.style.color = 'blue';
+                        icon.classList.add('favorited');
+                        localStorage.setItem('favorite-' + postId, 'true');
+                        showFavoriteNotification('Favorite berhasil ditambahkan!');
+                    }
+                }
             });
         });
     });
 
-    function showFavoriteNotification() {
-        const notification = document.getElementById('favorite-notification');
-        notification.style.display = 'block';
+    // Fungsi untuk toggle favorit status
+    async function toggleFavorite(postId, action, icon) {
+        const url = `/post/${postId}/${action}`;
+        try {
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'Content-Type': 'application/json',
+                },
+            });
+            if (response.ok) {
+                return true;
+            } else {
+                console.error('Gagal mengubah status favorit:', response.statusText);
+                return false;
+            }
+        } catch (error) {
+            console.error('Gagal menambah/menghapus favorit:', error);
+            return false;
+        }
+    }
 
-        // Sembunyikan notifikasi setelah 3 detik
-        setTimeout(() => {
-            notification.style.display = 'none';
+    // Fungsi untuk menampilkan notifikasi
+    function showFavoriteNotification(message) {
+        var notification = document.getElementById('favorite-notification');
+        notification.innerText = message; // Ganti teks notifikasi sesuai status favorit
+        notification.style.display = 'block';
+        setTimeout(function() {
+            notification.style.display = 'none'; // Menyembunyikan notifikasi setelah 3 detik
         }, 3000);
     }
 </script>

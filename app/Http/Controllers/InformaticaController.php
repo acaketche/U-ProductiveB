@@ -9,6 +9,7 @@ use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 
+
 class InformaticaController extends Controller
 {
     public function index(Request $request)

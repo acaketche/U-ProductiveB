@@ -36,10 +36,10 @@ class ForumPost extends Model
         return $this->hasMany(Comment::class, 'post_id');
     }
 
-    public function favoritedBy()
-    {
-        return $this->belongsToMany(User::class, 'favorites', 'post_id', 'user_id');
-    }
+    // public function favoritedBy()
+    // {
+    //     return $this->belongsToMany(User::class, 'favorites', 'post_id', 'user_id');
+    // }
 
     public function article()
     {
