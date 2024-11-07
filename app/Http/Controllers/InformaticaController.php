@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Informatica; // Pastikan sudah include model Informatica
 use App\Models\Category;
+use App\Models\History;
 use Illuminate\Http\Request;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Storage;
@@ -13,47 +14,49 @@ use Illuminate\Support\Facades\Auth;
 class InformaticaController extends Controller
 {
     public function index(Request $request)
-    {
-        $categories = Category::all();
+{
+    $categories = Category::all();
 
-        $query = Informatica::query();
+    $query = Informatica::query();
 
-        // Filter pencarian
-        if ($request->filled('search')) {
-            $query->where('title', 'like', '%' . $request->search . '%');
-        }
-
-        // Filter berdasarkan kategori
-        if ($request->filled('category')) {
-            $query->where('category_id', $request->category);
-        }
-
-        // Filter berdasarkan waktu
-        if ($request->filled('time')) {
-            if ($request->time === '24 Jam') {
-                $query->where('create_at', '>=', now()->subDay());
-            } elseif ($request->time === '1 Minggu') {
-                $query->where('create_at', '>=', now()->subWeek());
-            } elseif ($request->time === '1 Bulan') {
-                $query->where('create_at', '>=', now()->subMonth());
-            }
-        }
-
-        $informatics = $query->paginate(9);
-
-        return view('informatics.index', compact('informatics', 'categories'));
+    // Filter pencarian
+    if ($request->filled('search')) {
+        $query->where('title', 'like', '%' . $request->search . '%');
     }
+
+    // Filter berdasarkan kategori
+    if ($request->filled('category')) {
+        $query->where('category_id', $request->category);
+    }
+
+    // Filter berdasarkan waktu
+    if ($request->filled('time')) {
+        if ($request->time === '24 Jam') {
+            $query->where('create_at', '>=', now()->subDay());
+        } elseif ($request->time === '1 Minggu') {
+            $query->where('create_at', '>=', now()->subWeek());
+        } elseif ($request->time === '1 Bulan') {
+            $query->where('create_at', '>=', now()->subMonth());
+        }
+    }
+
+    // Urutkan berdasarkan created_at (waktu pembuatan) secara descending (terbaru di atas)
+    $informatics = $query->orderBy('create_at', 'desc')->paginate(6);
+
+    return view('informatics.index', compact('informatics', 'categories'));
+}
+
 
     public function show($id)
     {
         $informatics = Informatica::with('user', 'category')->findOrFail($id);
 
         // Simpan riwayat ke tabel histories
-        // History::create([
-        //     'user_id' => auth()->id(),
-        //     'if_id' => $informatics->if_id, // Pastikan menggunakan primary key yang benar
-        //     'viewed_at' => now(),
-        // ]);
+        History::create([
+            'user_id' => auth()->id(),
+            'if_id' => $informatics->if_id, // Pastikan menggunakan primary key yang benar
+            'viewed_at' => now(),
+        ]);
 
         return view('informatics.show', compact('informatics'));
     }

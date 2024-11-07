@@ -89,4 +89,3 @@ class ForumController extends Controller
         }
     }
 }
-

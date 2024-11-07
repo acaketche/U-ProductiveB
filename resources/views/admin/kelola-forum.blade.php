@@ -2,9 +2,49 @@
 @section('judul','Kelola Forum')
 @section('judul2','Kelola Forum')
 @section('content')
-
 <div class="content">
+    <h3>Manajemen Forum Dan Komentar</h3>
     <p>Manajemen data forum post yang terdaftar di sistem.</p>
+
+    <!-- Search and Filter Form -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <form action="{{ route('kelola.forum') }}" method="GET" class="row g-3">
+                <div class="col-md-4">
+                    <label for="search" class="form-label">Cari</label>
+                    <input type="text" class="form-control" id="search" name="search"
+                           placeholder="Cari berdasarkan isi post..." value="{{ request('search') }}">
+                </div>
+                <div class="col-md-3">
+                    <label for="user" class="form-label">Filter Pengguna</label>
+                    <select class="form-select" name="user" id="user">
+                        <option value="">Semua Pengguna</option>
+                        @foreach($users as $user)
+                            <option value="{{ $user->user_id }}" {{ request('user') == $user->user_id ? 'selected' : '' }}>
+                                {{ $user->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label for="date_range" class="form-label">Range Waktu</label>
+                    <select class="form-select" name="date_range" id="date_range">
+                        <option value="">Semua Waktu</option>
+                        <option value="today" {{ request('date_range') == 'today' ? 'selected' : '' }}>Hari Ini</option>
+                        <option value="week" {{ request('date_range') == 'week' ? 'selected' : '' }}>Minggu Ini</option>
+                        <option value="month" {{ request('date_range') == 'month' ? 'selected' : '' }}>Bulan Ini</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label">&nbsp;</label>
+                    <div>
+                        <button type="submit" class="btn btn-primary">Filter</button>
+                        <a href="{{ route('kelola.forum') }}" class="btn btn-secondary">Reset</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
 
     <table class="table table-striped table-bordered">
         <thead>
@@ -29,12 +69,16 @@
                             @method('DELETE')
                             <button class="btn btn-danger btn-sm" type="submit">Hapus Postingan</button>
                         </form>
-                        <a href="{{ route('view-comments', $post->post_id) }}" class="btn btn-primary btn-sm">Lihat Komentar</a> <!-- Ensure the post ID is passed here -->
+                        <a href="{{ route('view-comments', $post->post_id) }}" class="btn btn-primary btn-sm">Lihat Komentar</a>
                     </td>
                 </tr>
             @endforeach
         </tbody>
     </table>
-</div>
 
+    <!-- Pagination -->
+    <div class="d-flex justify-content-center">
+        {{ $forumPosts->appends(request()->query())->links() }}
+    </div>
+</div>
 @endsection

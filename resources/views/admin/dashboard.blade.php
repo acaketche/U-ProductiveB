@@ -2,7 +2,7 @@
 @section('judul','Dashboard')
 @section('judul2','Dashboard')
 @section('content')
-
+<h1>Dashboard</h1>
                 <!-- Content Row -->
                 <div class="row">
                     <div class="col-12 col-md-6 col-lg-4 mb-4">

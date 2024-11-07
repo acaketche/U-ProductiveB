@@ -6,16 +6,17 @@
             <div class="d-flex justify-content-center align-items-center flex-wrap">
                 <form action="{{ route('articles.index') }}" method="GET" class="d-flex flex-grow-1 flex-wrap justify-content-center align-items-center">
                     @auth
-                    <button class="btn btn-primary me-2 mb-2 mb-md-0" type="button"
-                        onclick="window.location.href='{{ route('articles.create') }}';">
-                        <i class="bi bi-plus-lg me-1"></i>Tambah
-                    </button>
-                @else
-                    <button class="btn btn-primary me-2 mb-2 mb-md-0" type="button"
-                        onclick="window.location.href='{{ route('login') }}';">
-                        <i class="bi bi-plus-lg me-1"></i>Tambah
-                    </button>
-                @endauth
+                        <button class="btn btn-primary me-2 mb-2 mb-md-0" type="button"
+                            onclick="window.location.href='{{ route('articles.create') }}';">
+                            <i class="bi bi-plus-lg me-1"></i>Tambah
+                        </button>
+                    @else
+                        <button class="btn btn-primary me-2 mb-2 mb-md-0" type="button"
+                            onclick="window.location.href='{{ route('login') }}';">
+                            <i class="bi bi-plus-lg me-1"></i>Tambah
+                        </button>
+                    @endauth
+
                     <div class="input-group me-2 mb-2 mb-md-0 flex-grow-1" style="max-width: 300px;">
                         <input type="text" name="search" class="form-control" placeholder="Cari Artikel" value="{{ request('search') }}">
                         <button class="btn btn-outline-secondary" type="submit">
@@ -33,9 +34,11 @@
                                     <select class="form-select" id="kategori" name="category">
                                         <option value="">Pilih</option>
                                         @foreach ($categories as $category)
-                                            <option value="{{ $category->category_id }}" {{ request('category') == $category->category_id ? 'selected' : '' }}>
-                                                {{ $category->name }}
-                                            </option>
+                                            @if($category->prodi_id === null)
+                                                <option value="{{ $category->category_id }}" {{ request('category') == $category->category_id ? 'selected' : '' }}>
+                                                    {{ $category->name }}
+                                                </option>
+                                            @endif
                                         @endforeach
                                     </select>
                                 </div>
@@ -126,31 +129,31 @@
     }
 
     .dropdown-menu {
-    width: 350px; /* Atur lebar dropdown agar lebih besar */
-    padding: 15px; /* Menambah padding dalam dropdown */
-    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
-    border: none;
-    border-radius: 10px;
-}
+        width: 350px;
+        padding: 15px;
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+        border: none;
+        border-radius: 10px;
+    }
 
     .form-label {
         font-weight: bold;
-        font-size: 1rem; /* Perbesar teks label */
+        font-size: 1rem;
     }
 
     .form-select {
-        font-size: 1rem; /* Perbesar ukuran teks dalam select */
-        padding: 0.75rem; /* Tambah padding pada dropdown option */
+        font-size: 1rem;
+        padding: 0.75rem;
     }
 
     .dropdown-toggle {
-        font-size: 1rem; /* Perbesar ukuran teks tombol dropdown */
-        padding: 0.5rem 1rem; /* Sesuaikan padding pada tombol dropdown */
+        font-size: 1rem;
+        padding: 0.5rem 1rem;
     }
 
     .dropdown-menu .btn-sm {
-        padding: 0.5rem 1rem; /* Sesuaikan ukuran tombol kecil */
-        font-size: 0.875rem; /* Sesuaikan ukuran font tombol kecil */
+        padding: 0.5rem 1rem;
+        font-size: 0.875rem;
     }
 
     .article-card {

@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand-lg navbar-energetic">
     <div class="container">
         <a class="navbar-brand" href="#">
-            <img src="{{ asset('storage/images/logo.png') }}"  class="logo">
+            <img src="{{ asset('storage/images/logo.png') }}" class="logo">
             <span class="brand-text">U-Productive</span>
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -12,9 +12,19 @@
                 <x-navbar.nav-item route="home" text="Home"/>
                 <x-navbar.nav-item route="articles.index" text="Artikel"/>
                 <x-navbar.nav-item route="video.index" text="Video"/>
-                <x-navbar.nav-item route="informatica.index" text="Informatika"/>
-                <x-navbar.nav-item route="teknik_sipil.index" text="Teknik Sipil"/>
-                <x-navbar.nav-item route="teknik_computer.index" text="Teknik Komputer"/>
+
+                <!-- Prodi Dropdown -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="prodiDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Prodi
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="prodiDropdown">
+                        <li><a class="dropdown-item" href="{{ route('informatica.index') }}">Informatika</a></li>
+                        <li><a class="dropdown-item" href="{{ route('teknik_sipil.index') }}">Teknik Sipil</a></li>
+                        <li><a class="dropdown-item" href="{{ route('teknik_computer.index') }}">Teknik Komputer</a></li>
+                    </ul>
+                </li>
+
                 @guest
                     <li class="nav-item">
                         <a class="btn btn-login" href="{{ route('login') }}">Login</a>

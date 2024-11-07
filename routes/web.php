@@ -1,10 +1,25 @@
 <?php
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\{
-    AuthController, UserController, AdminController, ProfileController, ArticleController, KategoriController,
-    VideoController, HistoryController, FavoriteController, ForumController, CommentController,
-    UtamaController, InformaticaController, TeknikSipilController, PDFExportController, TeknikComputerController, ProdiController
-};
+
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ArticleController;
+use App\Http\Controllers\KategoriController;
+use App\Http\Controllers\VideoController;
+use App\Http\Controllers\HistoryController;
+use App\Http\Controllers\FavoriteController;
+use App\Http\Controllers\ForumController;
+use App\Http\Controllers\CommentController;
+use App\Http\Controllers\UtamaController;
+use App\Http\Controllers\TeknikSipilController;
+use App\Http\Controllers\InformaticaController;
+use App\Http\Controllers\TeknikComputerController;
+use App\Http\Controllers\ProdiController;
+use App\Http\Controllers\PDFExportController;
+use App\Http\Controllers\YourExistingController;
+
 
 // General Routes
 Route::get('/export-pdf', [PDFExportController::class, 'exportPDF'])->name('export.pdf');
@@ -16,6 +31,11 @@ Route::get('/video', [VideoController::class, 'index'])->name('video.index');
 Route::get('/video/{video_id}', [VideoController::class, 'show'])->name('video.show');
 Route::get('/informatica', [InformaticaController::class, 'index'])->name('informatica.index');
 Route::get('/informatica/{id}', [InformaticaController::class, 'show'])->name('informatica.show');
+Route::get('teknik_computer', [TeknikComputerController::class, 'index'])->name('teknik_computer.index');
+Route::get('teknik_computer/{teknik_computer}', [TeknikComputerController::class, 'show'])->name('teknik_computer.show');
+Route::get('teknik_sipil', [TeknikSipilController::class, 'index'])->name('teknik_sipil.index');
+Route::get('teknik_sipil/{teknik_sipil}', [TeknikSipilController::class, 'show'])->name('teknik_sipil.show');
+
 
 Route::middleware('auth')->group(function() {
     Route::get('/articles/create', [ArticleController::class, 'create'])->name('articles.create');
@@ -25,6 +45,12 @@ Route::middleware('auth')->group(function() {
     Route::post('/informatica', [InformaticaController::class, 'store'])->name('informatica.store');
     Route::get('/informatics/create', [InformaticaController::class, 'create'])->name('informatica.create'); // Route untuk create
     Route::get('/informatica/move-file', [InformaticaController::class, 'moveFile']);
+
+    Route::get('teknik_computers/create', [TeknikComputerController::class, 'create'])->name('teknik_computer.create');
+    Route::post('teknik_computer', [TeknikComputerController::class, 'store'])->name('teknik_computer.store');
+    Route::get('teknik_sipils/create', [TeknikSipilController::class, 'create'])->name('teknik_sipil.create');
+    Route::post('teknik_sipil', [TeknikSipilController::class, 'store'])->name('teknik_sipil.store');
+
 
 });
 
@@ -52,9 +78,17 @@ Route::middleware('role:mahasiswa,dosen')->group(function() {
     Route::resource('informatics', InformaticaController::class)
     ->only(['edit', 'update', 'destroy']);
 
+    //teknik sipil
+    Route::resource('teknik_sipils', TeknikSipilController::class)
+    ->only(['edit', 'update', 'destroy']);
+
     // Videos
     Route::resource('video', VideoController::class)
     ->only(['edit', 'update', 'destroy']);
+
+    Route::resource('teknik_sipils', TeknikSipilController::class)
+    ->only(['edit', 'update', 'destroy']);
+
 
     // History & Profile
     Route::get('/history', [HistoryController::class, 'index'])->name('history.index');
@@ -65,6 +99,9 @@ Route::middleware('role:mahasiswa,dosen')->group(function() {
     Route::get('/favorites', [FavoriteController::class, 'index'])->name('favorite.index');
     Route::post('/post/{post_id}/favorite', [FavoriteController::class, 'store'])->name('post.favorite');
     Route::post('/post/{post_id}/unfavorite', [FavoriteController::class, 'destroy'])->name('post.unfavorite');
+    //Route::post('/post/{post}/unfavorite', [FavoriteController::class, 'unfavorite'])->name('post.unfavorite');
+    //Route::post('/favorite/{post_Id}', [ForumController::class, 'favorite'])->name('forum.favorite');
+    //Route::post('/post/{post}/favorite', [FavoriteController::class, 'favorite'])->name('post.favorite');
     Route::post('/favorite/{postId}', [FavoriteController::class, 'store'])->name('favorite.store');
 
 
@@ -84,9 +121,21 @@ Route::middleware('role:mahasiswa,dosen')->group(function() {
 Route::middleware('role:admin')->group(function() {
     Route::post('/logoutadmin', [AdminController::class, 'logout'])->name('logoutadmin');
     Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+    Route::get('/admin/prodi', [ProdiController::class, 'kelolaProdi'])->name('kelola.prodi');
 
+    //informatika management
+    Route::get('/admin/if', [ProdiController::class, 'kelolaInformatika'])->name('kelola.informatika');
+    Route::delete('/if/{id}', [ProdiController::class, 'destroy'])->name('delete-if');
+
+    Route::get('/admin/tk', [ProdiController::class, 'kelolaKomputer'])->name('kelola.komputer');
+    Route::delete('/tk/{id}', [ProdiController::class, 'destroytk'])->name('delete-tk');
+
+    Route::get('/admin/ts', [ProdiController::class, 'kelolaSipil'])->name('kelola.sipil');
+    Route::delete('/ts/{id}', [ProdiController::class, 'destroyts'])->name('delete-ts');
     // User Management
-    Route::get('/admin/kelola-user', [UserController::class, 'kelolaUser'])->name('kelola.user');
+    Route::get('/admin/kelola-user', [Admincontroller::class, 'kelolaUser'])->name('kelola.user');
+    Route::get('/admin/users/create', [AdminController::class, 'createUser'])->name('create-user');
+    Route::post('/admin/users', [AdminController::class, 'storeUser'])->name('store-user');
     Route::delete('/user/{id}', [UserController::class, 'destroy'])->name('delete-user');
 
     // Category Management
@@ -112,28 +161,11 @@ Route::middleware('role:admin')->group(function() {
     Route::delete('/kelola-forum/post/{id}', [AdminController::class, 'destroyPost'])->name('delete-forum-post');
     Route::get('/kelola-forum/post/{id}/comments', [AdminController::class, 'viewComments'])->name('view-comments');
     Route::delete('/kelola-forum/comment/{id}', [AdminController::class, 'destroyComment'])->name('delete-comment');
+
+
 });
 
 
-// Route untuk menampilkan daftar teknik sipil (index)
-// Teknik Sipil Routes
-Route::get('teknik_sipil', [TeknikSipilController::class, 'index'])->name('teknik_sipil.index');
-Route::get('teknik_sipil/create', [TeknikSipilController::class, 'create'])->name('teknik_sipil.create');
-Route::post('teknik_sipil', [TeknikSipilController::class, 'store'])->name('teknik_sipil.store');
-Route::get('teknik_sipil/{teknik_sipil}', [TeknikSipilController::class, 'show'])->name('teknik_sipil.show');
-Route::get('teknik_sipil/{teknik_sipil}/edit', [TeknikSipilController::class, 'edit'])->name('teknik_sipil.edit');
-Route::put('teknik_sipil/{teknik_sipil}', [TeknikSipilController::class, 'update'])->name('teknik_sipil.update');
-Route::delete('teknik_sipil/{teknik_sipil}', [TeknikSipilController::class, 'destroy'])->name('teknik_sipil.destroy');
-
-
-
-Route::get('teknik_computer', [TeknikComputerController::class, 'index'])->name('teknik_computer.index');
-Route::get('teknik_computer/create', [TeknikComputerController::class, 'create'])->name('teknik_computer.create');
-Route::post('teknik_computer', [TeknikComputerController::class, 'store'])->name('teknik_computer.store');
-Route::get('teknik_computer/{teknik_computer}', [TeknikComputerController::class, 'show'])->name('teknik_computer.show');
-
-
-Route::get('/generate-thumbnail', [TeknikSipilController::class, 'generateThumbnailFromAPI']);
 
 Route::get('prodi', [ProdiController::class, 'index'])->name('prodi.index');
 Route::get('prodi/{prodi_id}', [ProdiController::class, 'show'])->name('prodi.show');

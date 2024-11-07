@@ -12,7 +12,7 @@ class History extends Model
     protected $primaryKey = 'history_id';
     public $timestamps = false;
 
-    protected $fillable = ['user_id', 'article_id', 'video_id', 'viewed_at'];
+    protected $fillable = ['user_id', 'article_id', 'video_id', 'ts_id' ,'if_id','tk_id' , 'viewed_at'];
 
     // Relasi ke model User
     public function user()
@@ -20,18 +20,32 @@ class History extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function article()
+    // Relasi ke model TeknikSipil
+    public function teknik_sipils()
     {
-        return $this->belongsTo(Article::class);
+        return $this->belongsTo(TeknikSipil::class, 'ts_id');
     }
 
-    public function video()
-    {
-        return $this->belongsTo(Video::class);
-    }
+        // Relasi ke model TeknikComputer
+        public function teknik_computers()
+        {
+            return $this->belongsTo(TeknikComputer::class, 'tk_id');
+        }
 
-    public function forumPost()
-    {
-        return $this->belongsTo(ForumPost::class, 'forum_post_id', 'post_id');
-    }
+    // Di dalam model History
+public function article()
+{
+    return $this->belongsTo(Article::class, 'article_id');
+}
+
+public function video()
+{
+    return $this->belongsTo(Video::class, 'video_id');
+}
+
+public function informatics()
+{
+    return $this->belongsTo(Informatica::class, 'if_id');
+}
+
 }

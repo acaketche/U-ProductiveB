@@ -14,7 +14,7 @@
         <div class="col-md-8">
             <div class="ratio ratio-16x9">
                 <!-- Ganti dengan video ID dinamis -->
-                <iframe src="https://www.youtube.com/embed/{{ $video_Id }}" frameborder="0" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
+                <iframe src="https://www.youtube.com/embed/{{ $videoId }}" frameborder="0" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
             </div>
             <h3 class="mt-3">{{ $video->title }}</h3> <!-- Judul di bawah video -->
         </div>
