@@ -11,27 +11,31 @@ use Illuminate\Support\Facades\Storage;
 class KategoriController extends Controller
 {
     public function kelolaKategori(Request $request)
-{
-    $query = Category::with('prodi');
+        {
+            $query = Category::with('prodi');
 
-    // Search
-    if ($request->filled('search')) {
-        $search = $request->search;
-        $query->where('name', 'LIKE', "%{$search}%");
-    }
+            // Search
+            if ($request->filled('search')) {
+                $search = $request->search;
+                $query->where('name', 'LIKE', "%{$search}%");
+            }
 
+            // Filter by Prodi
+            if ($request->filled('prodi')) {
+                $query->where('prodi_id', $request->prodi);
+            }
 
-    // Export PDF
-    if ($request->has('export')) {
-        return $this->exportPDF($query->get());
-    }
+            // Export PDF
+            if ($request->has('export')) {
+                return $this->exportPDF($query->get());
+            }
 
-    // Pagination with query parameters
-    $categories = $query->paginate(10)->withQueryString();
-    $prodis = Prodi::all(); // assuming Prodi is the model for Prodi
+            // Pagination with query parameters
+            $categories = $query->paginate(10)->withQueryString();
+            $prodis = Prodi::all();
 
-    return view('admin.kelola-kategori', compact('categories', 'prodis'));
-}
+            return view('admin.kelola-kategori', compact('categories', 'prodis'));
+        }
 
 private function exportPDF($categories)
 {

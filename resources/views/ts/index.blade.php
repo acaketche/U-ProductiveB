@@ -33,10 +33,12 @@
                                     <select class="form-select" id="kategori" name="category">
                                         <option value="">Pilih</option>
                                         @foreach ($categories as $category)
+                                        @if($category->prodi_id === 2) <!-- Menampilkan kategori untuk prodi Komputer -->
                                             <option value="{{ $category->category_id }}" {{ request('category') == $category->category_id ? 'selected' : '' }}>
                                                 {{ $category->name }}
                                             </option>
-                                        @endforeach
+                                        @endif
+                                    @endforeach
                                     </select>
                                 </div>
                                 <div class="col-md-6">
@@ -68,8 +70,11 @@
         <div class="col">
             <div class="card h-100 article-card">
                 <a href="{{ route('teknik_sipil.show', $teknik_sipil->ts_id) }}" class="card-img-link">
-                    <img src="{{ asset('storage/' . $teknik_sipil->thumbnail_path) }}" class="card-img-top" alt="{{ $teknik_sipil->title }}">
+                    <img data-pdf-thumbnail-file="{{asset('storage/'. $teknik_sipil->file_pdf)}}" data-pdf-thumbnail-width="500" width="350" height="300">
                 </a>
+                <h5 class="card-title" style="font-size: 14px; color: blue;">
+                    {{ $teknik_sipil->category->name }}
+                </h5>
                 <div class="card-body">
                     <h5 class="card-title">{{ $teknik_sipil->title }}</h5>
                 </div>
@@ -85,122 +90,11 @@
 @endsection
 
 @push('styles')
-<style>
-    :root {
-        --primary-color: #FFD166;
-        --secondary-color: #af8585;
-        --text-color: #000000;
-        --background-color: #f8f9fa;
-    }
-
-    body {
-        background-color: var(--background-color);
-        color: var(--text-color);
-    }
-
-    .btn-primary {
-        background-color: var(--primary-color);
-        border: none;
-        color: var(--text-color);
-        font-weight: bold;
-        transition: all 0.3s ease;
-    }
-
-    .btn-primary:hover {
-        background-color: #ffc233;
-        transform: translateY(-2px);
-    }
-
-    .btn-outline-primary {
-        color: var(--secondary-color);
-        border-color: var(--secondary-color);
-    }
-
-    .btn-outline-primary:hover {
-        background-color: var(--secondary-color);
-        color: white;
-    }
-
-    .dropdown-menu {
-        width: 350px;
-        padding: 15px;
-        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
-        border: none;
-        border-radius: 10px;
-    }
-
-    .form-label {
-        font-weight: bold;
-        font-size: 1rem;
-    }
-
-    .form-select {
-        font-size: 1rem;
-        padding: 0.75rem;
-    }
-
-    .dropdown-toggle {
-        font-size: 1rem;
-        padding: 0.5rem 1rem;
-    }
-
-    .dropdown-menu .btn-sm {
-        padding: 0.5rem 1rem;
-        font-size: 0.875rem;
-    }
-
-    .article-card {
-        border: none;
-        border-radius: 15px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        transition: all 0.3s ease;
-        overflow: hidden;
-    }
-
-    .article-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-    }
-
-    .card-img-top {
-        border-top-left-radius: 15px;
-        border-top-right-radius: 15px;
-        object-fit: cover;
-        height: 200px;
-        transition: all 0.3s ease;
-    }
-
-    .card-img-link:hover .card-img-top {
-        transform: scale(1.05);
-    }
-
-    .card-title {
-        font-size: 1.2rem;
-        font-weight: bold;
-        color: var(--text-color);
-    }
-
-    .pagination .page-link {
-        color: var(--text-color);
-        border: none;
-        margin: 0 2px;
-        border-radius: 5px;
-    }
-
-    .pagination .page-link:hover,
-    .pagination .page-item.active .page-link {
-        background-color: var(--primary-color);
-        color: var(--text-color);
-    }
-
-    @media (max-width: 768px) {
-        .dropdown-menu {
-            width: 100% !important;
-        }
-        .row > .col-6 {
-            width: 100%;
-        }
-    }
-</style>
+    <link href="{{asset('style/prodi.css')}}" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
 @endpush
+
+<script
+    src="{{ asset('storage/pdfThumbnails.js') }}"
+    data-pdfjs-src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.5.207/pdf.js">
+</script>

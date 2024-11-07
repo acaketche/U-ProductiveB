@@ -4,7 +4,7 @@
 <div class="content">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h3>Manajemen User</h3>
-        <a href="#" class="btn btn-primary">
+        <a href="{{route('create-user')}}" class="btn btn-primary">
             <i class="bi bi-plus-lg"></i> Tambah User
         </a>
     </div>
