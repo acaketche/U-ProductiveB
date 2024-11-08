@@ -25,7 +25,7 @@
                     <button class="btn btn-outline-primary dropdown-toggle" type="button" id="filterDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="bi bi-funnel me-1"></i>Filter
                     </button>
-                    <div class="dropdown-menu p-3">
+                    <div class="dropdown-menu p-3"style="width: 350px; padding: 15px; box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15); border: none; border-radius: 10px;">
                         <div class="row g-3">
                             <div class="col-md-6">
                                 <label for="kategori" class="form-label">Kategori</label>

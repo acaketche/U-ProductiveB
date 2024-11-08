@@ -1,4 +1,3 @@
-
 @extends('layout.navbar-guest')
 
 @section('content')
@@ -23,14 +22,16 @@
                 <strong>Category:</strong> {{ $article->category->name }} <br>
                 <strong>Published on:</strong> {{ Carbon::parse($article->created_at)->format('F j, Y') }}
             </p>
-            <p class="card-text">{{ $article->content }}</p>
+            <div class="card-text">
+                {!! nl2br(e($article->content)) !!}
+            </div>
             <div class="card-footer">
                 <small>Last updated on {{ Carbon::parse($article->updated_at)->format('F j, Y') }}</small>
             </div>
+        </div>
     </div>
 </div>
 @endsection
-
 
 @push('styles')
 <link rel="stylesheet" href="{{ asset('style/article.css') }}">

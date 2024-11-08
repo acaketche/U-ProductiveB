@@ -54,6 +54,15 @@
                             </div>
                         </div>
                     </div>
+                    <div class="col-12 col-md-6 col-lg-4 mb-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Kelola Tugas Akhir</h5>
+                                <p class="card-text">Manajemen Tugas Akhir.</p>
+                                <a href="{{ route('kelola.prodi') }}" class="btn btn-primary">Kelola Tugas Akhir</a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </main>
         </div>

@@ -49,7 +49,7 @@
                 <table class="table table-striped table-bordered">
                     <thead>
                         <tr>
-                            <th>Kategori ID</th>
+                            <th>Nomor</th>
                             <th>Nama Kategori</th>
                             <th>Nama Prodi</th>
                             <th>Aksi</th>
@@ -58,7 +58,7 @@
                     <tbody>
                         @foreach($categories as $category)
                             <tr>
-                                <td>{{ $category->category_id }}</td>
+                                <td>{{ $loop->iteration }}</td>
                                 <td>{{ $category->name }}</td>
                                 <td>{{ optional($category->prodi)->name }}</td>
                                 <td>

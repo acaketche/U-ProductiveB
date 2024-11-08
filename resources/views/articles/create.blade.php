@@ -23,8 +23,12 @@
                 <label for="kategoriArtikel" class="form-label">Kategori Artikel</label>
                 <select name="category_id" class="form-select" required>
                     @foreach ($categories as $category)
-                        <option value="{{ $category->category_id }}">{{ $category->name }}</option>
-                    @endforeach
+                                            @if($category->prodi_id === null)
+                                                <option value="{{ $category->category_id }}" {{ request('category') == $category->category_id ? 'selected' : '' }}>
+                                                    {{ $category->name }}
+                                                </option>
+                                            @endif
+                                        @endforeach
                 </select>
             </div>
             <div class="mb-3">
