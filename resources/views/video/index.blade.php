@@ -34,9 +34,11 @@
                                     <select class="form-select" id="kategori" name="category" style="font-size: 1rem; padding: 0.75rem;">
                                         <option value="">Pilih</option>
                                         @foreach ($categories as $category)
-                                            <option value="{{ $category->category_id }}" {{ request('category') == $category->category_id ? 'selected' : '' }}>
-                                                {{ $category->name }}
-                                            </option>
+                                            @if($category->prodi_id === null)
+                                                <option value="{{ $category->category_id }}" {{ request('category') == $category->category_id ? 'selected' : '' }}>
+                                                    {{ $category->name }}
+                                                </option>
+                                            @endif
                                         @endforeach
                                     </select>
                                 </div>
