@@ -60,7 +60,7 @@ class ForumPost extends Model
 
     public function favorites()
     {
-        return $this->belongsToMany(ForumPost::class, 'favorites', 'user_id', 'post_id');
+        return $this->hasMany(Favorite::class, 'post_id', 'post_id');
     }
 
 }

@@ -17,12 +17,17 @@ class ForumController extends Controller
      */
     public function index()
     {
-        // Mengambil semua forum post dengan relasi yang diperlukan
-        $posts = ForumPost::with('user')->orderBy('created_at', 'desc')->get();
-
         $user = Auth::user();
 
-        // Mengirimkan data forum post ke view 'forum'
+        $posts = ForumPost::with('user')
+            ->with('favorites') // Pastikan eager loading ke relasi favorites
+            ->orderBy('created_at', 'desc')
+            ->get()
+            ->map(function ($post) use ($user) {
+                $post->isFavorited = Favorite::where('post_id', $post->post_id)->where('user_id', Auth::id())->exists();
+                return $post;
+            });
+
         return view('forum.halaman-utama', compact('posts', 'user'));
     }
 

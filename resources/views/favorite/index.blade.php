@@ -26,23 +26,23 @@
         <div class="text-center mb-3">
             <h3>My Favorite Posts</h3>
         </div>
-        @foreach ($favorites as $post)
+        @foreach ($favorites as $favorite)
             <div class="card mb-3">
                 <div class="card-header">
-                    {{ Carbon\Carbon::parse($post->created_at)->diffForHumans() }}
+                    {{ Carbon\Carbon::parse($favorite->forumPost->created_at)->diffForHumans() }}
                 </div>
                 <div class="card-body">
-                    <h5 class="card-title">{{ $post->title }}</h5>
-                    <p class="card-text">{{ $post->content }}</p>
+                    <h5 class="card-title">{{ $favorite->forumPost->title }}</h5>
+                    <p class="card-text">{{ $favorite->forumPost->content }}</p>
                 </div>
                 @if (Auth::check())
                 <div class="card-footer text-muted">
-                    <favorite
+                    {{-- <favorite
                         :post={{ $post->id }}
                         :favorited={{ $post->favorited() ? 'true' : 'false' }}
                         >
-                    </favorite>
-                    <form action="{{ url('/post/' . $post->post_id . '/unfavorite') }}" method="POST">
+                    </favorite> --}}
+                    <form action="{{route('post.unfavorite', $favorite->forumPost->post_id) }}" method="POST">
                         @csrf
                         <button type="submit">Hapus dari Favorit</button>
                     </form>
