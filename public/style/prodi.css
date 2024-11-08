@@ -43,6 +43,21 @@ body {
     border-radius: 10px;
 }
 
+/* Mengatur agar tombol dalam dropdown sejajar secara horizontal */
+.dropdown-menu .button-group {
+    width: 250px;
+    padding: 5px;
+    display: flex;
+    justify-content: space-between;
+    gap: 0.5rem; /* Menambah jarak antara tombol */
+}
+
+/* Pastikan tombol dalam button-group memiliki lebar otomatis */
+.dropdown-menu .button-group .btn {
+    width: auto;
+    flex: 1;
+}
+
 .form-label {
     font-weight: bold;
     font-size: 1rem;

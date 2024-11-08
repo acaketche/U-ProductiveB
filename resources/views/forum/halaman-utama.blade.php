@@ -49,7 +49,8 @@
                             <i class="bi bi-star-fill me-3 {{ $post->isFavorited ? 'favorited text-primary' : '' }}"
                                 style="font-size: 1.5em; cursor: pointer;"
                                 data-post-id="{{ $post->post_id }}" id="favorite-icon-{{ $post->post_id }}"
-                                data-is-favorited="{{ $post->isFavorited ? 'true' : 'false' }}"></i>
+                                data-is-favorited="{{ $post->isFavorited ? 'true' : 'false' }}">
+                            </i>
 
                             <!-- Form untuk menambah atau menghapus favorit -->
                             @if ($post->isFavorited)
@@ -99,46 +100,22 @@
             const postId = icon.getAttribute('data-post-id');
             const isFavorited = icon.getAttribute('data-is-favorited') === 'true';
 
-            // Cek jika ikon ini sudah pernah difavoritkan sebelumnya dan ubah tampilannya
+            // Cek localStorage untuk mempertahankan status favorit setelah reload
+            // Saat halaman dimuat, periksa apakah ikon bintang perlu diaktifkan
+            const isFavorited = icon.getAttribute('data-is-favorited') === 'true';
             if (isFavorited) {
                 icon.style.color = 'blue';
                 icon.classList.add('favorited');
-            } else {
-                icon.style.color = ''; // reset ke warna default
-                icon.classList.remove('favorited');
             }
 
-            // Cek localStorage untuk status favorit agar tetap berwarna biru ketika reload/pindah halaman
-            const storedFavoriteStatus = localStorage.getItem('favorite-' + postId);
-            if (storedFavoriteStatus === 'true') {
-                icon.style.color = 'blue';
-                icon.classList.add('favorited');
-            }
-
-            // Event listener untuk klik ikon
+            // Pada event klik, toggle status favorit
             icon.addEventListener('click', async (event) => {
-                const isCurrentlyFavorited = icon.classList.contains('favorited');
-
-                // Jika sudah dalam status "favorited" dan user mengklik, hapus favorit
-                if (isCurrentlyFavorited) {
-                    const response = await toggleFavorite(postId, 'unfavorite', icon);
-                    if (response) {
-                        // Set warna kembali ke default dan ubah atribut
-                        icon.style.color = '';
-                        icon.classList.remove('favorited');
-                        localStorage.setItem('favorite-' + postId, 'false');
-                        showFavoriteNotification('Favorite berhasil dihapus!');
-                    }
-                }
-                // Jika belum favorited dan user mengklik, tambahkan ke favorit
-                else {
-                    const response = await toggleFavorite(postId, 'favorite', icon);
-                    if (response) {
-                        icon.style.color = 'blue';
-                        icon.classList.add('favorited');
-                        localStorage.setItem('favorite-' + postId, 'true');
-                        showFavoriteNotification('Favorite berhasil ditambahkan!');
-                    }
+                const action = icon.classList.contains('favorited') ? 'unfavorite' : 'favorite';
+                const response = await toggleFavorite(postId, action, icon);
+                if (response) {
+                    const newStatus = action === 'favorite';
+                    icon.style.color = newStatus ? 'blue' : '';
+                    icon.classList.toggle('favorited', newStatus);
                 }
             });
         });

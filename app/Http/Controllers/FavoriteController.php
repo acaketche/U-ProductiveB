@@ -35,8 +35,8 @@ class FavoriteController extends Controller
     // Menampilkan daftar favorit
     public function index()
     {
-        $user = auth()->user();
-        $favorites = $user->favorites()->with(['article', 'video'])->orderBy('created_at', 'desc')->get();
+        $user = Auth::user();
+        $favorites = Favorite::where('user_id', Auth::id())->with('forumPost')->get();
 
         return view('favorite.index', compact('favorites', 'user'));
     }
