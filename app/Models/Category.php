@@ -33,4 +33,9 @@ class Category extends Model
     {
         return $this->hasMany(teknik_sipil::class, 'category_id', 'category_id');
     }
+
+    public function informatics()
+    {
+        return $this->hasMany(Informatica::class, 'category_id', 'category_id');
+    }
 }
