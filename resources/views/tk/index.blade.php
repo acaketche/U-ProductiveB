@@ -52,7 +52,7 @@
                         </div>
                         <div class="d-flex justify-content-between mt-3">
                             <a href="{{ route('teknik_computer.index') }}" class="btn btn-link text-danger p-0">Bersihkan filter</a>
-                            <div>
+                            <div class="button-group">
                                 <button type="button" class="btn btn-outline-secondary btn-sm me-2" data-bs-dismiss="dropdown">Batal</button>
                                 <button type="submit" class="btn btn-primary btn-sm">Terapkan</button>
                             </div>
