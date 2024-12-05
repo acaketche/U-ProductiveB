@@ -70,9 +70,9 @@
                 <a href="{{ route('teknik_computer.show', $teknik_computer->tk_id) }}">
                     <img data-pdf-thumbnail-file="{{ asset('storage/' . $teknik_computer->file_pdf) }}" data-pdf-thumbnail-width="500" width="350" height="300">
                 </a>
-                <h5 class="card-title" style="font-size: 14px; color: blue;">
-                    {{ $teknik_computer->category->name }}
-                </h5>
+                <p class="card-text mb-0 small text-muted">
+                    <i class="bi bi-tag me-1"></i>{{ $teknik_computer->category->name }}
+                </p>
                 <div class="card-body">
                     <h5 class="card-title">{{ $teknik_computer->title }}</h5>
                 </div>

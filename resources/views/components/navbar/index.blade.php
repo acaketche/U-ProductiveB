@@ -16,12 +16,12 @@
                 <!-- Prodi Dropdown -->
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="prodiDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Prodi
+                        Tugas Akhir
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="prodiDropdown">
-                        <li><a class="dropdown-item" href="{{ route('informatica.index') }}">Informatika</a></li>
-                        <li><a class="dropdown-item" href="{{ route('teknik_sipil.index') }}">Teknik Sipil</a></li>
-                        <li><a class="dropdown-item" href="{{ route('teknik_computer.index') }}">Teknik Komputer</a></li>
+                        <li><a class="dropdown-item" href="{{ route('informatica.index') }}">Prodi Informatika</a></li>
+                        <li><a class="dropdown-item" href="{{ route('teknik_sipil.index') }}">Prodi Teknik Sipil</a></li>
+                        <li><a class="dropdown-item" href="{{ route('teknik_computer.index') }}">Prodi Teknik Komputer</a></li>
                     </ul>
                 </li>
 

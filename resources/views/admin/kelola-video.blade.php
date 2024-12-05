@@ -5,7 +5,6 @@
 
 <div class="content">
     <h3>Manajemen Video</h3>
-    <p>Manajemen data artikel yang terdaftar di sistem untuk bagian filter dan tambah artikel.</p>
 
     <!-- Search and Filter Form -->
     <div class="card mb-4">
@@ -39,7 +38,7 @@
                 <!-- Status Filter -->
                 <div class="col-md-2">
                     <select name="status" class="form-select">
-                        <option value="">Semua Status</option>
+                        <option value=""disabled selected>Semua Status</option>
                         <option value="approved" {{ request('status') == 'approved' ? 'selected' : '' }}>Approved</option>
                         <option value="rejected" {{ request('status') == 'rejected' ? 'selected' : '' }}>Rejected</option>
                         <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>Pending</option>
@@ -67,7 +66,7 @@
         <table class="table table-striped table-bordered">
             <thead>
                 <tr>
-                    <th>ID</th>
+                    <th>Nomor</th>
                     <th>Judul</th>
                     <th>URL</th>
                     <th>Kategori</th>
@@ -80,34 +79,53 @@
             <tbody>
                 @foreach($videos as $video)
                     <tr>
-                        <td>{{ $video->video_id }}</td>
+                        <td>{{ $loop->iteration }}</td>
                         <td>{{ $video->title }}</td>
                         <td>{{ $video->url}}</td>
                         <td>{{ $video->category->name }}</td>
                         <td>{{ $video->user_id }}</td>
                         <td>{{ $video->created_at }}</td>
                         <td>
-                            <span class="badge {{ $video->status == 'approved' ? 'bg-success' : 'bg-danger' }}">
+                            <span class="badge {{ $video->status == 'approved' ? 'bg-success' : ($video->status == 'rejected' ? 'bg-danger' : 'bg-warning') }}">
                                 {{ ucfirst($video->status) }}
                             </span>
                         </td>
                         <td>
-                            @if($video->status == 'rejected')
-                            <form action="{{ route('admin.approve-video', $video->video_id) }}" method="POST" style="display:inline;">
-                                @csrf
-                                <button type="submit" class="btn btn-sm btn-success">Setujui</button>
-                            </form>
+                            @if($video->status == 'approved')
+                                @if($video->is_active)
+                                    <form action="{{ route('admin.stop-video', $video->video_id) }}" method="POST" style="display:inline;">
+                                        @csrf
+                                        <button type="submit" class="btn btn-sm btn-warning">Stop</button>
+                                    </form>
+                                @else
+                                    <form action="{{ route('admin.start-video', $video->video_id) }}" method="POST" style="display:inline;">
+                                        @csrf
+                                        <button type="submit" class="btn btn-sm btn-success">Start</button>
+                                    </form>
+                                @endif
+                            @else
+                                @if($video->status != 'approved')
+                                    <form action="{{ route('admin.approve-video', $video->video_id) }}" method="POST" style="display:inline;">
+                                        @csrf
+                                        <button type="submit" class="btn btn-sm btn-success">Setujui</button>
+                                    </form>
+                                @endif
 
-                            <form action="{{ route('admin.reject-video', $video->video_id) }}" method="POST" style="display:inline;">
-                                @csrf
-                                <button type="submit" class="btn btn-sm btn-danger">Tolak</button>
-                            </form>
+                                @if($video->status != 'rejected')
+                                    <form action="{{ route('admin.reject-video', $video->video_id) }}" method="POST" style="display:inline;">
+                                        @csrf
+                                        <button type="submit" class="btn btn-sm btn-danger">Tolak</button>
+                                    </form>
+                                @endif
                             @endif
 
                             <form action="{{ route('delete-video', $video->video_id) }}" method="POST" style="display:inline;">
                                 @csrf
                                 @method('DELETE')
-                                <button class="btn btn-danger btn-sm" type="submit">Hapus</button>
+                                <button class="btn btn-danger btn-sm" type="submit"
+                                        onclick="return confirm('Apakah Anda yakin ingin menghapus video ini?')">
+                                    Hapus
+                                </button>
                             </form>
                         </td>
                     </tr>

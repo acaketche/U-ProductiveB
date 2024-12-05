@@ -81,8 +81,9 @@
                         <div class="card-body">
                             <h5 class="card-title">{{ $video->title }}</h5>
                             <p class="card-text">
-                                <i class="bi bi-tag me-1"></i>{{ $video->category->name }}
-                            </p>
+                                <p class="card-text mb-0 small text-muted">
+                                    <i class="bi bi-tag me-1"></i>{{ $video->category->name }}
+                                </p>
                         </div>
                         <div class="card-footer bg-transparent border-0">
                             <a href="{{ route('video.show', $video->video_id) }}" class="btn btn-link text-primary p-0">Tonton video</a>

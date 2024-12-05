@@ -75,7 +75,12 @@
                 </a>
                 <div class="card-body">
                     <h5 class="card-title">{{ $article->title }}</h5>
-                    <p class="card-text">{{ Str::limit($article->content, 100) }}</p>
+                    <p class="card-text">
+                        {{ Str::limit($article->content, 100) }}
+                    </p>
+                    <p class="card-text mb-0 small text-muted">
+                        <i class="bi bi-tag me-1"></i>{{ $article->category->name }}
+                    </p>
                 </div>
                 <div class="card-footer bg-transparent border-0">
                     <a href="{{ route('articles.show', $article->article_id) }}" class="btn btn-link text-primary p-0">Baca selengkapnya</a>

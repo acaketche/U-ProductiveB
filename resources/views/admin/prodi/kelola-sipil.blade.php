@@ -4,7 +4,7 @@
 @section('content')
 <div class="content">
     <h3>Manajemen Tugas AKhir Sipil</h3>
-    <p>Manajemen Tugas Akhir Prodi Teknik Sipil STT Payakumbuh</p>
+
 
     <!-- Search and Filter Form -->
     <div class="card mb-4">
@@ -78,6 +78,9 @@
                                 <td>{{ optional($teknik_sipil->user)->name ?? 'Unknown User' }}</td>
                                 <td>{{ $teknik_sipil->create_at ?? 'No Date Available' }}</td>
                                 <td>
+                                    <a href="{{ route('lihat-pdfts', $teknik_sipil->ts_id) }}" class="btn btn-info btn-sm">
+                                        <i class="fas fa-eye"></i> Lihat PDF
+                                    </a>
                                     <form action="{{ route('delete-ts', $teknik_sipil->ts_id) }}" method="POST" style="display:inline;">
                                         @csrf
                                         @method('DELETE')

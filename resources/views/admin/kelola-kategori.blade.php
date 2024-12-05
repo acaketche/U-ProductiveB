@@ -22,7 +22,7 @@
                 </div>
                 <div class="col-md-3">
                     <select name="prodi" class="form-select">
-                        <option value="">Semua Prodi</option>
+                        <option value=""disabled selected>Pilih Prodi</option>
                         @foreach($prodis as $prodi)
                             <option value="{{ $prodi->prodi_id }}" {{ request('prodi') == $prodi->prodi_id ? 'selected' : '' }}>
                                 {{ $prodi->name }}

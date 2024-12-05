@@ -22,12 +22,14 @@
                 </div>
                 <div class="col-md-3">
                     <select name="role" class="form-select">
-                        <option value="">Semua Role</option>
+                        <option value="" disabled selected>Pilih Role</option>
                         <option value="admin" {{ request('role') == 'admin' ? 'selected' : '' }}>Admin</option>
                         <option value="dosen" {{ request('role') == 'dosen' ? 'selected' : '' }}>Dosen</option>
                         <option value="mahasiswa" {{ request('role') == 'mahasiswa' ? 'selected' : '' }}>Mahasiswa</option>
                     </select>
                 </div>
+
+
                 <div class="col-md-3">
                     <button type="submit" class="btn btn-primary me-2">Filter</button>
                     <a href="{{ route('kelola.user') }}" class="btn btn-secondary">Reset</a>
@@ -47,7 +49,7 @@
                 <table class="table table-striped table-bordered">
                     <thead>
                         <tr>
-                            <th>User ID</th>
+                            <th>Nomor</th>
                             <th>Nama User</th>
                             <th>Email</th>
                             <th>Role</th>
@@ -57,7 +59,7 @@
                     <tbody>
                         @foreach($users as $user)
                             <tr>
-                                <td>{{ $user->user_id }}</td>
+                                <td>{{ $loop->iteration }}</td>
                                 <td>{{ $user->name }}</td>
                                 <td>{{ $user->email }}</td>
                                 <td>{{ $user->role }}</td>

@@ -4,7 +4,7 @@
 @section('content')
 <div class="content">
     <h3>Manajemen Tugas AKhir Informatika</h3>
-    <p>Manajemen Tugas Akhir Prodi Informatika STT Payakumbuh</p>
+
 
     <!-- Search and Filter Form -->
     <div class="card mb-4">
@@ -78,14 +78,17 @@
                                 <td>{{ optional($informatic->user)->name ?? 'Unknown User' }}</td>
                                 <td>{{ $informatic->create_at ?? 'No Date Available' }}</td>
                                 <td>
-                                    <form action="{{ route('delete-if', $informatic->if_id) }}" method="POST" style="display:inline;">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button class="btn btn-danger btn-sm" type="submit"
-                                                onclick="return confirm('Apakah Anda yakin ingin menghapus tugas akhir ini?')">
-                                            Hapus
-                                        </button>
-                                    </form>
+                                        <a href="{{ route('lihat-pdf', $informatic->if_id) }}" class="btn btn-info btn-sm">
+                                            <i class="fas fa-eye"></i> Lihat PDF
+                                        </a>
+                                        <form action="{{ route('delete-if', $informatic->if_id) }}" method="POST" style="display:inline;">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button class="btn btn-danger btn-sm" type="submit"
+                                                    onclick="return confirm('Apakah Anda yakin ingin menghapus tugas akhir ini?')">
+                                                Hapus
+                                            </button>
+                                        </form>
                                 </td>
                             </tr>
                         @endforeach

@@ -25,7 +25,8 @@ class ArticleController extends Controller
     // Mulai query
     $query = Article::query();
 
-    $query->where('status', 'approved');
+    $query->where('status', 'approved')
+    ->where('is_active', true);
 
     // Filter berdasarkan pencarian
     if ($search) {
@@ -93,7 +94,7 @@ class ArticleController extends Controller
     $article->content = $request->input('content');
     $article->image = $imagePath;
     $article->user_id = Auth::id();  // Tambahkan ID pengguna yang sedang login
-    $article->status = 'rejected';  // Set status artikel ke 'pending' atau 'waiting for approval'
+    $article->status = 'pending';  // Set status artikel ke 'pending' atau 'waiting for approval'
 
     // Simpan artikel ke database
     $article->save();
@@ -233,4 +234,33 @@ public function kelolaArtikel(Request $request)
         return redirect()->route('kelola.artikel')->with('success', 'Artikel berhasil dihapus!');
     }
 
+    public function stopArticle($id)
+{
+    $article = Article::findOrFail($id);
+
+    // Pastikan hanya artikel yang sudah diapprove yang bisa di-stop
+    if ($article->status == 'approved') {
+        $article->is_active = false;
+        $article->save();
+
+        return redirect()->route('kelola.artikel')->with('success', 'Artikel berhasil dihentikan sementara!');
+    }
+
+    return redirect()->route('kelola.artikel')->with('error', 'Artikel tidak dapat dihentikan!');
+}
+
+public function startArticle($id)
+{
+    $article = Article::findOrFail($id);
+
+    // Pastikan hanya artikel yang sudah diapprove yang bisa di-start
+    if ($article->status == 'approved') {
+        $article->is_active = true;
+        $article->save();
+
+        return redirect()->route('kelola.artikel')->with('success', 'Artikel berhasil ditayangkan kembali!');
+    }
+
+    return redirect()->route('kelola.artikel')->with('error', 'Artikel tidak dapat ditayangkan!');
+}
 }

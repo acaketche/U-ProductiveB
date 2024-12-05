@@ -3,6 +3,7 @@
 @section('judul2','Kelola Komentar')
 @section('content')
 <div class="content">
+    <h3>Manajemen Forum Dan Komentar</h3>
     <p>Manajemen data komentar terkait post ID: {{ $post->post_id }}</p>
     <!-- Search and Filter Form -->
     <div class="card mb-4">
@@ -37,7 +38,7 @@
     <table class="table table-striped table-bordered">
         <thead>
             <tr>
-                <th>ID Komentar</th>
+                <th>Nomor</th>
                 <th>Isi Komentar</th>
                 <th>Nama Pengguna</th>
                 <th>Waktu Dibuat</th>
@@ -47,7 +48,7 @@
         <tbody>
             @foreach($comments as $comment)
                 <tr>
-                    <td>{{ $comment->comment_id }}</td>
+                    <td>{{ $loop->iteration }}</td>
                     <td>{{ $comment->content }}</td>
                     <td>{{ $comment->user->name }}</td>
                     <td>{{ $comment->created_at }}</td>

@@ -126,6 +126,7 @@
             <button type="submit" class="btn btn-primary">Register</button>
         </form>
 
+
         <div class="mt-3 text-center">
             <p class="text-muted">Sudah punya akun? <a href="{{ route('login') }}">Login di sini</a></p>
         </div>

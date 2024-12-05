@@ -126,12 +126,16 @@ Route::middleware('role:admin')->group(function() {
     //informatika management
     Route::get('/admin/if', [ProdiController::class, 'kelolaInformatika'])->name('kelola.informatika');
     Route::delete('/if/{id}', [ProdiController::class, 'destroy'])->name('delete-if');
+    Route::get('/lihat-pdf-if/{id}', [ProdiController::class, 'lihatPdfIf'])->name('lihat-pdf');
+
 
     Route::get('/admin/tk', [ProdiController::class, 'kelolaKomputer'])->name('kelola.komputer');
     Route::delete('/tk/{id}', [ProdiController::class, 'destroytk'])->name('delete-tk');
+    Route::get('/lihat-pdf-tk/{id}', [ProdiController::class, 'lihatPdfTk'])->name('lihat-pdftk');
 
     Route::get('/admin/ts', [ProdiController::class, 'kelolaSipil'])->name('kelola.sipil');
     Route::delete('/ts/{id}', [ProdiController::class, 'destroyts'])->name('delete-ts');
+    Route::get('/lihat-pdf-ts/{id}', [ProdiController::class, 'lihatPdfTs'])->name('lihat-pdfts');
     // User Management
     Route::get('/admin/kelola-user', [Admincontroller::class, 'kelolaUser'])->name('kelola.user');
     Route::get('/admin/users/create', [AdminController::class, 'createUser'])->name('create-user');
@@ -149,12 +153,16 @@ Route::middleware('role:admin')->group(function() {
     Route::post('/admin/reject-article/{id}', [ArticleController::class, 'reject'])->name('admin.reject-article');
     Route::get('/admin/kelola-artikel', [ArticleController::class, 'kelolaArtikel'])->name('kelola.artikel');
     Route::delete('/admin/artikel/{id}', [ArticleController::class, 'destroy'])->name('delete-artikel');
+    Route::post('/admin/stop-article/{id}', [ArticleController::class, 'stopArticle'])->name('admin.stop-article');
+    Route::post('/admin/start-article/{id}', [ArticleController::class, 'startArticle'])->name('admin.start-article');
 
     // Videos Management
     Route::get('/admin/kelola-video', [VideoController::class, 'kelolaVideo'])->name('kelola.video');
     Route::delete('/admin/video/{id}', [VideoController::class, 'destroy'])->name('delete-video');
     Route::post('/admin/approve-video/{id}', [VideoController::class, 'approve'])->name('admin.approve-video');
     Route::post('/admin/reject-video/{id}', [VideoController::class, 'reject'])->name('admin.reject-video');
+    Route::post('/admin/stop-video/{id}', [VideoController::class, 'stopVideo'])->name('admin.stop-video');
+    Route::post('/admin/start-video/{id}', [VideoController::class, 'startVideo'])->name('admin.start-video');
 
     // Forum Management
     Route::get('/kelola-forum', [AdminController::class, 'kelolaForum'])->name('kelola.forum');

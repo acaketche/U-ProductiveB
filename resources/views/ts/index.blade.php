@@ -72,9 +72,9 @@
                 <a href="{{ route('teknik_sipil.show', $teknik_sipil->ts_id) }}" class="card-img-link">
                     <img data-pdf-thumbnail-file="{{asset('storage/'. $teknik_sipil->file_pdf)}}" data-pdf-thumbnail-width="500" width="350" height="300">
                 </a>
-                <h5 class="card-title" style="font-size: 14px; color: blue;">
-                    {{ $teknik_sipil->category->name }}
-                </h5>
+                <p class="card-text mb-0 small text-muted">
+                    <i class="bi bi-tag me-1"></i>{{ $teknik_sipil->category->name }}
+                </p>
                 <div class="card-body">
                     <h5 class="card-title">{{ $teknik_sipil->title }}</h5>
                 </div>

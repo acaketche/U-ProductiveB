@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
 use PDF;
 
 class ProdiController extends Controller
@@ -73,6 +74,49 @@ class ProdiController extends Controller
 
         return response()->download(storage_path('app/public/temp/' . $filename))
             ->deleteFileAfterSend(true);
+    }
+    public function lihatPdfIf($id)
+    {
+        $informatic = Informatica::findOrFail($id);
+
+        // Pastikan file_pdf adalah path relatif dari folder storage
+        $filePath = 'public/' . $informatic->file_pdf;
+
+        // Periksa apakah file ada
+        if (Storage::exists($filePath)) {
+            return response()->file(storage_path('app/' . $filePath));
+        }
+
+        return redirect()->route('kelola.informatika')->with('error', 'File PDF tidak ditemukan!');
+    }
+
+    public function lihatPdfTs($id)
+    {
+        $teknik_sipils = TeknikSipil::findOrFail($id);
+
+        // Pastikan file_pdf adalah path relatif dari folder storage
+        $filePath = 'public/' . $teknik_sipils->file_pdf;
+
+        // Periksa apakah file ada
+        if (Storage::exists($filePath)) {
+            return response()->file(storage_path('app/' . $filePath));
+        }
+
+        return redirect()->route('kelola.sipil')->with('error', 'File PDF tidak ditemukan!');
+    }
+    public function lihatPdfTk($id)
+    {
+        $teknik_computers = TeknikComputer::findOrFail($id);
+
+        // Pastikan file_pdf adalah path relatif dari folder storage
+        $filePath = 'public/' . $teknik_computers->file_pdf;
+
+        // Periksa apakah file ada
+        if (Storage::exists($filePath)) {
+            return response()->file(storage_path('app/' . $filePath));
+        }
+
+        return redirect()->route('kelola.komputer')->with('error', 'File PDF tidak ditemukan!');
     }
 
     public function destroy($id)
@@ -213,6 +257,8 @@ class ProdiController extends Controller
         return response()->download(storage_path('app/public/temp/' . $filename))
             ->deleteFileAfterSend(true);
     }
+
+
 
     public function destroyts($id)
     {

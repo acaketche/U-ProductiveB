@@ -18,9 +18,9 @@ class ProfileController extends Controller
         }
 
         $user = Auth::user();
-        $articles = $user->articles; // Pastikan relasi articles ada dalam model User
-        $videos = $user->videos; // Pastikan relasi videos ada dalam model User
-        $history = $user->history; // Pastikan relasi history ada dalam model User
+        $articles = $user->articles()->orderBy('created_at', 'desc')->get();
+        $videos = $user->videos()->orderBy('created_at', 'desc')->get();
+        $history = $user->history;
 
         return view('user.user-profile', compact('user', 'articles', 'videos', 'history'));
     }

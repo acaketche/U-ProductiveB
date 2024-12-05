@@ -4,7 +4,6 @@
 @section('content')
 <div class="content">
     <h3>Manajemen Artikel</h3>
-    <p>Manajemen data artikel yang terdaftar di sistem untuk bagian filter dan tambah artikel.</p>
 
     <!-- Search and Filter Form -->
     <div class="card mb-4">
@@ -38,7 +37,7 @@
                 <!-- Status Filter -->
                 <div class="col-md-2">
                     <select name="status" class="form-select">
-                        <option value="">Semua Status</option>
+                        <option value=""disabled selected>Semua Status</option>
                         <option value="approved" {{ request('status') == 'approved' ? 'selected' : '' }}>Approved</option>
                         <option value="rejected" {{ request('status') == 'rejected' ? 'selected' : '' }}>Rejected</option>
                         <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>Pending</option>
@@ -68,7 +67,7 @@
                 <table class="table table-striped table-bordered">
                     <thead>
                         <tr>
-                            <th>ID</th>
+                            <th>Nomor</th>
                             <th>Judul</th>
                             <th>Kategori</th>
                             <th>ID User</th>
@@ -80,7 +79,7 @@
                     <tbody>
                         @foreach($articles as $article)
                             <tr>
-                                <td>{{ $article->article_id }}</td>
+                                <td>{{ $loop->iteration}}</td>
                                 <td>{{ $article->title }}</td>
                                 <td>{{ $article->category->name }}</td>
                                 <td>{{ $article->user_id }}</td>
@@ -90,30 +89,44 @@
                                         {{ ucfirst($article->status) }}
                                     </span>
                                 </td>
-                                <td>
-                                    @if($article->status != 'approved')
-                                        <form action="{{ route('admin.approve-article', $article->article_id) }}" method="POST" style="display:inline;">
-                                            @csrf
-                                            <button type="submit" class="btn btn-sm btn-success">Setujui</button>
-                                        </form>
-                                    @endif
+                                    <td>
+                                        @if($article->status == 'approved')
+                                            @if($article->is_active)
+                                                <form action="{{ route('admin.stop-article', $article->article_id) }}" method="POST" style="display:inline;">
+                                                    @csrf
+                                                    <button type="submit" class="btn btn-sm btn-warning">Stop</button>
+                                                </form>
+                                            @else
+                                                <form action="{{ route('admin.start-article', $article->article_id) }}" method="POST" style="display:inline;">
+                                                    @csrf
+                                                    <button type="submit" class="btn btn-sm btn-success">Start</button>
+                                                </form>
+                                            @endif
+                                        @else
+                                            @if($article->status != 'approved')
+                                                <form action="{{ route('admin.approve-article', $article->article_id) }}" method="POST" style="display:inline;">
+                                                    @csrf
+                                                    <button type="submit" class="btn btn-sm btn-success">Setujui</button>
+                                                </form>
+                                            @endif
 
-                                    @if($article->status != 'rejected')
-                                        <form action="{{ route('admin.reject-article', $article->article_id) }}" method="POST" style="display:inline;">
-                                            @csrf
-                                            <button type="submit" class="btn btn-sm btn-danger">Tolak</button>
-                                        </form>
-                                    @endif
+                                            @if($article->status != 'rejected')
+                                                <form action="{{ route('admin.reject-article', $article->article_id) }}" method="POST" style="display:inline;">
+                                                    @csrf
+                                                    <button type="submit" class="btn btn-sm btn-danger">Tolak</button>
+                                                </form>
+                                            @endif
+                                        @endif
 
-                                    <form action="{{ route('delete-artikel', $article->article_id) }}" method="POST" style="display:inline;">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button class="btn btn-danger btn-sm" type="submit"
-                                                onclick="return confirm('Apakah Anda yakin ingin menghapus artikel ini?')">
-                                            Hapus
-                                        </button>
-                                    </form>
-                                </td>
+                                        <form action="{{ route('delete-artikel', $article->article_id) }}" method="POST" style="display:inline;">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button class="btn btn-danger btn-sm" type="submit"
+                                                    onclick="return confirm('Apakah Anda yakin ingin menghapus artikel ini?')">
+                                                Hapus
+                                            </button>
+                                        </form>
+                                    </td>
                             </tr>
                         @endforeach
                     </tbody>

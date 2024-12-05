@@ -1,5 +1,8 @@
 @extends('layout.navbar-guest')
 @section('content')
+@php
+    use Carbon\Carbon;
+@endphp
 <div class="container mt-4">
     <!-- Profile Header -->
     <div class="profile-header">
@@ -25,37 +28,58 @@
     <!-- Profile Content -->
     <div class="profile-content mt-4">
         <h4>My Content</h4>
-        <div class="row">
-            <!-- Article Items -->
-            @foreach($articles as $article)
-            <div class="col-md-4 content-item">
-                <div class="card h-100 position-relative">
-                    <a href="{{ route('articles.show', $article->article_id) }}">
-                        <img src="{{ Storage::url($article->image) }}" class="card-img-top" alt="{{ $article->title }}">
-                    </a>
-                    <div class="card-body">
-                        <h5 class="card-title">{{ $article->title }}</h5>
-                        <p class="card-text">{{ Str::limit($article->content, 100) }}</p>
-                    </div>
-                </div>
-            </div>
-            @endforeach
-
-            <!-- Video Items -->
-            @foreach($videos as $video)
-            <div class="col-md-4 content-item">
-                <div class="card h-100 position-relative">
-                    <a href="{{ route('video.show', $video->video_id) }}" class="video-thumbnail">
-                        <img src="{{ $video->thumbnail_url }}" class="card-img-top" alt="{{ $video->title }}">
-                        <div class="play-icon">
-                            <i class="bi bi-play-circle"></i>
+        <ul class="nav nav-tabs" id="profileTab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="articles-tab" data-bs-toggle="tab" data-bs-target="#articles" type="button" role="tab">Articles</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="videos-tab" data-bs-toggle="tab" data-bs-target="#videos" type="button" role="tab">Videos</button>
+            </li>
+        </ul>
+        <div class="tab-content mt-3" id="profileTabContent">
+            <!-- Articles Tab -->
+            <div class="tab-pane fade show active" id="articles" role="tabpanel">
+                <div class="row">
+                    @forelse($articles as $article)
+                        <div class="col-md-4 content-item">
+                            <div class="card h-100 position-relative">
+                                <a href="{{ route('articles.show', $article->article_id) }}">
+                                    <img src="{{ Storage::url($article->image) }}" class="card-img-top" alt="{{ $article->title }}">
+                                </a>
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ $article->title }}</h5>
+                                    <p class="card-text">{{ Str::limit($article->content, 100) }}</p>
+                                    <p class="small text-muted">Published on: {{ Carbon::parse($article->created_at)->format('F j, Y') }}</p>
+                                </div>
+                            </div>
                         </div>
-                    </a>
-                    <h5>{{ $video->title }}</h5>
-                    <p>Category: {{ $video->category->name }}</p>
+                    @empty
+                        <p>No articles available.</p>
+                    @endforelse
                 </div>
             </div>
-            @endforeach
+
+            <!-- Videos Tab -->
+            <div class="tab-pane fade" id="videos" role="tabpanel">
+                <div class="row">
+                    @forelse($videos as $video)
+                        <div class="col-md-4 content-item">
+                            <div class="card h-100 position-relative">
+                                <a href="{{ route('video.show', $video->video_id) }}" class="video-thumbnail">
+                                    <img src="{{ $video->thumbnail_url }}" class="card-img-top" alt="{{ $video->title }}">
+                                    <div class="play-icon">
+                                        <i class="bi bi-play-circle"></i>
+                                    </div>
+                                </a>
+                                <h5>{{ $video->title }}</h5>
+                                <p class="small text-muted">Published on: {{ Carbon::parse($video->created_at)->format('F j, Y') }}</p>
+                            </div>
+                        </div>
+                    @empty
+                        <p>No videos available.</p>
+                    @endforelse
+                </div>
+            </div>
         </div>
     </div>
 </div>

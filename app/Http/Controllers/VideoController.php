@@ -21,7 +21,7 @@ class VideoController extends Controller
 
         $query = Video::query();
 
-        $query->where('status', 'approved');
+        $query->where('status', 'approved')->where('is_active', true);
 
         if ($search) {
             $query->where('title', 'like', '%' . $search . '%');
@@ -73,7 +73,7 @@ class VideoController extends Controller
         $requestData = $request->all();
         $requestData['thumbnail_url'] = $thumbnailUrl;
         $requestData['user_id'] = Auth::id();
-        $requestData['status'] = 'rejected';
+        $requestData['status'] = 'pending';
 
         Video::create($requestData);
 
@@ -194,6 +194,36 @@ class VideoController extends Controller
 
         return redirect()->route('kelola.video')->with('success', 'Video berhasil dihapus!');
     }
+
+    public function stopVideo($id)
+{
+    $video = Video::findOrFail($id);
+
+    // Pastikan hanya artikel yang sudah diapprove yang bisa di-stop
+    if ($video->status == 'approved') {
+        $video->is_active = false;
+        $video->save();
+
+        return redirect()->route('kelola.video')->with('success', 'Video berhasil dihentikan sementara!');
+    }
+
+    return redirect()->route('kelola.video')->with('error', 'Video tidak dapat dihentikan!');
+}
+
+public function startVideo($id)
+{
+    $video = Video::findOrFail($id);
+
+    // Pastikan hanya artikel yang sudah diapprove yang bisa di-start
+    if ($video->status == 'approved') {
+        $video->is_active = true;
+        $video->save();
+
+        return redirect()->route('kelola.video')->with('success', 'Video berhasil ditayangkan kembali!');
+    }
+
+    return redirect()->route('kelola.video')->with('error', 'video tidak dapat ditayangkan!');
+}
 
     private function extractYouTubeId($url)
     {
