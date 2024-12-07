@@ -24,6 +24,7 @@ class User extends Authenticatable
         'password',
         'role',
         'profile_picture',
+        'identifier',
     ];
 
     const CREATED_AT = 'created_at';

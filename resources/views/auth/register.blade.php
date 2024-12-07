@@ -122,6 +122,10 @@
                     <option value="Mahasiswa">Mahasiswa</option>
                     <option value="Dosen">Dosen</option>
                 </select>
+                <div class="mb-3">
+                    <label for="identifier" class="form-label">NIM/NIDN</label>
+                    <input type="text" class="form-control" id="identifier" name="identifier" placeholder="Masukkan NIM atau NIDN" required>
+                </div>
             </div>
             <button type="submit" class="btn btn-primary">Register</button>
         </form>

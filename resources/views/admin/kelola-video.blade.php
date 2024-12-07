@@ -118,6 +118,9 @@
                                     </form>
                                 @endif
                             @endif
+                            <a href="{{ route('video.kelola.show', $video->video_id) }}" class="btn btn-info btn-sm">
+                                <i class="fas fa-eye"></i> Lihat Video
+                            </a>
 
                             <form action="{{ route('delete-video', $video->video_id) }}" method="POST" style="display:inline;">
                                 @csrf

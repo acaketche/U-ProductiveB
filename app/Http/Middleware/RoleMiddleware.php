@@ -17,25 +17,18 @@ class RoleMiddleware
      * @param  string  $role
      * @return mixed
      */
-    public function handle(Request $request, Closure $next, $role)
-    {
+    public function handle(Request $request, Closure $next, ...$roles)
+{
+    Log::info('Role Middleware', [
+        'user_id' => Auth::id(),
+        'role' => Auth::check() ? Auth::user()->role : 'Guest',
+        'expected_roles' => $roles,
+    ]);
 
-        Log::info('Role Middleware', [
-            'user_id' => Auth::id(),
-            'role' => Auth::check() ? Auth::user()->role : 'Guest',
-            'expected_role' => $role,
-        ]);
-        // Cek apakah pengguna terautentikasi dan memiliki peran yang sesuai
-        if (Auth::check() && Auth::user()->role == $role) {
-            return $next($request);
-        }
-
-        // Jika tidak, redirect atau berikan respons sesuai kebutuhan
-        return redirect('/'); // Misalnya redirect ke homepage
-
-
+    if (Auth::check() && in_array(Auth::user()->role, $roles)) {
+        return $next($request);
     }
 
-
+    return redirect('/')->with('error', 'Anda tidak memiliki akses ke halaman ini.');
 }
-
+}

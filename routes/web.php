@@ -117,6 +117,7 @@ Route::middleware('role:mahasiswa,dosen')->group(function() {
 
 });
 
+
 // Admin Routes
 Route::middleware('role:admin')->group(function() {
     Route::post('/logoutadmin', [AdminController::class, 'logout'])->name('logoutadmin');
@@ -155,6 +156,7 @@ Route::middleware('role:admin')->group(function() {
     Route::delete('/admin/artikel/{id}', [ArticleController::class, 'destroy'])->name('delete-artikel');
     Route::post('/admin/stop-article/{id}', [ArticleController::class, 'stopArticle'])->name('admin.stop-article');
     Route::post('/admin/start-article/{id}', [ArticleController::class, 'startArticle'])->name('admin.start-article');
+    Route::get('/artikel-show/{id}', [ArticleController::class, 'showkelolaartikel'])->name('articles.kelola.show');
 
     // Videos Management
     Route::get('/admin/kelola-video', [VideoController::class, 'kelolaVideo'])->name('kelola.video');
@@ -163,6 +165,7 @@ Route::middleware('role:admin')->group(function() {
     Route::post('/admin/reject-video/{id}', [VideoController::class, 'reject'])->name('admin.reject-video');
     Route::post('/admin/stop-video/{id}', [VideoController::class, 'stopVideo'])->name('admin.stop-video');
     Route::post('/admin/start-video/{id}', [VideoController::class, 'startVideo'])->name('admin.start-video');
+    Route::get('/video-show/{id}', [VideoController::class, 'showkelolavideo'])->name('video.kelola.show');
 
     // Forum Management
     Route::get('/kelola-forum', [AdminController::class, 'kelolaForum'])->name('kelola.forum');

@@ -225,6 +225,21 @@ public function startVideo($id)
     return redirect()->route('kelola.video')->with('error', 'video tidak dapat ditayangkan!');
 }
 
+public function showkelolavideo($id)
+{
+    $video = Video::with('user', 'category')->findOrFail($id);
+     // Ekstraksi ID video YouTube
+    $videoId = $this->extractYouTubeId($video->url);
+
+    History::create([
+        'user_id' => auth()->id(),
+        'video_id' => $video->video_id,
+        'viewed_at' => now(),
+    ]);
+
+    return view('admin.show-video', compact('video', 'videoId'));
+}
+
     private function extractYouTubeId($url)
     {
         preg_match('/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/i', $url, $matches);

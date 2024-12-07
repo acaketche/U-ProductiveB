@@ -33,7 +33,8 @@
                 <div class="card-body">
                     @if (Auth::check())
                         <p> <img src="{{ $post->user && $post->user->profile_picture ? Storage::url($post->user->profile_picture) : asset('images/default-profile.png') }}" alt="User Image" class="rounded-image" style="width: 50px; height: 50px;">
-                            {{ $post->user->name ?? 'User Tidak Ditemukan' }}
+                            {{ $post->user->name ?? 'User Tidak Ditemukan' }}<br>
+                            <small style="color: gray;">{{ $post->user->role ?? 'Role Tidak Ditemukan' }}</small>
                         </p>
                     @endif
                     <p class="card-text">

@@ -117,7 +117,9 @@
                                                 </form>
                                             @endif
                                         @endif
-
+                                        <a href="{{ route('articles.kelola.show', $article->article_id) }}" class="btn btn-info btn-sm">
+                                            <i class="fas fa-eye"></i> Lihat Artikel
+                                        </a>
                                         <form action="{{ route('delete-artikel', $article->article_id) }}" method="POST" style="display:inline;">
                                             @csrf
                                             @method('DELETE')

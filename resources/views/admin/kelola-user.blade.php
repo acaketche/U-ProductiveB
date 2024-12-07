@@ -53,6 +53,7 @@
                             <th>Nama User</th>
                             <th>Email</th>
                             <th>Role</th>
+                            <th>NIM/NIDN</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
@@ -63,6 +64,7 @@
                                 <td>{{ $user->name }}</td>
                                 <td>{{ $user->email }}</td>
                                 <td>{{ $user->role }}</td>
+                                <td>{{ $user->identifier }}</td>
                                 <td>
                                     <form action="{{ route('delete-user', $user->user_id) }}" method="POST" class="d-inline">
                                         @csrf

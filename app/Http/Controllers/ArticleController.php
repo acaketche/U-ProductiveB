@@ -263,4 +263,19 @@ public function startArticle($id)
 
     return redirect()->route('kelola.artikel')->with('error', 'Artikel tidak dapat ditayangkan!');
 }
+
+public function showkelolaartikel($id)
+{
+    // Mengambil artikel dengan user dan category menggunakan eager loading
+    $article = Article::with('user', 'category')->findOrFail($id);
+
+    // Simpan riwayat ke tabel histories
+    History::create([
+        'user_id' => auth()->id(),
+        'article_id' => $article->article_id, // Pastikan menggunakan primary key yang benar
+        'viewed_at' => now(),
+    ]);
+
+    return view('admin.show-artikel', compact('article'));
+}
 }
