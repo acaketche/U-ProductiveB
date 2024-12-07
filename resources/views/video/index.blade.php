@@ -94,7 +94,7 @@
         </div>
     @else
         <div class="alert alert-info" role="alert">
-            <i class="bi bi-info-circle me-2"></i>Tidak ada video ditemukan.
+            <i class="bi bi-info-circle me-2">Video Yang Kamu Cari Tidak Ditemukan</i>
         </div>
     @endif
 

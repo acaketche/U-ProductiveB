@@ -23,6 +23,17 @@
     <div class="container mt-4" style="max-width: 800px; margin: auto;">
         <h3 class="mb-4">History</h3>
         <div class="row">
+            <div class="row mb-4">
+                <form action="{{ route('history.index') }}" method="GET" class="d-flex">
+                    <div class="input-group me-2 mb-2 mb-md-0 flex-grow-1" style="max-width: 300px;">
+                        <input type="text" name="search" class="form-control" placeholder="Cari History" value="{{ request('search') }}">
+                        <button class="btn btn-outline-secondary" type="submit">
+                            <i class="bi bi-search"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+
             <!-- Unified Card for History -->
             <div class="col-12 mb-3">
                 <div class="card shadow-sm">
@@ -78,7 +89,7 @@
                                 </div>
                             @endforeach
                         @else
-                            <p>Tidak ada riwayat kunjungan.</p>
+                            <p>Tidak ada riwayat kunjungan yang sesuai dengan pencarian Anda.</p>
                         @endif
                     </div>
                 </div>

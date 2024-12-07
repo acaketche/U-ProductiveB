@@ -66,29 +66,30 @@
         </div>
     </div>
 
-    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-        @foreach ($articles as $article)
-        <div class="col">
-            <div class="card h-100 article-card">
-                <a href="{{ route('articles.show', $article->article_id) }}" class="card-img-link">
-                    <img src="{{ Storage::url($article->image) }}" class="card-img-top" alt="{{ $article->title }}">
-                </a>
-                <div class="card-body">
-                    <h5 class="card-title">{{ $article->title }}</h5>
-                    <p class="card-text">
-                        {{ Str::limit($article->content, 100) }}
-                    </p>
-                    <p class="card-text mb-0 small text-muted">
-                        <i class="bi bi-tag me-1"></i>{{ $article->category->name }}
-                    </p>
-                </div>
-                <div class="card-footer bg-transparent border-0">
-                    <a href="{{ route('articles.show', $article->article_id) }}" class="btn btn-link text-primary p-0">Baca selengkapnya</a>
+    @if(isset($articles) && $articles->count() > 0)
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+            @foreach ($articles as $article)
+            <div class="col">
+                <div class="card h-100 article-card">
+                    <a href="{{ route('articles.show', $article->article_id) }}" class="card-img-link">
+                        <img src="{{ Storage::url($article->image) }}" class="card-img-top" alt="{{ $article->title }}">
+                    </a>
+                    <div class="card-body">
+                        <h5 class="card-title">{{ $article->title }}</h5>
+                        <p class="card-text">{{ Str::limit($article->content, 100) }}</p>
+                    </div>
+                    <div class="card-footer bg-transparent border-0">
+                        <a href="{{ route('articles.show', $article->article_id) }}" class="btn btn-link text-primary p-0">Baca selengkapnya</a>
+                    </div>
                 </div>
             </div>
+            @endforeach
         </div>
-        @endforeach
-    </div>
+    @else
+        <div class="alert alert-info" role="alert">
+            <i class="bi bi-info-circle me-2">Artikel Yang Kamu Cari Tidak Ditemukan</i>
+        </div>
+    @endif
 
     <nav aria-label="Page navigation" class="mt-4">
         {{ $articles->links('pagination::bootstrap-5') }}

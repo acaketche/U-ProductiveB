@@ -29,8 +29,7 @@ class ForumPost extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    // Relasi dengan model Comment
-
+    // Relasi dengan Comment
     public function comments()
     {
         return $this->hasMany(Comment::class, 'post_id');

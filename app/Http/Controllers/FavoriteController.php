@@ -36,7 +36,12 @@ class FavoriteController extends Controller
     public function index()
     {
         $user = Auth::user();
-        $favorites = Favorite::where('user_id', Auth::id())->with('forumPost')->get();
+
+        // Mengambil favorit dengan urutan terbaru di atas
+        $favorites = Favorite::where('user_id', $user->user_id)
+        ->with('forumPost')
+        ->orderBy('created_at', 'desc') // Urutkan berdasarkan `created_at` descending
+        ->get();
 
         return view('favorite.index', compact('favorites', 'user'));
     }
