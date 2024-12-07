@@ -88,7 +88,7 @@ class InformaticaController extends Controller
         // Simpan riwayat ke tabel histories
         History::create([
             'user_id' => auth()->id(),
-            'ts_id' => $teknik_sipils->ts_id, // Pastikan menggunakan primary key yang benar
+            'if_id' => $informatics->if_id, // Pastikan menggunakan primary key yang benar
             'viewed_at' => now(),
         ]);
 

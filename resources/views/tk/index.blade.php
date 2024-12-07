@@ -63,23 +63,29 @@
         </div>
     </div>
 
-    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mt-4">
-        @foreach ($teknik_computers as $teknik_computer)
-        <div class="col-md-4 mb-4">
-            <div class="card h-100 position-relative">
-                <a href="{{ route('teknik_computer.show', $teknik_computer->tk_id) }}">
-                    <img data-pdf-thumbnail-file="{{ asset('storage/' . $teknik_computer->file_pdf) }}" data-pdf-thumbnail-width="500" width="350" height="300">
-                </a>
-                <h5 class="card-title" style="font-size: 14px; color: blue;">
-                    {{ $teknik_computer->category->name }}
-                </h5>
-                <div class="card-body">
-                    <h5 class="card-title">{{ $teknik_computer->title }}</h5>
+    @if(isset($teknik_computers) && $teknik_computers->count() > 0)
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mt-4">
+            @foreach ($teknik_computers as $teknik_computer)
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 position-relative">
+                    <a href="{{ route('teknik_computer.show', $teknik_computer->tk_id) }}">
+                        <img data-pdf-thumbnail-file="{{ asset('storage/' . $teknik_computer->file_pdf) }}" data-pdf-thumbnail-width="500" width="350" height="300">
+                    </a>
+                    <h5 class="card-title" style="font-size: 14px; color: blue;">
+                        {{ $teknik_computer->category->name }}
+                    </h5>
+                    <div class="card-body">
+                        <h5 class="card-title">{{ $teknik_computer->title }}</h5>
+                    </div>
                 </div>
             </div>
+            @endforeach
         </div>
-        @endforeach
-    </div>
+    @else
+        <div class="alert alert-info" role="alert">
+            <i class="bi bi-info-circle me-2" >Tugas Akhir Yang Kamu Cari Tidak Ditemukan</i>
+        </div>
+    @endif
 
     <nav aria-label="Page navigation" class="mt-4">
         {{ $teknik_computers->links('pagination::bootstrap-5') }}

@@ -15,14 +15,14 @@ class Favorite extends Model
     use HasFactory;
 
     protected $table = 'favorites'; // Nama tabel
-    public const UPDATED_AT = 'modified_at'; // Gunakan 'modified_at' sebagai timestamp untuk updated_at
-    public $timestamps = false; // Nonaktifkan timestamps
+    protected $primaryKey = 'favorite_id';
+    public $timestamps =true;
 
     protected $fillable = ['user_id', 'post_id'];
 
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id', 'id'); // Pastikan foreign key `user_id` mengarah ke tabel users
     }
 
     public function video()

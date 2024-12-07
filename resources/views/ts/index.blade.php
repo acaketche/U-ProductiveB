@@ -65,23 +65,29 @@
         </div>
     </div>
 
-    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-        @foreach ($teknik_sipils as $teknik_sipil)
-        <div class="col">
-            <div class="card h-100 article-card">
-                <a href="{{ route('teknik_sipil.show', $teknik_sipil->ts_id) }}" class="card-img-link">
-                    <img data-pdf-thumbnail-file="{{asset('storage/'. $teknik_sipil->file_pdf)}}" data-pdf-thumbnail-width="500" width="350" height="300">
-                </a>
-                <h5 class="card-title" style="font-size: 14px; color: blue;">
-                    {{ $teknik_sipil->category->name }}
-                </h5>
-                <div class="card-body">
-                    <h5 class="card-title">{{ $teknik_sipil->title }}</h5>
+    @if(isset($teknik_sipils) && $teknik_sipils->count() > 0)
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+            @foreach ($teknik_sipils as $teknik_sipil)
+            <div class="col">
+                <div class="card h-100 article-card">
+                    <a href="{{ route('teknik_sipil.show', $teknik_sipil->ts_id) }}" class="card-img-link">
+                        <img data-pdf-thumbnail-file="{{asset('storage/' . $teknik_sipil->file_pdf)}}" data-pdf-thumbnail-width="500" width="350" height="300">
+                    </a>
+                    <h5 class="card-title" style="font-size: 14px; color: blue;">
+                        {{ $teknik_sipil->category->name }}
+                    </h5>
+                    <div class="card-body">
+                        <h5 class="card-title">{{ $teknik_sipil->title }}</h5>
+                    </div>
                 </div>
             </div>
+            @endforeach
         </div>
-        @endforeach
-    </div>
+    @else
+        <div class="alert alert-info" role="alert">
+            <i class="bi bi-info-circle me-2">Tugas Akhir Yang Kamu Cari Tidak Ditemukan</i>
+        </div>
+    @endif
 
     <nav aria-label="Page navigation" class="mt-4">
         {{ $teknik_sipils->links('pagination::bootstrap-5') }}
@@ -94,7 +100,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
 @endpush
 
-<script>
+<script
     src="{{ asset('storage/pdfThumbnails.js') }}"
     data-pdfjs-src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.5.207/pdf.js">
 </script>

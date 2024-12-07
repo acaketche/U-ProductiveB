@@ -79,7 +79,7 @@
 
                         <!-- Form untuk menambahkan komentar -->
                         <form action="{{ route('comments.create', ['post_id' => $post->post_id]) }}" method="GET">
-                            <button type="submit" class="btn btn-primary2">Tambah Komentar</button>
+                            <button type="submit" class="btn btn-primary2">Tambah Komentar ({{ $post->comments->count() }})</button>
                         </form>
                     </div>
                 </div>
