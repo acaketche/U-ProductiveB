@@ -31,7 +31,7 @@
                             <div class="row g-3">
                                 <div class="col-md-6">
                                     <label for="kategori" class="form-label" style="font-weight: bold; font-size: 1rem;">Kategori</label>
-                                    <select class="form-select" id="kategori" name="category" style="font-size: 1rem; padding: 0.75rem;">
+                                    <select class="form-select" id="kategori" name="category_id" style="font-size: 1rem; padding: 0.75rem;">
                                         <option value="">Pilih</option>
                                         @foreach ($categories as $category)
                                             @if($category->prodi_id === null)

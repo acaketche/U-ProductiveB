@@ -79,7 +79,7 @@ Route::middleware('role:mahasiswa,dosen')->group(function() {
     ->only(['edit', 'update', 'destroy']);
 
     //teknik sipil
-    Route::resource('teknik_sipils', TeknikSipilController::class)
+    Route::resource('teknik_komputers', TeknikComputerController::class)
     ->only(['edit', 'update', 'destroy']);
 
     // Videos
