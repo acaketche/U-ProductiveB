@@ -36,9 +36,9 @@
                     @if (Auth::check())
                         <form action="{{ route('post.unfavorite', $favorite->forumPost->post_id) }}" method="POST" style="display:inline;">
                             @csrf
-                            <button type="submit" class="btn btn-link p-0 text-danger">
+                            {{-- <button type="submit" class="btn btn-link p-0 text-danger">
                                 <i class="bi bi-trash"></i> <!-- Ikon tong sampah -->
-                            </button>
+                            </button> --}}
                         </form>
                     @endif
                 </div>

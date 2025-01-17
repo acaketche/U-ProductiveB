@@ -25,6 +25,7 @@ class KategoriController extends Controller
                 $query->where('prodi_id', $request->prodi);
             }
 
+
             // Export PDF
             if ($request->has('export')) {
                 return $this->exportPDF($query->get());

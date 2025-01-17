@@ -56,7 +56,7 @@
                     <td>{{ optional($article->user)->name ?? 'User tidak ditemukan' }}</td>
                     <td>{{ optional($article->category)->name ?? 'Kategori tidak ditemukan' }}</td>
                     <td>{{ ucfirst($article->status) ?? '-' }}</td>
-                    <td>{{ optional($article->created_at)->format('d-m-Y H:i') ?? '-' }}</td>
+                    <td>{{ $article->created_at ? \Carbon\Carbon::parse($article->created_at)->format('d-m-Y') : '-' }}</td>
                 </tr>
             @endforeach
         </tbody>

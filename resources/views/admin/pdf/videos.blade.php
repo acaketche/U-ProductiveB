@@ -56,7 +56,7 @@
                     <td>{{ optional($video->user)->name ?? 'User tidak ditemukan' }}</td>
                     <td>{{ optional($video->category)->name ?? 'Kategori tidak ditemukan' }}</td>
                     <td>{{ ucfirst($video->status) ?? '-' }}</td>
-                    <td>{{ optional($video->created_at)->format('d-m-Y H:i') ?? '-' }}</td>
+                    <td>{{ $video->created_at ? \Carbon\Carbon::parse($video->created_at)->format('d-m-Y') : '-' }}</td>
                 </tr>
             @endforeach
         </tbody>

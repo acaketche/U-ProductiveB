@@ -50,6 +50,15 @@
                                     <h5 class="card-title">{{ $article->title }}</h5>
                                     <p class="card-text">{{ Str::limit($article->content, 100) }}</p>
                                     <p class="small text-muted">Published on: {{ Carbon::parse($article->created_at)->format('F j, Y') }}</p>
+                                    <p class="status-box
+                                    @if($article->status == 'pending') bg-warning text-dark
+                                    @elseif($article->status == 'approved') bg-success text-white
+                                    @elseif($article->status == 'rejected') bg-danger text-white
+                                    @else bg-secondary text-white
+                                    @endif">
+                                    {{ ucfirst($article->status) }}
+                                </p>
+
                                 </div>
                             </div>
                         </div>
@@ -59,27 +68,37 @@
                 </div>
             </div>
 
-            <!-- Videos Tab -->
-            <div class="tab-pane fade" id="videos" role="tabpanel">
-                <div class="row">
-                    @forelse($videos as $video)
-                        <div class="col-md-4 content-item">
-                            <div class="card h-100 position-relative">
-                                <a href="{{ route('video.show', $video->video_id) }}" class="video-thumbnail">
-                                    <img src="{{ $video->thumbnail_url }}" class="card-img-top" alt="{{ $video->title }}">
-                                    <div class="play-icon">
-                                        <i class="bi bi-play-circle"></i>
-                                    </div>
-                                </a>
-                                <h5>{{ $video->title }}</h5>
-                                <p class="small text-muted">Published on: {{ Carbon::parse($video->created_at)->format('F j, Y') }}</p>
-                            </div>
+           <!-- Videos Tab -->
+<div class="tab-pane fade" id="videos" role="tabpanel">
+    <div class="row">
+        @forelse($videos as $video)
+            <div class="col-md-4 content-item">
+                <div class="card h-100 position-relative">
+                    <a href="{{ route('video.show', $video->video_id) }}" class="video-thumbnail">
+                        <img src="{{ $video->thumbnail_url }}" class="card-img-top" alt="{{ $video->title }}">
+                        <div class="play-icon">
+                            <i class="bi bi-play-circle"></i>
                         </div>
-                    @empty
-                        <p>No videos available.</p>
-                    @endforelse
+                    </a>
+                    <div class="card-body">
+                        <h5 class="card-title">{{ $video->title }}</h5>
+                        <p class="small text-muted">Published on: {{ Carbon::parse($video->created_at)->format('F j, Y') }}</p>
+                        <p class="status-box
+                            @if($video->status == 'pending') bg-warning text-dark
+                            @elseif($video->status == 'approved') bg-success text-white
+                            @elseif($video->status == 'rejected') bg-danger text-white
+                            @else bg-secondary text-white
+                            @endif">
+                            {{ ucfirst($video->status) }}
+                        </p>
+                    </div>
                 </div>
             </div>
+        @empty
+            <p>No videos available.</p>
+        @endforelse
+    </div>
+</div>
         </div>
     </div>
 </div>

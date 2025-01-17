@@ -71,9 +71,9 @@
                     <th>URL</th>
                     <th>Kategori</th>
                     <th>ID User</th>
-                    <th>Created At</th>
+                    <th>Dibuat Pada</th>
                     <th>Status</th>
-                    <th>Action</th>
+                    <th>Aksi</th>
                 </tr>
             </thead>
             <tbody>
@@ -95,12 +95,12 @@
                                 @if($video->is_active)
                                     <form action="{{ route('admin.stop-video', $video->video_id) }}" method="POST" style="display:inline;">
                                         @csrf
-                                        <button type="submit" class="btn btn-sm btn-warning">Stop</button>
+                                        <button type="submit" class="btn btn-sm btn-warning">Tidak Tayang</button>
                                     </form>
                                 @else
                                     <form action="{{ route('admin.start-video', $video->video_id) }}" method="POST" style="display:inline;">
                                         @csrf
-                                        <button type="submit" class="btn btn-sm btn-success">Start</button>
+                                        <button type="submit" class="btn btn-sm btn-success">Tayang</button>
                                     </form>
                                 @endif
                             @else

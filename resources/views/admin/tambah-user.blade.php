@@ -40,7 +40,7 @@
                         <select name="role" id="role" class="form-select @error('role') is-invalid @enderror" required>
                             <option value="">Pilih Role</option>
                             <option value="admin" {{ old('role') == 'admin' ? 'selected' : '' }}>Admin</option>
-                            <option value="dosen" {{ old('role') == 'dosen' ? 'selected' : '' }}>Dosen</option>
+                            {{-- <option value="dosen" {{ old('role') == 'dosen' ? 'selected' : '' }}>Dosen</option> --}}
                             <option value="mahasiswa" {{ old('role') == 'mahasiswa' ? 'selected' : '' }}>Mahasiswa</option>
                         </select>
                         @error('role')

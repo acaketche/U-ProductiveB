@@ -7,7 +7,7 @@
             @if (Auth::check())
                 <p>{{ Auth::user()->name }}</p>
                 <p class="contact-info">{{ Auth::user()->email }}</p>
-                <p class="contact-info">{{ Auth::user()->role }}</p>
+                {{-- <p class="contact-info">{{ Auth::user()->role }}</p> --}}
             @else
                 <p>Guest</p>
                 <p class="contact-info">Email tidak tersedia</p>
@@ -34,7 +34,7 @@
                     @if (Auth::check())
                         <p> <img src="{{ $post->user && $post->user->profile_picture ? Storage::url($post->user->profile_picture) : asset('images/default-profile.png') }}" alt="User Image" class="rounded-image" style="width: 50px; height: 50px;">
                             {{ $post->user->name ?? 'User Tidak Ditemukan' }}<br>
-                            <small style="color: gray;">{{ $post->user->role ?? 'Role Tidak Ditemukan' }}</small>
+                            {{-- <small style="color: gray;">{{ $post->user->role ?? 'Role Tidak Ditemukan' }}</small> --}}
                         </p>
                     @endif
                     <p class="card-text">

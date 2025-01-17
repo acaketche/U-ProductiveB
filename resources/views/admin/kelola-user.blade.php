@@ -24,7 +24,7 @@
                     <select name="role" class="form-select">
                         <option value="" disabled selected>Pilih Role</option>
                         <option value="admin" {{ request('role') == 'admin' ? 'selected' : '' }}>Admin</option>
-                        <option value="dosen" {{ request('role') == 'dosen' ? 'selected' : '' }}>Dosen</option>
+                        {{-- <option value="dosen" {{ request('role') == 'dosen' ? 'selected' : '' }}>Dosen</option> --}}
                         <option value="mahasiswa" {{ request('role') == 'mahasiswa' ? 'selected' : '' }}>Mahasiswa</option>
                     </select>
                 </div>
@@ -53,7 +53,7 @@
                             <th>Nama User</th>
                             <th>Email</th>
                             <th>Role</th>
-                            <th>NIM/NIDN</th>
+                            {{-- <th>NIM/NIDN</th> --}}
                             <th>Aksi</th>
                         </tr>
                     </thead>
@@ -64,7 +64,7 @@
                                 <td>{{ $user->name }}</td>
                                 <td>{{ $user->email }}</td>
                                 <td>{{ $user->role }}</td>
-                                <td>{{ $user->identifier }}</td>
+                                {{-- <td>{{ $user->identifier }}</td> --}}
                                 <td>
                                     <form action="{{ route('delete-user', $user->user_id) }}" method="POST" class="d-inline">
                                         @csrf

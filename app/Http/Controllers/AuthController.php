@@ -23,8 +23,8 @@ class AuthController extends Controller
             'name' => 'required|string|max:255|unique:users',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
-            'role' => 'required|in:Mahasiswa,Dosen,Admin',
-            'identifier' => 'required|numeric|unique:users',
+            // 'role' => 'required|in:mahasiswa,admin',
+            // 'identifier' => 'required|numeric|unique:users',
         ]);
 
         if ($validator->fails()) {
@@ -41,8 +41,8 @@ class AuthController extends Controller
             'name' => $request->input('name'),
             'email' => $request->input('email'),
             'password' =>$request->input('password'),
-            'role' => $request->input('role'),
-            'identifier' => $request->input('identifier'),
+            'role' => 'mahasiswa',
+            // 'identifier' => $request->input('identifier'),
         ]);
 
         // Log in the user
@@ -82,9 +82,11 @@ class AuthController extends Controller
             return redirect()->intended('/admin/dashboard');
         } elseif ($user->hasRole('mahasiswa')) {
             return redirect()->intended('/userprofile');
-        } elseif ($user->hasRole('dosen')) {
-            return redirect()->intended('/userprofile');
-        } else {
+        }
+        // elseif ($user->hasRole('dosen')) {
+        //     return redirect()->intended('/userprofile');
+        // }
+        else {
             return redirect()->intended('/home');
         }
     } else {

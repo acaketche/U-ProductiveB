@@ -108,7 +108,7 @@
                 </div>
             </div>
             <div class="mb-3">
-                <label for="password_confirmation" class="form-label">Confirm Password</label>
+                <label for="password_confirmation" class="form-label">Konfirmasi Password</label>
                 <div class="input-group">
                     <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" placeholder="Konfirmasi Password" required>
                     <button type="button" class="btn" id="toggleConfirmPassword">
@@ -116,7 +116,7 @@
                     </button>
                 </div>
             </div>
-            <div class="mb-3">
+            {{-- <div class="mb-3">
                 <label for="role" class="form-label">Register as</label>
                 <select class="form-select" id="role" name="role" required>
                     <option value="Mahasiswa">Mahasiswa</option>
@@ -126,7 +126,7 @@
                     <label for="identifier" class="form-label">NIM/NIDN</label>
                     <input type="text" class="form-control" id="identifier" name="identifier" placeholder="Masukkan NIM atau NIDN" required>
                 </div>
-            </div>
+            </div> --}}
             <button type="submit" class="btn btn-primary">Register</button>
         </form>
 

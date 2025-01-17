@@ -45,24 +45,34 @@
                 </div>
             </div>
 
-            <!-- Kolom kanan untuk menampilkan komentar -->
+           <!-- Kolom kanan untuk menampilkan komentar -->
             <div class="col-md-4">
                 <h5>Komentar</h5>
                 <div id="commentsContainer">
                     @foreach ($post->comments as $comment)
                         <div class="card mb-3">
-                            <div class="card-body">
-                                @if ($comment->user)
-                                    <p>{{ $comment->user->name }}</p>
-                                @else
-                                    <p class="card-text">User Tidak Ditemukan</p>
-                                @endif
-                                <p class="card-text">{{ $comment->content }}</p>
+                            <div class="card-body d-flex align-items-start">
+                                <!-- Foto Profil -->
+                                <img src="{{ $comment->user && $comment->user->profile_picture ? Storage::url($comment->user->profile_picture) : asset('images/default-profile.png') }}"
+                                    alt="User Image"
+                                    class="rounded-image me-3"
+                                    style="width: 30px; height: 30px;">
+
+                                <!-- Konten Komentar -->
+                                <div>
+                                    @if ($comment->user)
+                                        <p class="mb-1 fw-bold">{{ $comment->user->name }}</p>
+                                    @else
+                                        <p class="mb-1 fw-bold text-danger">User Tidak Ditemukan</p>
+                                    @endif
+                                    <p class="card-text mb-0">{{ $comment->content }}</p>
+                                </div>
                             </div>
                         </div>
                     @endforeach
                 </div>
             </div>
+
         </div>
     </div>
 
